@@ -1,12 +1,13 @@
 package com.odont.odont.models.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.Objects;
 
 @Entity
 @Table(name = "person", schema = "db_odont", catalog = "")
-public class PersonEntity {
+public class PersonEntity implements Serializable {
     private long personId;
     private String firstName;
     private String secondName;
@@ -147,8 +148,26 @@ public class PersonEntity {
                 Objects.equals(txDate, that.txDate);
     }
 
+
     @Override
     public int hashCode() {
         return Objects.hash(personId, firstName, secondName, thirdName, firstSurname, secondSurname, thirdSurname, status, txUser, txHost, txDate);
+    }
+
+    @Override
+    public String toString() {
+        return "PersonEntity{" +
+                "personId=" + personId +
+                ", firstName='" + firstName + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", thirdName='" + thirdName + '\'' +
+                ", firstSurname='" + firstSurname + '\'' +
+                ", secondSurname='" + secondSurname + '\'' +
+                ", thirdSurname='" + thirdSurname + '\'' +
+                ", status=" + status +
+                ", txUser='" + txUser + '\'' +
+                ", txHost='" + txHost + '\'' +
+                ", txDate=" + txDate +
+                '}';
     }
 }
