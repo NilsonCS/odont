@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.odont.odont.models.entity.PersonAddressIdEntity" table="person_address_id" schema="db_odont">
+        <id name="personAddressId">
+            <column name="person_address_id" sql-type="bigint(20) unsigned"/>
+        </id>
+        <property name="status">
+            <column name="status" sql-type="int(11)"/>
+        </property>
+        <property name="txUser">
+            <column name="tx_user" sql-type="varchar(50)" length="50"/>
+        </property>
+        <property name="txHost">
+            <column name="tx_host" sql-type="varchar(100)" length="100"/>
+        </property>
+        <property name="txDate">
+            <column name="tx_date" sql-type="date"/>
+        </property>
+        <many-to-one name="personByPersonId" class="com.odont.odont.models.entity.PersonEntity">
+            <column name="person_id"/>
+        </many-to-one>
+        <many-to-one name="addressByAddressId" class="com.odont.odont.models.entity.AddressEntity">
+            <column name="address_id"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

@@ -4,8 +4,18 @@
     "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
   <session-factory>
-    <property name="connection.url"/>
-    <property name="connection.driver_class"/>
+    <property name="connection.url">jdbc:mysql://localhost:3306/db_odont</property>
+    <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+    <mapping class="com.odont.odont.models.entity.AddressEntity"/>
+    <mapping resource="com/odont/odont/models/entity/AddressEntity.hbm.xml"/>
+    <mapping class="com.odont.odont.models.entity.CopyOfPersonEntity"/>
+    <mapping resource="com/odont/odont/models/entity/CopyOfPersonEntity.hbm.xml"/>
+    <mapping class="com.odont.odont.models.entity.HPersonEntity"/>
+    <mapping resource="com/odont/odont/models/entity/HPersonEntity.hbm.xml"/>
+    <mapping resource="com/odont/odont/models/entity/PersonEntity.hbm.xml"/>
+    <mapping class="com.odont.odont.models.entity.PersonEntity"/>
+    <mapping class="com.odont.odont.models.entity.PersonAddressIdEntity"/>
+    <mapping resource="com/odont/odont/models/entity/PersonAddressIdEntity.hbm.xml"/>
     <!-- <property name="connection.username"/> -->
     <!-- <property name="connection.password"/> -->
 
