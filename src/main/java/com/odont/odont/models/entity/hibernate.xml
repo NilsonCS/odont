@@ -7,9 +7,9 @@
     <property name="connection.url">jdbc:mysql://localhost:3306/db_odont</property>
     <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
     <mapping class="com.odont.odont.models.entity.AddressEntity"/>
-    <mapping resource="com/odont/odont/models/entity/AddressEntity.hbm.xml"/>
+    <mapping resource="com/odont/odont/models/entity/AddressEntity.hbm.xmlhbm.xml"/>
     <mapping class="com.odont.odont.models.entity.CopyOfPersonEntity"/>
-    <mapping resource="com/odont/odont/models/entity/CopyOfPersonEntity.hbm.xml"/>
+    <mapping resource="com/odont/odont/models/entity/CopyOfPersonEntity.hbm.xmlhbm.xml"/>
     <mapping class="com.odont.odont.models.entity.HPersonEntity"/>
     <mapping resource="com/odont/odont/models/entity/HPersonEntity.hbm.xml"/>
     <mapping resource="com/odont/odont/models/entity/PersonEntity.hbm.xml"/>
