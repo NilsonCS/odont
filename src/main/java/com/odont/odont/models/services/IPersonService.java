@@ -8,7 +8,7 @@ public interface IPersonService {
 
     public List<PersonEntity> findAll();
 
-    public PersonEntity findById(Long person_id);
+    public PersonEntity findById(Long personId);
 
     public PersonEntity save (PersonEntity personEntity);
 
