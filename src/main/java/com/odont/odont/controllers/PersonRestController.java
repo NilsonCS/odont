@@ -34,21 +34,28 @@ public class PersonRestController {
         return personService.save(personEntity);
     }
 
-    @PutMapping("/person/{id}")
+    @PutMapping("/person/{personId}") // para modificar
     //@ResponseStatus(HttpStatus.CREATED)
-    public PersonEntity update(@RequestBody PersonEntity personEntity, @PathVariable Long person_id) {
-        PersonEntity personActual = personService.findById(person_id);
+    public PersonEntity update(@RequestBody PersonEntity personEntity, @PathVariable Long personId) {
+        PersonEntity personActual = personService.findById(personId);
 
         personActual.setFirstName(personEntity.getFirstName());
         personActual.setSecondName(personEntity.getSecondName());
         personActual.setThirdName(personEntity.getThirdName());
+        personActual.setFirstSurname(personEntity.getFirstSurname());
+        personActual.setSecondSurname(personEntity.getSecondSurname());
+        personActual.setThirdName(personEntity.getThirdSurname());
+        personActual.setStatus(personEntity.getStatus());
+        personActual.setTxUser(personEntity.getTxUser());
+        personActual.setTxHost(personEntity.getTxHost());
+        personActual.setTxDate(personEntity.getTxDate());
         return personService.save(personActual);
     }
 
-    @DeleteMapping("/persons/{id}")
-   // @ResponseStatus(HttpStatus.CREATED(200).NO_CONTENT)
-    public void delete(@PathVariable Long id){
-        personService.delete(id);
+    @DeleteMapping("/persons/{personId}")
+   // @ResponseStatus(HttpStatus.CREATED.NO_CONTENT)
+    public void delete(@PathVariable Long personId){
+        personService.delete(personId);
     }
 
 }
