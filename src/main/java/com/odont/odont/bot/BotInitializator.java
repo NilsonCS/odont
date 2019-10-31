@@ -30,7 +30,8 @@ public class BotInitializator {
         ApiContextInitializer.init();
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
         try {
-            telegramBotsApi.registerBot(new MainBot(personDao));
+            telegramBotsApi.registerBot(new MainBot(personDao,iMaterialsDao));
+
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }

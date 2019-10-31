@@ -9,13 +9,4 @@ public interface IMaterialsService {
     public  MaterialsEntitya findById(Long idMaterials);
     public MaterialsEntitya save (MaterialsEntitya materialsEntitya);
     public void delete(Long id);
-
-    /* public List<PersonEntity> findAll();
-
-    public PersonEntity findById(Long personId);
-
-    public PersonEntity save (PersonEntity personEntity);
-
-    public void delete(Long id);*/
-
 }

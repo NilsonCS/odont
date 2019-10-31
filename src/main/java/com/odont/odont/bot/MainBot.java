@@ -28,12 +28,11 @@ public class MainBot extends TelegramLongPollingBot {
         System.out.println(update);
 
         if (update.hasMessage() && update.getMessage().hasText()) {
-<<<<<<< HEAD
+
             PersonEntity personEntity = personDao.findById((long) 3).get();
             MaterialsEntitya materialsEntitya = iMaterialsDao.findById((long)3).get();
-=======
-            PersonEntity personEntity = personDao.findById((long) 1).get();
->>>>>>> c35e2f30d7bdc2ead7070d0887a861bf2c874b36
+
+
             SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
                     .setChatId(update.getMessage().getChatId())
                     .setText("Persona desde BBDD: " + personEntity+materialsEntitya);
