@@ -1,14 +1,10 @@
-package com.odont.odont.models.entity;
+package com.odont.odont.models.dto;
 
-import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Objects;
 
-@Entity
-@Table(name = "materials", schema = "db_odont", catalog = "")
-public class MaterialsEntitya {
-    private int idMaterials;
+public class MaterialsDto {
+    private Integer idMaterials;
     private String materialName;
     private double priceIn;
     private double priceOut;
@@ -18,18 +14,18 @@ public class MaterialsEntitya {
     private Timestamp updateAt;
     private Timestamp deleteAt;
 
-    @Id
-    @Column(name = "idMaterials")
-    public long getIdMaterials() {
+    public MaterialsDto(){
+
+    }
+
+    public Integer getIdMaterials() {
         return idMaterials;
     }
 
-    public void setIdMaterials(int idMaterials) {
+    public void setIdMaterials(Integer idMaterials) {
         this.idMaterials = idMaterials;
     }
 
-    @Basic
-    @Column(name = "material_name")
     public String getMaterialName() {
         return materialName;
     }
@@ -38,8 +34,6 @@ public class MaterialsEntitya {
         this.materialName = materialName;
     }
 
-    @Basic
-    @Column(name = "Price_in")
     public double getPriceIn() {
         return priceIn;
     }
@@ -48,8 +42,6 @@ public class MaterialsEntitya {
         this.priceIn = priceIn;
     }
 
-    @Basic
-    @Column(name = "Price_out")
     public double getPriceOut() {
         return priceOut;
     }
@@ -58,8 +50,6 @@ public class MaterialsEntitya {
         this.priceOut = priceOut;
     }
 
-    @Basic
-    @Column(name = "Date_in")
     public Date getDateIn() {
         return dateIn;
     }
@@ -68,8 +58,6 @@ public class MaterialsEntitya {
         this.dateIn = dateIn;
     }
 
-    @Basic
-    @Column(name = "Date_out")
     public Date getDateOut() {
         return dateOut;
     }
@@ -78,8 +66,6 @@ public class MaterialsEntitya {
         this.dateOut = dateOut;
     }
 
-    @Basic
-    @Column(name = "Created_at")
     public Timestamp getCreatedAt() {
         return createdAt;
     }
@@ -88,8 +74,6 @@ public class MaterialsEntitya {
         this.createdAt = createdAt;
     }
 
-    @Basic
-    @Column(name = "Update_at")
     public Timestamp getUpdateAt() {
         return updateAt;
     }
@@ -98,33 +82,11 @@ public class MaterialsEntitya {
         this.updateAt = updateAt;
     }
 
-    @Basic
-    @Column(name = "Delete_at")
     public Timestamp getDeleteAt() {
         return deleteAt;
     }
 
     public void setDeleteAt(Timestamp deleteAt) {
         this.deleteAt = deleteAt;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        MaterialsEntitya that = (MaterialsEntitya) o;
-        return idMaterials == that.idMaterials &&
-                Double.compare(that.priceIn, priceIn) == 0 &&
-                Double.compare(that.priceOut, priceOut) == 0 &&
-                Objects.equals(materialName, that.materialName) &&
-                Objects.equals(dateIn, that.dateIn) &&
-                Objects.equals(createdAt, that.createdAt) &&
-                Objects.equals(updateAt, that.updateAt) &&
-                Objects.equals(deleteAt, that.deleteAt);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(idMaterials, materialName, priceIn, priceOut, dateIn, dateOut, createdAt, updateAt, deleteAt);
     }
 }
