@@ -3,10 +3,11 @@ package com.odont.odont.models.services;
 import com.odont.odont.models.dao.IMaterialsDao;
 import com.odont.odont.models.entity.MaterialsEntitya;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
+@Service
 public class MaterialsServiceImpl implements IMaterialsService {
     @Autowired
     private IMaterialsDao iMaterialsDao;
