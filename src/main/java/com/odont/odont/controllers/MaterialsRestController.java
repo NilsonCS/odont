@@ -1,7 +1,5 @@
 package com.odont.odont.controllers;
-
 import com.odont.odont.models.entity.MaterialsEntitya;
-import com.odont.odont.models.entity.PersonEntity;
 import com.odont.odont.models.services.IMaterialsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +16,7 @@ public class MaterialsRestController{
     private IMaterialsService iMaterialsService;
 
 
-    @GetMapping("/persons")
+    @GetMapping("/materials")
     public List<MaterialsEntitya> index(){
         return iMaterialsService.findAll();
 
@@ -35,24 +33,23 @@ public class MaterialsRestController{
         return iMaterialsService.save(materialsEntitya);
     }
 
-    @PutMapping("/materials/{idMaterials}") // para modificar
+    @PutMapping("/materials/{idMaterials}")
     //@ResponseStatus(HttpStatus.CREATED)
     public MaterialsEntitya update(@RequestBody MaterialsEntitya materialsEntitya, @PathVariable Long idMaterials) {
         MaterialsEntitya materialentitya = iMaterialsService.findById(idMaterials);
 
-        materialentitya.setMaterialName(materialentitya.getMaterialName());
-        materialentitya.setPriceIn(materialentitya.getPriceIn());
-        materialentitya.setPriceOut(materialentitya.getPriceOut());
-        materialentitya.setDateIn(materialentitya.getDateIn());
-        materialentitya.setDateOut(materialentitya.getDateOut());
-        materialentitya.setCreatedAt(materialentitya.getCreatedAt());
-        materialentitya.setUpdateAt(materialentitya.getUpdateAt());
-        materialentitya.setDeleteAt(materialentitya.getDeleteAt());
+        materialentitya.setMaterialName(materialsEntitya.getMaterialName());
+        materialentitya.setPriceIn(materialsEntitya.getPriceIn());
+        materialentitya.setPriceOut(materialsEntitya.getPriceOut());
+        materialentitya.setDateIn(materialsEntitya.getDateIn());
+        materialentitya.setDateOut(materialsEntitya.getDateOut());
+        materialentitya.setCreatedAt(materialsEntitya.getCreatedAt());
+        materialentitya.setUpdateAt(materialsEntitya.getUpdateAt());
+        materialentitya.setDeleteAt(materialsEntitya.getDeleteAt());
         return iMaterialsService.save(materialentitya);
     }
 
     @DeleteMapping("/materials/{idMaterials}")
-    // @ResponseStatus(HttpStatus.CREATED.NO_CONTENT)
     public void delete(@PathVariable Long idMaterials){
         iMaterialsService.delete(idMaterials);
     }
