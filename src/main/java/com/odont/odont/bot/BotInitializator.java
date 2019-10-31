@@ -1,5 +1,6 @@
 package com.odont.odont.bot;
 
+import com.odont.odont.models.dao.IMaterialsDao;
 import com.odont.odont.models.dao.IPersonDao;
 import com.odont.odont.models.dto.PersonDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,11 @@ import javax.annotation.PostConstruct;
 public class BotInitializator {
 
     IPersonDao personDao;
-
+    IMaterialsDao iMaterialsDao;
     @Autowired
-    public BotInitializator(IPersonDao personDao) {
+    public BotInitializator(IPersonDao personDao, IMaterialsDao iMaterialsDao) {
         this.personDao = personDao;
+        this.iMaterialsDao = iMaterialsDao;
     }
 
     public BotInitializator() {

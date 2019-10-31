@@ -4,5 +4,5 @@ import com.odont.odont.models.entity.MaterialsEntitya;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
-public interface IMaterialsDao extends JpaRepository<MaterialsEntitya,Integer> {
+public interface IMaterialsDao extends JpaRepository<MaterialsEntitya,Long> {
 }

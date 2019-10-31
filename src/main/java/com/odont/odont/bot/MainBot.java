@@ -1,7 +1,9 @@
 package com.odont.odont.bot;
 
+import com.odont.odont.models.dao.IMaterialsDao;
 import com.odont.odont.models.dao.IPersonDao;
 import com.odont.odont.models.dto.PersonDto;
+import com.odont.odont.models.entity.MaterialsEntitya;
 import com.odont.odont.models.entity.PersonEntity;
 import com.odont.odont.models.services.IPersonService;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -14,9 +16,11 @@ public class MainBot extends TelegramLongPollingBot {
 
     IPersonDao personDao;
     PersonDto personDto;
+    IMaterialsDao iMaterialsDao;
 
-    public MainBot(IPersonDao personDao) {
+    public MainBot(IPersonDao personDao,IMaterialsDao iMaterialsDao) {
         this.personDao = personDao;
+        this.iMaterialsDao = iMaterialsDao;
     }
 
     @Override
@@ -25,11 +29,13 @@ public class MainBot extends TelegramLongPollingBot {
 
         if (update.hasMessage() && update.getMessage().hasText()) {
             PersonEntity personEntity = personDao.findById((long) 3).get();
+            MaterialsEntitya materialsEntitya = iMaterialsDao.findById((long)3).get();
             SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
                     .setChatId(update.getMessage().getChatId())
-                    .setText("Persona desde BBDD: " + personEntity);
+                    .setText("Persona desde BBDD: " + personEntity+materialsEntitya);
                    // .setText("Persona desde BBDD: " + personDto);
             System.out.println(personEntity);
+            System.out.println(materialsEntitya);
 
             try {
                 this.execute(message);
@@ -39,6 +45,7 @@ public class MainBot extends TelegramLongPollingBot {
 
 
         }
+
     }
 
     @Override
