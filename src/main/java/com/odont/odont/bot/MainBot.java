@@ -18,7 +18,7 @@ public class MainBot extends TelegramLongPollingBot {
     PersonDto personDto;
     IMaterialsDao iMaterialsDao;
 
-    public MainBot(IPersonDao personDao,IMaterialsDao iMaterialsDao) {
+    public MainBot(IPersonDao personDao, IMaterialsDao iMaterialsDao) {
         this.personDao = personDao;
         this.iMaterialsDao = iMaterialsDao;
     }
@@ -35,7 +35,7 @@ public class MainBot extends TelegramLongPollingBot {
 
             SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
                     .setChatId(update.getMessage().getChatId())
-                    .setText("Persona desde BBDD: " + personEntity+materialsEntitya);
+                    .setText("Persona desde BBDD: " + personEntity +" Materiales desde BBDD: "+materialsEntitya);
                    // .setText("Persona desde BBDD: " + personDto);
             System.out.println(personEntity);
             System.out.println(materialsEntitya);

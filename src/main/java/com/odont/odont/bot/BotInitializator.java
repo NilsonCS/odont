@@ -23,6 +23,7 @@ public class BotInitializator {
     }
 
     public BotInitializator() {
+
     }
 
     @PostConstruct
