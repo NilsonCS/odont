@@ -24,7 +24,6 @@ public class MaterialsServiceImpl implements IMaterialsService {
     public MaterialsEntitya findById(Long person_id) {
         return iMaterialsDao.findById(person_id).orElse(null);
     }
-
     @Override
     @Transactional
 
