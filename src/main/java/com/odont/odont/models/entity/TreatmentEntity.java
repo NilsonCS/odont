@@ -9,7 +9,7 @@ public class TreatmentEntity {
     private int treatmentId;
     private String nameTreatment;
     private double costTreatment;
-    private Object duration;
+    private String duration;
 
     @Id
     @Column(name = "treatment_id")
@@ -43,11 +43,11 @@ public class TreatmentEntity {
 
     @Basic
     @Column(name = "duration")
-    public Object getDuration() {
+    public String getDuration() {
         return duration;
     }
 
-    public void setDuration(Object duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
 

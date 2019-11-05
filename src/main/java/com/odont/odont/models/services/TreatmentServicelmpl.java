@@ -3,13 +3,17 @@ package com.odont.odont.models.services;
 import com.odont.odont.models.dao.ITreatmentDao;
 import com.odont.odont.models.entity.TreatmentEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Service
 public class TreatmentServicelmpl implements ITreatmentService{
+
     @Autowired
     private ITreatmentDao iTreatmentDao;
+
     @Override
     @Transactional(readOnly = true)
     public List<TreatmentEntity> findAll() {
