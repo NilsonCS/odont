@@ -51,6 +51,7 @@ public class MainBot extends TelegramLongPollingBot {
 
     }
 
+    /* @@@@@@@@@@@@@@@@@@@@ Nilson Contreras @@@@@@@@@@@@@@@@@@@@@@@*/
     @Override
     public String getBotUsername() {
         return "GatoscBot";
@@ -60,6 +61,37 @@ public class MainBot extends TelegramLongPollingBot {
     public String getBotToken() {
         return "718088447:AAFnThJd7y3IjjcmWFFJadMLYhfrqlRkAbY";
     }
+
+    /* @@@@@@@@@@@@@@@@@@@@ Bacarreza Gadiel @@@@@@@@@@@@@@@@@@@@@@@*/
+//     @Override
+//    public String getBotUsername() {
+//        return "GatoscBot";
+//    }
+//
+//    @Override
+//    public String getBotToken() {
+//        return "718088447:AAFnThJd7y3IjjcmWFFJadMLYhfrqlRkAbY";
+//    }
+
+    /* @@@@@@@@@@@@@@@@@@@@ Vera Vania @@@@@@@@@@@@@@@@@@@@@@@*/
+
+//     @Override
+//    public String getBotUsername() {
+//        return "GatoscBot";
+//    }
+//
+//    @Override
+//    public String getBotToken() {
+//        return "718088447:AAFnThJd7y3IjjcmWFFJadMLYhfrqlRkAbY";
+//    }
+//
+//
+
+
+
+
+
+
 
 
     @Override
