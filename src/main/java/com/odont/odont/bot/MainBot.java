@@ -2,6 +2,7 @@ package com.odont.odont.bot;
 
 import com.odont.odont.models.dao.IMaterialsDao;
 import com.odont.odont.models.dao.IPersonDao;
+import com.odont.odont.models.dao.ITreatmentDao;
 import com.odont.odont.models.dto.PersonDto;
 import com.odont.odont.models.entity.MaterialsEntitya;
 import com.odont.odont.models.entity.PersonEntity;
@@ -17,10 +18,12 @@ public class MainBot extends TelegramLongPollingBot {
     IPersonDao personDao;
     PersonDto personDto;
     IMaterialsDao iMaterialsDao;
+    ITreatmentDao iTreatmentDao;
 
-    public MainBot(IPersonDao personDao,IMaterialsDao iMaterialsDao) {
+    public MainBot(IPersonDao personDao,IMaterialsDao iMaterialsDao, ITreatmentDao iTreatmentDao) {
         this.personDao = personDao;
         this.iMaterialsDao = iMaterialsDao;
+        this.iTreatmentDao = iTreatmentDao;
     }
 
     @Override
@@ -29,16 +32,15 @@ public class MainBot extends TelegramLongPollingBot {
 
         if (update.hasMessage() && update.getMessage().hasText()) {
 
-            PersonEntity personEntity = personDao.findById((long) 3).get();
-            MaterialsEntitya materialsEntitya = iMaterialsDao.findById((long)3).get();
-
+            PersonEntity personEntity = personDao.findById((long) 1).get();
+            //MaterialsEntitya materialsEntitya = iMaterialsDao.findById((long)3).get();
 
             SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
                     .setChatId(update.getMessage().getChatId())
-                    .setText("Persona desde BBDD: " + personEntity+materialsEntitya);
+                    .setText("Persona desde BBDD: " + personEntity + "\n" + " Materiales desde BBDD:" );
                    // .setText("Persona desde BBDD: " + personDto);
             System.out.println(personEntity);
-            System.out.println(materialsEntitya);
+
 
             try {
                 this.execute(message);
