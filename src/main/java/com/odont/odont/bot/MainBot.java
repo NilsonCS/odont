@@ -27,23 +27,28 @@ public class MainBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update){
-        System.out.println(update);
+        System.out.println(update.getMessage().getFrom().getFirstName()+ ": " +update.getMessage().getText());
+      /*  SendMessage sendMessage = new SendMessage().setChatId(update.getMessage().getChatId());
 
-        if(update.hasMessage() && update.getMessage().hasText()){
-
-            MaterialsEntity materialsEntity = iMaterialsDao.findById((long) 1).get();
-
-            SendMessage message = new SendMessage()
-                    .setChatId(update.getMessage().getChatId())
-                    .setText("Materiales desde BBDD: "+materialsEntity+ "\n");
-            System.out.println(materialsEntity);
-
-            try{
-                this.execute(message);
-            }catch (TelegramApiException e){
-                e.printStackTrace();
-            }
-        }
+        sendMessage.setText("Bienvenido!!!!"+"\t" + update.getMessage().getFrom().getFirstName()+"\n"+
+                "\n" +"A: Si desea ver el menu escriba /menu" );*/
+//        System.out.println(update);
+//
+//        if(update.hasMessage() && update.getMessage().hasText()){
+//
+//            MaterialsEntity materialsEntity = iMaterialsDao.findById((long) 1).get();
+//
+//            SendMessage message = new SendMessage()
+//                    .setChatId(update.getMessage().getChatId())
+//                    .setText("Materiales desde BBDD: "+materialsEntity+ "\n");
+//            System.out.println(materialsEntity);
+//
+//            try{
+//                this.execute(message);
+//            }catch (TelegramApiException e){
+//                e.printStackTrace();
+//            }
+//        }
     }
 /*
     @Override
@@ -106,15 +111,6 @@ public class MainBot extends TelegramLongPollingBot {
     public String getBotToken() {
         return "998435810:AAEScPMttRL_pnqy46amQfxg3bwvdWL6-Lo";
     }
-
-
-
-
-
-
-
-
-
 
     @Override
     public void clearWebhook() throws TelegramApiRequestException {
