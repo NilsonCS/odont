@@ -9,8 +9,14 @@ import com.odont.odont.models.entity.MaterialsEntity;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.User;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainBot extends TelegramLongPollingBot {
 
@@ -25,30 +31,60 @@ public class MainBot extends TelegramLongPollingBot {
         this.iMaterialsDao = iMaterialsDao;
     }
 
+    private long chatId;
+    private User user;
+
     @Override
     public void onUpdateReceived(Update update){
-        System.out.println(update.getMessage().getFrom().getFirstName()+ ": " +update.getMessage().getText());
+
 
         if(update.hasMessage() && update.getMessage().hasText()){
-            SendMessage sendMessage = new SendMessage().setChatId(update.getMessage().getChatId());
-            sendMessage.setText("Bienvenido!!!!"+"\t" + update.getMessage().getFrom().getFirstName()+"\n"+
-                    "\n" +"A: Si desea ver el menu escriba /menu" );
-            String comando =update.getMessage().getText();
-            if(comando.equals("/menu")){
-                sendMessage.setText("/A Agregar un nuevo producto"+"\n"+"/B Eliminar producto"+"\n"+"/C Editar producto"+"\n"+"/D Lista de productos");
-            }
-//            MaterialsEntity materialsEntity = iMaterialsDao.findById((long) 1).get();
-//
-//            SendMessage message = new SendMessage()
-//                    .setChatId(update.getMessage().getChatId())
-//                    .setText("Materiales desde BBDD: "+materialsEntity+ "\n");
-//            System.out.println(materialsEntity);
+            System.out.println(update.getMessage().getFrom().getFirstName()+ ": " +update.getMessage().getText());
+           // switch (update.getMessage().getText()){
+                switch (update.getMessage().getText()){
+                    case "/start":
+                        chatId = update.getMessage().getFrom().getId();
+                        user = update.getMessage().getFrom();
+                        SendMessage sendMessage = new SendMessage().setChatId(update.getMessage().getChatId());
+                        sendMessage.setText("Bienvenido!!!!"+"\t" + update.getMessage().getFrom().getFirstName()+"\n"+
+                        "\n" +"A: Si desea ver el menu escriba /menu" );
 
-            try{
-                this.execute(sendMessage);
-            }catch (TelegramApiException e){
-                e.printStackTrace();
+                        try {
+                            execute(sendMessage);
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case "/menu":
+                        chatId = update.getMessage().getFrom().getId();
+                        user = update.getMessage().getFrom();
+                        SendMessage sendMessage1 = new SendMessage().setChatId(update.getMessage().getChatId());
+                        sendMessage1.setText("El menu para los Materiales es:" );
+                        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+                        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+                        List<InlineKeyboardButton> rowInline = new ArrayList<>();
+                        rowInline.add(new InlineKeyboardButton().setText("Agregar").setCallbackData("agregar"));
+                        rowInline.add(new InlineKeyboardButton().setText("Editar").setCallbackData("editar"));
+                        rowInline.add(new InlineKeyboardButton().setText("Eliminar").setCallbackData("eliminar"));
+                        rowInline.add(new InlineKeyboardButton().setText("Lista").setCallbackData("lista"));
+
+
+
+                        rowsInline.add(rowInline);
+                        markupInline.setKeyboard(rowsInline);
+                        sendMessage1.setReplyMarkup(markupInline);
+                        try {
+                            execute(sendMessage1);
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+
+
             }
+
+
+
         }
     }
 /*
