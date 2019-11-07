@@ -114,6 +114,16 @@ public class MainBot extends TelegramLongPollingBot {
 
                 case "lista":
                     System.out.println("Apreto Lista");
+                    MaterialsEntity materialsEntity = iMaterialsDao.findById((long)1).get();
+                    SendMessage message = new SendMessage()
+                            .setChatId(chatId)
+                            .setText("Materiales desde la Base de Datos"+materialsEntity);
+                    System.out.println(materialsEntity);
+                    try {
+                        this.execute(message);
+                    } catch (TelegramApiException e) {
+                        e.printStackTrace();
+                    }
                     break;
             }
         }
