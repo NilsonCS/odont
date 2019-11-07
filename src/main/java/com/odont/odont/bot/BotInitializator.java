@@ -3,7 +3,6 @@ package com.odont.odont.bot;
 import com.odont.odont.models.dao.IMaterialsDao;
 import com.odont.odont.models.dao.IPersonDao;
 import com.odont.odont.models.dao.ITreatmentDao;
-import com.odont.odont.models.dto.PersonDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.ApiContextInitializer;
@@ -19,10 +18,10 @@ public class BotInitializator {
     IMaterialsDao iMaterialsDao;
     ITreatmentDao iTreatmentDao;
     @Autowired
-    public BotInitializator(IPersonDao personDao, IMaterialsDao iMaterialsDao, ITreatmentDao iTreatmentDao) {
+    public BotInitializator(IPersonDao personDao, ITreatmentDao iTreatmentDao, IMaterialsDao iMaterialsDao) {
         this.personDao = personDao;
-        this.iMaterialsDao = iMaterialsDao;
         this.iTreatmentDao = iTreatmentDao;
+        this.iMaterialsDao = iMaterialsDao;
     }
 
     public BotInitializator() {
@@ -34,7 +33,7 @@ public class BotInitializator {
         ApiContextInitializer.init();
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
         try {
-            telegramBotsApi.registerBot(new MainBot(personDao,iMaterialsDao, iTreatmentDao));
+            telegramBotsApi.registerBot(new MainBot(personDao, iTreatmentDao,iMaterialsDao));
 
         } catch (TelegramApiException e) {
             e.printStackTrace();

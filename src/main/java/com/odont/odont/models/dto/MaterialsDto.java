@@ -1,37 +1,39 @@
 package com.odont.odont.models.dto;
 
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.util.Date;
 
 public class MaterialsDto {
-    private Integer idMaterials;
-    private String materialName;
+
+    private Long idmaterials;
+    private String name;
     private double priceIn;
     private double priceOut;
     private Date dateIn;
     private Date dateOut;
-    private Timestamp createdAt;
-    private Timestamp updateAt;
-    private Timestamp deleteAt;
 
-    public MaterialsDto(){
-
+    public MaterialsDto(Long idmaterials, String name, double priceIn, double priceOut, Date dateIn, Date dateOut) {
+        this.idmaterials = idmaterials;
+        this.name = name;
+        this.priceIn = priceIn;
+        this.priceOut = priceOut;
+        this.dateIn = dateIn;
+        this.dateOut = dateOut;
     }
 
-    public Integer getIdMaterials() {
-        return idMaterials;
+    public Long getIdmaterials() {
+        return idmaterials;
     }
 
-    public void setIdMaterials(Integer idMaterials) {
-        this.idMaterials = idMaterials;
+    public void setIdmaterials(Long idmaterials) {
+        this.idmaterials = idmaterials;
     }
 
-    public String getMaterialName() {
-        return materialName;
+    public String getName() {
+        return name;
     }
 
-    public void setMaterialName(String materialName) {
-        this.materialName = materialName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public double getPriceIn() {
@@ -64,29 +66,5 @@ public class MaterialsDto {
 
     public void setDateOut(Date dateOut) {
         this.dateOut = dateOut;
-    }
-
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Timestamp getUpdateAt() {
-        return updateAt;
-    }
-
-    public void setUpdateAt(Timestamp updateAt) {
-        this.updateAt = updateAt;
-    }
-
-    public Timestamp getDeleteAt() {
-        return deleteAt;
-    }
-
-    public void setDeleteAt(Timestamp deleteAt) {
-        this.deleteAt = deleteAt;
     }
 }

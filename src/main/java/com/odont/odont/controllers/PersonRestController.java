@@ -1,13 +1,12 @@
 package com.odont.odont.controllers;
 
-import ch.qos.logback.core.net.server.Client;
 import com.odont.odont.models.entity.PersonEntity;
 import com.odont.odont.models.services.IPersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+
 @CrossOrigin(origins = {"http://localhost:8080"})
 @RestController
 @RequestMapping ("/api")

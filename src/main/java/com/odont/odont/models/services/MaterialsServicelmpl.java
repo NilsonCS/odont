@@ -1,39 +1,40 @@
 package com.odont.odont.models.services;
 
 import com.odont.odont.models.dao.IMaterialsDao;
-import com.odont.odont.models.entity.MaterialsEntitya;
+import com.odont.odont.models.entity.MaterialsEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
 @Service
-public class MaterialsServiceImpl implements IMaterialsService {
+public class MaterialsServicelmpl implements IMaterialsService{
+
     @Autowired
     private IMaterialsDao iMaterialsDao;
 
     @Override
-    @Transactional(readOnly = true)
-    public List<MaterialsEntitya> findAll() {
-        return (List<MaterialsEntitya>) iMaterialsDao.findAll();
+    @Transactional(readOnly =  true)
+    public List<MaterialsEntity>findAll(){
+        return (List<MaterialsEntity>)iMaterialsDao.findAll();
     }
 
     @Override
     @Transactional(readOnly = true)
 
-    public MaterialsEntitya findById(Long person_id) {
-        return iMaterialsDao.findById(person_id).orElse(null);
+    public MaterialsEntity findById(Long idmaterials){
+        return iMaterialsDao.findById(idmaterials).orElse(null);
     }
     @Override
     @Transactional
-
-    public MaterialsEntitya save(MaterialsEntitya personEntity) {
-        return iMaterialsDao.save(personEntity);
+    public MaterialsEntity save(MaterialsEntity materialsEntity){
+        return iMaterialsDao.save(materialsEntity);
     }
 
     @Override
     @Transactional
-    public void delete(Long id) {
+    public void delete(Long id){
         iMaterialsDao.deleteById(id);
     }
 }

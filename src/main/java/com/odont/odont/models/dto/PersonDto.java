@@ -1,7 +1,5 @@
 package com.odont.odont.models.dto;
 
-
-import com.odont.odont.models.dao.IPersonDao;
 import com.odont.odont.models.entity.PersonEntity;
 
 
