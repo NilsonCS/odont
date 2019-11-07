@@ -246,8 +246,6 @@ public class MainBot extends TelegramLongPollingBot {
 //    public String getBotToken() {
 //        return "718088447:AAFnThJd7y3IjjcmWFFJadMLYhfrqlRkAbY";
 //    }
-
-<<<<<<< HEAD
     /* @@@@@@@@@@@@@@@@@@@@ Vera Vania @@@@@@@@@@@@@@@@@@@@@@@*/
 
 //     @Override
@@ -260,20 +258,19 @@ public class MainBot extends TelegramLongPollingBot {
 //        return "998435810:AAEScPMttRL_pnqy46amQfxg3bwvdWL6-Lo";
 //    }
 //
-=======
-    /* @@@@@@@@@@@@@@@@@@@@ Bacarreza Gadiel @@@@@@@@@@@@@@@@@@@@@@@*/
-     @Override
-    public String getBotUsername() {
-        return "CitasDentistaBot";
-    }
 
-    @Override
-    public String getBotToken() {
-        return "971865743:AAHD6m_iDbNA03GkGwUFdReXG5z8Ttnb5UI";
-    }
+    /* @@@@@@@@@@@@@@@@@@@@ Bacarreza Gadiel @@@@@@@@@@@@@@@@@@@@@@@*/
+//     @Override
+//    public String getBotUsername() {
+//        return "CitasDentistaBot";
+//    }
+//
+//    @Override
+//    public String getBotToken() {
+//        return "971865743:AAHD6m_iDbNA03GkGwUFdReXG5z8Ttnb5UI";
+//    }
 
     /* @@@@@@@@@@@@@@@@@@@@ Vera Vania @@@@@@@@@@@@@@@@@@@@@@@*/
->>>>>>> e7cbdfa5d1673f3d1d6060b5f278855efeb51931
 
   /*   @Override
     public String getBotUsername() {
