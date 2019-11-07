@@ -6,8 +6,10 @@ import com.odont.odont.models.dao.ITreatmentDao;
 import com.odont.odont.models.dto.PersonDto;
 import com.odont.odont.models.entity.MaterialsEntity;
 
+import com.odont.odont.models.services.MaterialsServicelmpl;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -17,6 +19,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.Math.toIntExact;
 
 public class MainBot extends TelegramLongPollingBot {
 
@@ -40,7 +44,7 @@ public class MainBot extends TelegramLongPollingBot {
 
         if(update.hasMessage() && update.getMessage().hasText()){
             System.out.println(update.getMessage().getFrom().getFirstName()+ ": " +update.getMessage().getText());
-           // switch (update.getMessage().getText()){
+
                 switch (update.getMessage().getText()){
                     case "/start":
                         chatId = update.getMessage().getFrom().getId();
@@ -79,12 +83,39 @@ public class MainBot extends TelegramLongPollingBot {
                             e.printStackTrace();
                         }
                         break;
-
-
             }
+        }else if(update.hasCallbackQuery()){
+            String call_data = update.getCallbackQuery().getData();
+            long message_id = update.getCallbackQuery().getMessage().getMessageId();
+            long chat_id = update.getCallbackQuery().getMessage().getChatId();
+            String caso= "";
+            switch (call_data){
+                case"agregar":
+                    System.out.println("Apreto Agregar");
+                    caso = "Ingrese el nombre del curso a crear: ";
+                    EditMessageText new_messageCrearCurso = new EditMessageText()
+                            .setChatId(chat_id)
+                            .setMessageId(toIntExact(message_id))
+                            .setText(caso);
+                    try {
+                        execute(new_messageCrearCurso);
+                    } catch (TelegramApiException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case "editar":
 
+                    System.out.println("Apreto editar");
+                    break;
 
+                case "eliminar":
+                    System.out.println("Apreto eliminar");
+                    break;
 
+                case "lista":
+                    System.out.println("Apreto Lista");
+                    break;
+            }
         }
     }
 /*
@@ -148,15 +179,6 @@ public class MainBot extends TelegramLongPollingBot {
     public String getBotToken() {
         return "998435810:AAEScPMttRL_pnqy46amQfxg3bwvdWL6-Lo";
     }
-
-
-
-
-
-
-
-
-
 
     @Override
     public void clearWebhook() throws TelegramApiRequestException {

@@ -5,6 +5,7 @@ import com.odont.odont.models.entity.MaterialsEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
@@ -34,6 +35,6 @@ public class MaterialsServicelmpl implements IMaterialsService{
     @Override
     @Transactional
     public void delete(Long id){
-        iMaterialsDao.deleteById(id);
+    iMaterialsDao.deleteById(id);
     }
 }
