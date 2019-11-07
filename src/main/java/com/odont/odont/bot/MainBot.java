@@ -6,6 +6,7 @@ import com.odont.odont.models.dao.ITreatmentDao;
 import com.odont.odont.models.dto.PersonDto;
 import com.odont.odont.models.entity.MaterialsEntity;
 
+import com.odont.odont.models.entity.TreatmentEntity;
 import com.odont.odont.models.services.MaterialsServicelmpl;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -71,9 +72,6 @@ public class MainBot extends TelegramLongPollingBot {
                         rowInline.add(new InlineKeyboardButton().setText("Editar").setCallbackData("editar"));
                         rowInline.add(new InlineKeyboardButton().setText("Eliminar").setCallbackData("eliminar"));
                         rowInline.add(new InlineKeyboardButton().setText("Lista").setCallbackData("lista"));
-
-
-
                         rowsInline.add(rowInline);
                         markupInline.setKeyboard(rowsInline);
                         sendMessage1.setReplyMarkup(markupInline);
@@ -128,21 +126,21 @@ public class MainBot extends TelegramLongPollingBot {
             }
         }
     }
-/*
-    @Override
+
+  /*  @Override
     public void onUpdateReceived(Update update) {
         System.out.println(update);
 
         if (update.hasMessage() && update.getMessage().hasText()) {
-
-            PersonEntity personEntity = personDao.findById((long) 1).get();
+            TreatmentEntity treatmentEntity = iTreatmentDao.findById((long) 1).get();
+            //PersonEntity personEntity = personDao.findById((long) 1).get();
             //MaterialsEntitya materialsEntitya = iMaterialsDao.findById((long)3).get();
 
             SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
                     .setChatId(update.getMessage().getChatId())
-                    .setText("Persona desde BBDD: " + personEntity + "\n" + " Materiales desde BBDD:" );
+                    .setText("Tratamiento desde BBDD: " + treatmentEntity + "\n");
                    // .setText("Persona desde BBDD: " + personDto);
-            System.out.println(personEntity);
+            System.out.println(treatmentEntity);
 
 
             try {
@@ -168,27 +166,27 @@ public class MainBot extends TelegramLongPollingBot {
 //    }
 
     /* @@@@@@@@@@@@@@@@@@@@ Bacarreza Gadiel @@@@@@@@@@@@@@@@@@@@@@@*/
-//     @Override
-//    public String getBotUsername() {
-//        return "GatoscBot";
-//    }
-//
-//    @Override
-//    public String getBotToken() {
-//        return "718088447:AAFnThJd7y3IjjcmWFFJadMLYhfrqlRkAbY";
-//    }
-
-    /* @@@@@@@@@@@@@@@@@@@@ Vera Vania @@@@@@@@@@@@@@@@@@@@@@@*/
-
      @Override
     public String getBotUsername() {
-        return "materiales_bot";
+        return "CitasDentistaBot";
     }
 
     @Override
     public String getBotToken() {
-        return "998435810:AAEScPMttRL_pnqy46amQfxg3bwvdWL6-Lo";
+        return "971865743:AAHD6m_iDbNA03GkGwUFdReXG5z8Ttnb5UI";
     }
+
+    /* @@@@@@@@@@@@@@@@@@@@ Vera Vania @@@@@@@@@@@@@@@@@@@@@@@*/
+
+//     @Override
+//    public String getBotUsername() {
+ //       return "materiales_bot";
+   // }
+
+ //   @Override
+ //   public String getBotToken() {
+ //       return "998435810:AAEScPMttRL_pnqy46amQfxg3bwvdWL6-Lo";
+ //   }
 
     @Override
     public void clearWebhook() throws TelegramApiRequestException {
