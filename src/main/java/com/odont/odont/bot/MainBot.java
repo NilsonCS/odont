@@ -40,10 +40,10 @@ public class MainBot extends TelegramLongPollingBot {
     private User user;
 
     @Override
-    public void onUpdateReceived(Update update){
+    public void onUpdateReceived(Update update) {
 
 
-        if(update.hasMessage() && update.getMessage().hasText()){
+        if(update.hasMessage() && update.getMessage().hasText()){//inicio menu inventario
             System.out.println(update.getMessage().getFrom().getFirstName()+ ": " +update.getMessage().getText());
 
                 switch (update.getMessage().getText()){
@@ -125,8 +125,79 @@ public class MainBot extends TelegramLongPollingBot {
                     break;
             }
         }
-    }
+    }   //fin menu inventario
 
+       /* if (update.hasMessage() && update.getMessage().hasText()) { //inicio menu de citas
+            String message_text = update.getMessage().getText();
+            long chat_id = update.getMessage().getChatId();
+            if (update.getMessage().getText().equals("/menu")) {
+
+
+                SendMessage message = new SendMessage() // Create a message object object
+                        .setChatId(chat_id)
+                        .setText("You send /menu");
+                InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+                List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+                List<InlineKeyboardButton> rowInline = new ArrayList<>();
+                rowInline.add(new InlineKeyboardButton().setText("Reservar cita").setCallbackData("Reserva"));
+                rowInline.add(new InlineKeyboardButton().setText("Modificar cita").setCallbackData("Modificar"));
+                rowInline.add(new InlineKeyboardButton().setText("Eliminar cita").setCallbackData("Eliminar"));
+                // Set the keyboard to the markup
+                rowsInline.add(rowInline);
+                // Add it to the message
+                markupInline.setKeyboard(rowsInline);
+                message.setReplyMarkup(markupInline);
+                try {
+                    execute(message); // Sending our message object to user
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
+            } else {
+            }
+        } else if (update.hasCallbackQuery()) {
+            // Set variables
+            String call_data = update.getCallbackQuery().getData();
+            long message_id = update.getCallbackQuery().getMessage().getMessageId();
+            long chat_id = update.getCallbackQuery().getMessage().getChatId();
+
+            if (call_data.equals("Reserva")) {
+                String answer = "Ingrese fecha de reserva";
+                EditMessageText new_message = new EditMessageText()
+                        .setChatId(chat_id)
+                        .setMessageId(toIntExact(message_id))
+                        .setText(answer);
+                try {
+                    execute(new_message);
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (call_data.equals("Modificar")) {
+                String answer = "Ingrese nueva fecha y hora";
+                EditMessageText new_message = new EditMessageText()
+                        .setChatId(chat_id)
+                        .setMessageId(toIntExact(message_id))
+                        .setText(answer);
+                try {
+                    execute(new_message);
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (call_data.equals("Eliminar")) {
+                String answer = "Ingrese fecha y hora que desee eliminar";
+                EditMessageText new_message = new EditMessageText()
+                        .setChatId(chat_id)
+                        .setMessageId(toIntExact(message_id))
+                        .setText(answer);
+                try {
+                    execute(new_message);
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    } //fin menu de citas */
   /*  @Override
     public void onUpdateReceived(Update update) {
         System.out.println(update);
@@ -178,15 +249,15 @@ public class MainBot extends TelegramLongPollingBot {
 
     /* @@@@@@@@@@@@@@@@@@@@ Vera Vania @@@@@@@@@@@@@@@@@@@@@@@*/
 
-//     @Override
-//    public String getBotUsername() {
- //       return "materiales_bot";
-   // }
+  /*   @Override
+    public String getBotUsername() {
+       return "materiales_bot";
+    }
 
- //   @Override
- //   public String getBotToken() {
- //       return "998435810:AAEScPMttRL_pnqy46amQfxg3bwvdWL6-Lo";
- //   }
+    @Override
+    public String getBotToken() {
+        return "998435810:AAEScPMttRL_pnqy46amQfxg3bwvdWL6-Lo";
+    }*/
 
     @Override
     public void clearWebhook() throws TelegramApiRequestException {
