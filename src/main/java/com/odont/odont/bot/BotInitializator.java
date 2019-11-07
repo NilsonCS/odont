@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import sun.applet.Main;
 
 import javax.annotation.PostConstruct;
 
@@ -17,11 +18,13 @@ public class BotInitializator {
     IPersonDao personDao;
     IMaterialsDao iMaterialsDao;
     ITreatmentDao iTreatmentDao;
+   MainBot mainBot;
     @Autowired
     public BotInitializator(IPersonDao personDao, ITreatmentDao iTreatmentDao, IMaterialsDao iMaterialsDao) {
         this.personDao = personDao;
         this.iTreatmentDao = iTreatmentDao;
         this.iMaterialsDao = iMaterialsDao;
+
     }
 
     public BotInitializator() {
@@ -32,6 +35,7 @@ public class BotInitializator {
     public void init() {
         ApiContextInitializer.init();
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
+
         try {
             telegramBotsApi.registerBot(new MainBot(personDao, iTreatmentDao,iMaterialsDao));
 

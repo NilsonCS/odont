@@ -5,7 +5,7 @@ import com.odont.odont.models.dao.IPersonDao;
 import com.odont.odont.models.dao.ITreatmentDao;
 import com.odont.odont.models.dto.PersonDto;
 import com.odont.odont.models.entity.MaterialsEntity;
-import com.odont.odont.models.entity.PersonEntity;
+
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -28,27 +28,28 @@ public class MainBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update){
         System.out.println(update.getMessage().getFrom().getFirstName()+ ": " +update.getMessage().getText());
-      /*  SendMessage sendMessage = new SendMessage().setChatId(update.getMessage().getChatId());
 
-        sendMessage.setText("Bienvenido!!!!"+"\t" + update.getMessage().getFrom().getFirstName()+"\n"+
-                "\n" +"A: Si desea ver el menu escriba /menu" );*/
-//        System.out.println(update);
-//
-//        if(update.hasMessage() && update.getMessage().hasText()){
-//
+        if(update.hasMessage() && update.getMessage().hasText()){
+            SendMessage sendMessage = new SendMessage().setChatId(update.getMessage().getChatId());
+            sendMessage.setText("Bienvenido!!!!"+"\t" + update.getMessage().getFrom().getFirstName()+"\n"+
+                    "\n" +"A: Si desea ver el menu escriba /menu" );
+            String comando =update.getMessage().getText();
+            if(comando.equals("/menu")){
+                sendMessage.setText("/A Agregar un nuevo producto"+"\n"+"/B Eliminar producto"+"\n"+"/C Editar producto"+"\n"+"/D Lista de productos");
+            }
 //            MaterialsEntity materialsEntity = iMaterialsDao.findById((long) 1).get();
 //
 //            SendMessage message = new SendMessage()
 //                    .setChatId(update.getMessage().getChatId())
 //                    .setText("Materiales desde BBDD: "+materialsEntity+ "\n");
 //            System.out.println(materialsEntity);
-//
-//            try{
-//                this.execute(message);
-//            }catch (TelegramApiException e){
-//                e.printStackTrace();
-//            }
-//        }
+
+            try{
+                this.execute(sendMessage);
+            }catch (TelegramApiException e){
+                e.printStackTrace();
+            }
+        }
     }
 /*
     @Override
@@ -111,6 +112,15 @@ public class MainBot extends TelegramLongPollingBot {
     public String getBotToken() {
         return "998435810:AAEScPMttRL_pnqy46amQfxg3bwvdWL6-Lo";
     }
+
+
+
+
+
+
+
+
+
 
     @Override
     public void clearWebhook() throws TelegramApiRequestException {
