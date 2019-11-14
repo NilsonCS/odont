@@ -47,6 +47,10 @@ public class TreatmentEntity {
         return duration;
     }
 
+    public void setDuration(Object duration) {
+        this.duration = (String) duration;
+    }
+
     public void setDuration(String duration) {
         this.duration = duration;
     }
