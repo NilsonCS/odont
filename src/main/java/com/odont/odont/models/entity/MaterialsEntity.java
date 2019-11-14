@@ -8,11 +8,11 @@ import java.util.Objects;
 @Table(name = "materials", schema = "db_odont", catalog = "")
 public class MaterialsEntity {
     private long idmaterials;
+    private Date dateIn;
+    private Date dateOut;
     private String name;
     private double priceIn;
     private double priceOut;
-    private Date dateIn;
-    private Date dateOut;
 
     @Id
     @Column(name = "idmaterials")
@@ -22,36 +22,6 @@ public class MaterialsEntity {
 
     public void setIdmaterials(long idmaterials) {
         this.idmaterials = idmaterials;
-    }
-
-    @Basic
-    @Column(name = "Name")
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Basic
-    @Column(name = "Price_in")
-    public double getPriceIn() {
-        return priceIn;
-    }
-
-    public void setPriceIn(double priceIn) {
-        this.priceIn = priceIn;
-    }
-
-    @Basic
-    @Column(name = "Price_out")
-    public double getPriceOut() {
-        return priceOut;
-    }
-
-    public void setPriceOut(double priceOut) {
-        this.priceOut = priceOut;
     }
 
     @Basic
@@ -74,6 +44,36 @@ public class MaterialsEntity {
         this.dateOut = dateOut;
     }
 
+    @Basic
+    @Column(name = "name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Basic
+    @Column(name = "price_in")
+    public double getPriceIn() {
+        return priceIn;
+    }
+
+    public void setPriceIn(double priceIn) {
+        this.priceIn = priceIn;
+    }
+
+    @Basic
+    @Column(name = "price_out")
+    public double getPriceOut() {
+        return priceOut;
+    }
+
+    public void setPriceOut(double priceOut) {
+        this.priceOut = priceOut;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -82,27 +82,25 @@ public class MaterialsEntity {
         return idmaterials == that.idmaterials &&
                 Double.compare(that.priceIn, priceIn) == 0 &&
                 Double.compare(that.priceOut, priceOut) == 0 &&
-                Objects.equals(name, that.name) &&
                 Objects.equals(dateIn, that.dateIn) &&
-                Objects.equals(dateOut, that.dateOut);
+                Objects.equals(dateOut, that.dateOut) &&
+                Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idmaterials, name, priceIn, priceOut, dateIn, dateOut);
+        return Objects.hash(idmaterials, dateIn, dateOut, name, priceIn, priceOut);
     }
 
     @Override
-    public  String toString(){
+    public String toString(){
         return "MaterialsEntity{"+
-                "idmaterials ="+ idmaterials +
-                ", Name ='" + name + '\'' +
-                ", Pice_in ='" + priceIn + '\'' +
-                ", Price_out = '" + priceOut + '\'' +
-                ", Date_in = '" + dateIn + '\'' +
-                ", Date_out = '" + dateOut +
+                "idmaterials = "+idmaterials+
+                ", name = '" + name + '\'' +
+                ", priceIn = '" + priceIn + '\'' +
+                ", priceOut = '" + priceOut + '\'' +
+                ", dateIn = '" + dateIn+ '\'' +
+                ", dateOut = '" + dateOut +
                 '}';
     }
-
-
 }
