@@ -20,6 +20,7 @@ public class MaterialsDto {
         this.dateOut = dateOut;
     }
 
+
     public Long getIdmaterials() {
         return idmaterials;
     }
