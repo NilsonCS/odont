@@ -66,4 +66,13 @@ public class TreatmentEntity {
     public int hashCode() {
         return Objects.hash(treatmentId, nameTreatment, costTreatment, duration);
     }
+    @Override
+    public String toString(){
+        return "MaterialsEntity{"+
+                "treatmentId = "+treatmentId+
+                ", name = '" + nameTreatment + '\'' +
+                ", costTreatment = '" + costTreatment+ '\'' +
+                ", duration = '" + duration+
+                '}';
+    }
 }
