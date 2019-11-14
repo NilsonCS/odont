@@ -41,7 +41,7 @@ public class MainBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update){
 
-      /*  if(update.hasMessage() && update.getMessage().hasText()){//inicio menu inventario
+        if(update.hasMessage() && update.getMessage().hasText()){//inicio menu inventario
             System.out.println(update.getMessage().getFrom().getFirstName()+ ": " +update.getMessage().getText());
 
                 switch (update.getMessage().getText()){
@@ -71,8 +71,6 @@ public class MainBot extends TelegramLongPollingBot {
                         rowInline.add(new InlineKeyboardButton().setText("Eliminar").setCallbackData("eliminar"));
                         rowInline.add(new InlineKeyboardButton().setText("Lista").setCallbackData("lista"));
 
-
-
                         rowsInline.add(rowInline);
                         markupInline.setKeyboard(rowsInline);
                         sendMessage1.setReplyMarkup(markupInline);
@@ -84,14 +82,17 @@ public class MainBot extends TelegramLongPollingBot {
                         break;
             }
         }else if(update.hasCallbackQuery()){
+
             String call_data = update.getCallbackQuery().getData();
             long message_id = update.getCallbackQuery().getMessage().getMessageId();
             long chat_id = update.getCallbackQuery().getMessage().getChatId();
             String caso= "";
             switch (call_data){
                 case"agregar":
+
                     System.out.println("Apreto Agregar");
                     caso = "Ingrese el nombre del curso a crear: ";
+
                     EditMessageText new_messageCrearCurso = new EditMessageText()
                             .setChatId(chat_id)
                             .setMessageId(toIntExact(message_id))
@@ -125,10 +126,10 @@ public class MainBot extends TelegramLongPollingBot {
                     }
                     break;
             }
-        }//
+        }
 
-       */
-         if (update.hasMessage() && update.getMessage().hasText()) { //inicio menu de citas
+
+         /*if (update.hasMessage() && update.getMessage().hasText()) { //inicio menu de citas
             String message_text = update.getMessage().getText();
             long chat_id = update.getMessage().getChatId();
             if (update.getMessage().getText().equals("/menu")) {
@@ -199,7 +200,7 @@ public class MainBot extends TelegramLongPollingBot {
                     e.printStackTrace();
                 }
             }
-        }
+        }*/
     } //fin menu de citas
 
 
@@ -243,19 +244,19 @@ public class MainBot extends TelegramLongPollingBot {
 //    }
 
     /* @@@@@@@@@@@@@@@@@@@@ Bacarreza Gadiel @@@@@@@@@@@@@@@@@@@@@@@*/
-     @Override
-    public String getBotUsername() {
-        return "CitasDentistabot";
-    }
-
-    @Override
-    public String getBotToken() {
-        return "971865743:AAHD6m_iDbNA03GkGwUFdReXG5z8Ttnb5UI";
-    }
+//     @Override
+//    public String getBotUsername() {
+//        return "CitasDentistabot";
+//    }
+//
+//    @Override
+//    public String getBotToken() {
+//        return "971865743:AAHD6m_iDbNA03GkGwUFdReXG5z8Ttnb5UI";
+//    }
 
     /* @@@@@@@@@@@@@@@@@@@@ Vera Vania @@@@@@@@@@@@@@@@@@@@@@@*/
 
-  /*   @Override
+     @Override
     public String getBotUsername() {
         return "materiales_bot";
     }
@@ -268,5 +269,5 @@ public class MainBot extends TelegramLongPollingBot {
     @Override
     public void clearWebhook() throws TelegramApiRequestException {
         System.out.println("Se invoco clearWebhook");
-    }*/
+    }
 }

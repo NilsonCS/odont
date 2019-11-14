@@ -25,6 +25,13 @@ public class MaterialsRestController{
        model.addAttribute("ListMaterials",materialsList);
        return "index";
    }
+
+   @RequestMapping("/new ")
+   public String showNewMaterials(Model model){
+       MaterialsEntity materialsEntity = new MaterialsEntity();
+       model.addAttribute("materials",materialsEntity);
+       return "new_material";
+   }
 }
 
 //@CrossOrigin(origins = {"http://localhost:8080"})
