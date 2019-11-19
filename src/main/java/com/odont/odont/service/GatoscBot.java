@@ -2,6 +2,7 @@ package com.odont.odont.service;
 
 
 import com.odont.odont.handler.TelegramMessageHandler;
+import com.odont.odont.models.telegram.TelegramUpdate;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
