@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.odont.odont.models.entity.CpUserFileEntity" table="cp_user_file" schema="db_odont">
+        <id name="userFileId">
+            <column name="user_file_id" sql-type="bigint(20) unsigned"/>
+        </id>
+        <property name="userId">
+            <column name="user_id" sql-type="int(11)"/>
+        </property>
+        <property name="cpFileFileId">
+            <column name="cp_file_file_id" sql-type="int(11)"/>
+        </property>
+        <property name="fileType">
+            <column name="file_type" sql-type="varchar(10)" length="10"/>
+        </property>
+        <property name="txUser">
+            <column name="tx_user" sql-type="varchar(50)" length="50"/>
+        </property>
+        <property name="txHost">
+            <column name="tx_host" sql-type="varchar(100)" length="100"/>
+        </property>
+        <property name="txDate">
+            <column name="tx_date" sql-type="date"/>
+        </property>
+    </class>
+</hibernate-mapping>
