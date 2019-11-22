@@ -25,6 +25,5 @@ public class TelegramMessage {
     String text;
     @ManyToOne
     TelegramUser from;
-    @ManyToOne
-    TelegramChat chat;
+
 }
