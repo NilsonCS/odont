@@ -1,5 +1,7 @@
 package com.odont.odont.models.dto;
 
+import com.odont.odont.models.entity.MaterialsEntity;
+
 import java.util.Date;
 
 public class MaterialsDto {
@@ -20,6 +22,8 @@ public class MaterialsDto {
         this.dateOut = dateOut;
     }
 
+    public MaterialsDto(MaterialsEntity materialsEntity) {
+    }
 
     public Long getIdmaterials() {
         return idmaterials;

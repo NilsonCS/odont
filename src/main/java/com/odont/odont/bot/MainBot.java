@@ -3,6 +3,7 @@ package com.odont.odont.bot;
 import com.odont.odont.models.dao.IMaterialsDao;
 import com.odont.odont.models.dao.IPersonDao;
 import com.odont.odont.models.dao.ITreatmentDao;
+import com.odont.odont.models.dto.MaterialsDto;
 import com.odont.odont.models.dto.PersonDto;
 
 import com.odont.odont.models.entity.MaterialsEntity;
@@ -26,6 +27,7 @@ public class MainBot extends TelegramLongPollingBot {
 
     IPersonDao personDao;
     PersonDto personDto;
+
     IMaterialsDao iMaterialsDao;
     ITreatmentDao iTreatmentDao;
 
@@ -90,18 +92,8 @@ public class MainBot extends TelegramLongPollingBot {
             switch (call_data){
                 case"agregar":
 
-                    System.out.println("Apreto Agregar");
-                    caso = "Ingrese el nombre del curso a crear: ";
 
-                    EditMessageText new_messageCrearCurso = new EditMessageText()
-                            .setChatId(chat_id)
-                            .setMessageId(toIntExact(message_id))
-                            .setText(caso);
-                    try {
-                        execute(new_messageCrearCurso);
-                    } catch (TelegramApiException e) {
-                        e.printStackTrace();
-                    }
+
                     break;
                 case "editar":
 
@@ -270,4 +262,6 @@ public class MainBot extends TelegramLongPollingBot {
     public void clearWebhook() throws TelegramApiRequestException {
         System.out.println("Se invoco clearWebhook");
     }
+
+
 }

@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface IMaterialsDao extends JpaRepository<MaterialsEntity,Long> {
+public interface IMaterialsDao extends JpaRepository<MaterialsEntity,Integer> {
 
 }

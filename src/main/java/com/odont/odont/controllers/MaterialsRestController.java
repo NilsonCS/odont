@@ -14,24 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @Controller
+@RequestMapping("/user")
 public class MaterialsRestController{
-
-   @Autowired
     private MaterialsServicelmpl materialsServicelmpl;
 
-   @RequestMapping("/")
-   public String viewMaterials(Model model){
-       List<MaterialsEntity> materialsList =  materialsServicelmpl.listAll();
-       model.addAttribute("ListMaterials",materialsList);
-       return "index";
-   }
+    public MaterialsRestController(MaterialsServicelmpl materialsServicelmpl){
+        this.materialsServicelmpl =materialsServicelmpl;
+    }
 
-   @RequestMapping("/new ")
-   public String showNewMaterials(Model model){
-       MaterialsEntity materialsEntity = new MaterialsEntity();
-       model.addAttribute("materials",materialsEntity);
-       return "new_material";
-   }
 }
 
 //@CrossOrigin(origins = {"http://localhost:8080"})

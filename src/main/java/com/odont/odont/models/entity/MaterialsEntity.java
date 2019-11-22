@@ -1,12 +1,13 @@
 package com.odont.odont.models.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.Objects;
 
 @Entity
 @Table(name = "materials", schema = "db_odont", catalog = "")
-public class MaterialsEntity {
+public class MaterialsEntity implements Serializable {
     private long idmaterials;
     private Date dateIn;
     private Date dateOut;
@@ -90,6 +91,14 @@ public class MaterialsEntity {
     @Override
     public int hashCode() {
         return Objects.hash(idmaterials, dateIn, dateOut, name, priceIn, priceOut);
+    }
+
+    public MaterialsEntity(){
+
+    }
+
+    public MaterialsEntity(long idmaterials) {
+        this.idmaterials = idmaterials;
     }
 
     @Override
