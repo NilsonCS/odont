@@ -8,7 +8,7 @@ import java.util.Objects;
 @Table(name = "cp_user", schema = "db_odont", catalog = "")
 public class CpUserEntity {
     private long userId;
-    private int personId;
+    private String personId;
     private String botUserId;
     private String txUser;
     private String txHost;
@@ -26,11 +26,11 @@ public class CpUserEntity {
 
     @Basic
     @Column(name = "person_id", nullable = false)
-    public int getPersonId() {
+    public String getPersonId() {
         return personId;
     }
 
-    public void setPersonId(int personId) {
+    public void setPersonId(String personId) {
         this.personId = personId;
     }
 
@@ -80,7 +80,7 @@ public class CpUserEntity {
         this.userId = userId;
     }
 
-    public CpUserEntity(long userId, int personId, String botUserId, String txUser, String txHost, Date txDate) {
+    public CpUserEntity(long userId, String personId, String botUserId, String txUser, String txHost, Date txDate) {
         this.userId = userId;
         this.personId = personId;
         this.botUserId = botUserId;

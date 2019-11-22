@@ -8,13 +8,16 @@ import java.util.Objects;
 @Table(name = "cp_chat", schema = "db_odont", catalog = "")
 public class CpChatEntity {
     private long chatId;
-    private int cpUserUserId;
+    private long cpUserUserId;
     private String inMessage;
     private String outMessage;
     private Date msgDate;
     private String txUser;
     private String txHost;
     private Date txDate;
+
+    public CpChatEntity() {
+    }
 
     @Id
     @Column(name = "chat_id", nullable = false)
@@ -28,11 +31,11 @@ public class CpChatEntity {
 
     @Basic
     @Column(name = "cp_user_user_id", nullable = false)
-    public int getCpUserUserId() {
+    public long getCpUserUserId() {
         return cpUserUserId;
     }
 
-    public void setCpUserUserId(int cpUserUserId) {
+    public void setCpUserUserId(long cpUserUserId) {
         this.cpUserUserId = cpUserUserId;
     }
 
@@ -109,6 +112,35 @@ public class CpChatEntity {
                 Objects.equals(txUser, that.txUser) &&
                 Objects.equals(txHost, that.txHost) &&
                 Objects.equals(txDate, that.txDate);
+    }
+
+    public CpChatEntity(long chatId) {
+        this.chatId = chatId;
+    }
+
+    public CpChatEntity(long chatId, int cpUserUserId, String inMessage, String outMessage, Date msgDate, String txUser, String txHost, Date txDate) {
+        this.chatId = chatId;
+        this.cpUserUserId = cpUserUserId;
+        this.inMessage = inMessage;
+        this.outMessage = outMessage;
+        this.msgDate = msgDate;
+        this.txUser = txUser;
+        this.txHost = txHost;
+        this.txDate = txDate;
+    }
+
+    @Override
+    public String toString() {
+        return "CpChatEntity{" +
+                "chatId=" + chatId +
+                ", cpUserUserId=" + cpUserUserId +
+                ", inMessage='" + inMessage + '\'' +
+                ", outMessage='" + outMessage + '\'' +
+                ", msgDate=" + msgDate +
+                ", txUser='" + txUser + '\'' +
+                ", txHost='" + txHost + '\'' +
+                ", txDate=" + txDate +
+                '}';
     }
 
     @Override
