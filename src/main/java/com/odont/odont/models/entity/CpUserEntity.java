@@ -74,6 +74,21 @@ public class CpUserEntity {
         this.txDate = txDate;
     }
 
+    public CpUserEntity() { }
+
+    public CpUserEntity(long userId) {
+        this.userId = userId;
+    }
+
+    public CpUserEntity(long userId, int personId, String botUserId, String txUser, String txHost, Date txDate) {
+        this.userId = userId;
+        this.personId = personId;
+        this.botUserId = botUserId;
+        this.txUser = txUser;
+        this.txHost = txHost;
+        this.txDate = txDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -85,6 +100,18 @@ public class CpUserEntity {
                 Objects.equals(txUser, that.txUser) &&
                 Objects.equals(txHost, that.txHost) &&
                 Objects.equals(txDate, that.txDate);
+    }
+
+    @Override
+    public String toString() {
+        return "CpUserEntity{" +
+                "userId=" + userId +
+                ", personId=" + personId +
+                ", botUserId='" + botUserId + '\'' +
+                ", txUser='" + txUser + '\'' +
+                ", txHost='" + txHost + '\'' +
+                ", txDate=" + txDate +
+                '}';
     }
 
     @Override
