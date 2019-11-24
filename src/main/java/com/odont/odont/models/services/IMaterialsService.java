@@ -1,7 +1,6 @@
 package com.odont.odont.models.services;
 
 import com.odont.odont.models.entity.MaterialsEntity;
-
 import java.util.List;
 
 public interface IMaterialsService {

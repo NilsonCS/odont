@@ -1,20 +1,22 @@
 package com.odont.odont.models.dto;
 
-import com.odont.odont.models.entity.MaterialsEntity;
 
-import java.util.Date;
+
+import java.sql.Date;
 
 public class MaterialsDto {
 
-    private Long idmaterials;
+    private long idmaterials;
+    private String codeMaterials;
     private String name;
     private double priceIn;
     private double priceOut;
-    private Date dateIn;
-    private Date dateOut;
+    private java.sql.Date dateIn;
+    private java.sql.Date dateOut;
 
-    public MaterialsDto(Long idmaterials, String name, double priceIn, double priceOut, Date dateIn, Date dateOut) {
+    public MaterialsDto(int idmaterials, String codeMaterials, String name, double priceIn, double priceOut, Date dateIn, Date dateOut) {
         this.idmaterials = idmaterials;
+        this.codeMaterials = codeMaterials;
         this.name = name;
         this.priceIn = priceIn;
         this.priceOut = priceOut;
@@ -22,15 +24,20 @@ public class MaterialsDto {
         this.dateOut = dateOut;
     }
 
-    public MaterialsDto(MaterialsEntity materialsEntity) {
-    }
-
-    public Long getIdmaterials() {
+    public long getIdmaterials() {
         return idmaterials;
     }
 
-    public void setIdmaterials(Long idmaterials) {
+    public void setIdmaterials(int idmaterials) {
         this.idmaterials = idmaterials;
+    }
+
+    public String getCodeMaterials() {
+        return codeMaterials;
+    }
+
+    public void setCodeMaterials(String codeMaterials) {
+        this.codeMaterials = codeMaterials;
     }
 
     public String getName() {

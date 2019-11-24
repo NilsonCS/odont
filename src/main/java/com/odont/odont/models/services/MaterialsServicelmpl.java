@@ -1,36 +1,40 @@
 package com.odont.odont.models.services;
 
 import com.odont.odont.models.dao.IMaterialsDao;
-import com.odont.odont.models.dto.MaterialsDto;
 import com.odont.odont.models.entity.MaterialsEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class MaterialsServicelmpl{
-
-    IMaterialsDao iMaterialsDao;
-
+public class MaterialsServicelmpl implements IMaterialsService{
 
     @Autowired
+    private IMaterialsDao iMaterialsDao;
 
-    public MaterialsServicelmpl(IMaterialsDao iMaterialsDao) {
-        this.iMaterialsDao = iMaterialsDao;
+    @Override
+    @Transactional(readOnly =  true)
+    public List<MaterialsEntity>findAll(){
+        return (List<MaterialsEntity>)iMaterialsDao.findAll();
     }
 
-    public List<MaterialsEntity> all(){
-        List<MaterialsEntity> entityList = new ArrayList<>();
-        List<MaterialsEntity> all = iMaterialsDao.findAll();
-        for(MaterialsEntity entity: all){
-            entityList.add(entity);
-        }
-        return entityList;
+    @Override
+    @Transactional(readOnly = true)
+
+    public MaterialsEntity findById(Long idmaterials){
+        return iMaterialsDao.findById(idmaterials).orElse(null);
+    }
+    @Override
+    @Transactional
+    public MaterialsEntity save(MaterialsEntity materialsEntity){
+        return iMaterialsDao.save(materialsEntity);
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id){
+        iMaterialsDao.deleteById(id);
     }
 }

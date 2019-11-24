@@ -3,26 +3,76 @@ package com.odont.odont.controllers;
 
 import com.odont.odont.models.dao.IMaterialsDao;
 import com.odont.odont.models.entity.MaterialsEntity;
-import com.odont.odont.models.services.IMaterialsService;
-import com.odont.odont.models.services.MaterialsServicelmpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.validation.Valid;
+
 
 @Controller
-@RequestMapping("/user")
-public class MaterialsRestController{
-    private MaterialsServicelmpl materialsServicelmpl;
+@RequestMapping("/materials/")
+public class MaterialsRestController {
 
-    public MaterialsRestController(MaterialsServicelmpl materialsServicelmpl){
-        this.materialsServicelmpl =materialsServicelmpl;
+    private final IMaterialsDao iMaterialsDao;
+
+    @Autowired
+    public MaterialsRestController(IMaterialsDao iMaterialsDao) {
+        this.iMaterialsDao = iMaterialsDao;
     }
 
-}
+    @GetMapping("creat")
+    public String showCreatMaterials(MaterialsEntity materialsEntity)
+    {
+        return "add-materials";
+    }
+
+    @GetMapping("list")
+    public String showUpdateMaterials(Model model){
+        model.addAttribute("materials", iMaterialsDao.findAll());
+        return "index";
+    }
+
+    @PostMapping("add")
+    public String addMaterials(@Valid MaterialsEntity materialsEntity, BindingResult result, Model model){
+        if(result.hasErrors()){
+            return "add-Materials";
+        }
+        iMaterialsDao.save(materialsEntity);
+        return "List:";
+    }
+
+    @GetMapping("edit/{materialsid}")
+    public String showUpdateMaterials(@PathVariable("materialsid")long id, Model model){
+
+        MaterialsEntity materialsEntity = iMaterialsDao.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid Materials: "+id));
+        model.addAttribute("materials",materialsEntity);
+        return "update-materials";
+    }
+    @PostMapping("update/{materialsid}")
+    public String updateMaterials(@PathVariable("materialsid")long id,@Valid MaterialsEntity materialsEntity,BindingResult result, Model model){
+        if(result.hasErrors()){
+            materialsEntity.setIdmaterials(id);
+            return "update-materials";
+        }
+        iMaterialsDao.save(materialsEntity);
+        model.addAttribute("Materials",iMaterialsDao.findAll());
+        return "index";
+    }
+
+    @GetMapping("delete/{materialsid}")
+    public String deleteMaterials(@PathVariable("materialsid") long id, Model model) {
+        MaterialsEntity materialsEntity = iMaterialsDao.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid Materials: "+id));
+        iMaterialsDao.delete(materialsEntity);
+        model.addAttribute("materials", iMaterialsDao.findAll());
+        return "index";
+    }
+
+
 
 //@CrossOrigin(origins = {"http://localhost:8080"})
 //@RestController
@@ -68,76 +118,4 @@ public class MaterialsRestController{
 //        iMaterialsService.delete(idmaterials);
 //    }
 
-
-
-
-
-
-
-//@Controller
-//@RequestMapping("/materials/")
-//public class MaterialsRestController {
-//
-//    private final IMaterialsDao iMaterialsDao;
-//
-//    @Autowired
-//    public MaterialsRestController(IMaterialsDao iMaterialsDao) {
-//        this.iMaterialsDao = iMaterialsDao;
-//    }
-//
-//    @GetMapping("creat")
-//    public String showCreatMaterials(MaterialsEntity materialsEntity)
-//    {
-//        return "add-materials";
-//    }
-//
-//    @GetMapping("list")
-//    public String showUpdateMaterials(Model model){
-//        model.addAttribute("materials", iMaterialsDao.findAll());
-//        return "index";
-//    }
-//
-//    @PostMapping("add")
-//    public String addMaterials(@Valid MaterialsEntity materialsEntity, BindingResult result, Model model){
-//        if(result.hasErrors()){
-//            return "add-Materials";
-//        }
-//        iMaterialsDao.save(materialsEntity);
-//        return "List:";
-//    }
-//
-//    @GetMapping("edit/{materialsid}")
-//    public String showUpdateMaterials(@PathVariable("materialsid")long id, Model model){
-//
-//        MaterialsEntity materialsEntity = iMaterialsDao.findById(id)
-//                .orElseThrow(() -> new IllegalArgumentException("Invalid Materials: "+id));
-//        model.addAttribute("materials",materialsEntity);
-//        return "update-materials";
-//    }
-//    @PostMapping("update/{materialsid}")
-//    public String updateMaterials(@PathVariable("materialsid")long id,@Valid MaterialsEntity materialsEntity,BindingResult result, Model model){
-//        if(result.hasErrors()){
-//            materialsEntity.setIdmaterials(id);
-//            return "update-materials";
-//        }
-//        iMaterialsDao.save(materialsEntity);
-//        model.addAttribute("Materials",iMaterialsDao.findAll());
-//        return "index";
-//    }
-//
-//    @GetMapping("delete/{materialsid}")
-//    public String deleteMaterials(@PathVariable("materialsid") long id, Model model) {
-//        MaterialsEntity materialsEntity = iMaterialsDao.findById(id)
-//                .orElseThrow(() -> new IllegalArgumentException("Invalid Materials: "+id));
-//        iMaterialsDao.delete(materialsEntity);
-//        model.addAttribute("materials", iMaterialsDao.findAll());
-//        return "index";
-//    }
-
-
-
-
-
-
-
-
+}

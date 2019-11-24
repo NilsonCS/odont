@@ -4,11 +4,9 @@ import com.odont.odont.bl.BotBl;
 import com.odont.odont.models.dao.IMaterialsDao;
 import com.odont.odont.models.dao.IPersonDao;
 import com.odont.odont.models.dao.ITreatmentDao;
-import com.odont.odont.models.dto.MaterialsDto;
 import com.odont.odont.models.dto.PersonDto;
 
 import com.odont.odont.models.entity.MaterialsEntity;
-import com.odont.odont.models.entity.TreatmentEntity;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -48,195 +46,115 @@ public class MainBot extends TelegramLongPollingBot {
     }
 
 
-//    @Override
+//        //TODO REVISAR LAS SIG FUNCION GENERADA POR MERGE VANIA "Probando 11/22/2019"
 //    public void onUpdateReceived(Update update) {
+//        System.out.println(update);
+//        update.getMessage().getFrom().getId();
+//        if (update.hasMessage() && update.getMessage().hasText()) {
+//            List<String> messages = botBl.processUpdate(update);
+//            for(String messageText: messages) {
+//                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
+//                        .setChatId(update.getMessage().getChatId())
+//                        .setText(messageText);
+//                try {
+//                    this.execute(message);
+//                } catch (TelegramApiException e) {
+//                    e.printStackTrace();
+//                }
 //
-//        if (update.hasMessage() && update.getMessage().hasText()) {//inicio menu inventario
-//            System.out.println(update.getMessage().getFrom().getFirstName() + ": " + update.getMessage().getText());
-//
-//            switch (update.getMessage().getText()) {
-//                case "/start":
-//                    chatId = update.getMessage().getFrom().getId();
-//                    user = update.getMessage().getFrom();
-//                    SendMessage sendMessage = new SendMessage().setChatId(update.getMessage().getChatId());
-//                    sendMessage.setText("Bienvenido!!!!" + "\t" + update.getMessage().getFrom().getFirstName() + "\n" +
-//                            "\n" + "A: Si desea ver el menu escriba /menu");
-//
-//                    try {
-//                        execute(sendMessage);
-//                    } catch (TelegramApiException e) {
-//                        e.printStackTrace();
-//                    }
-//                    break;
-//                case "/menu":
-//                    chatId = update.getMessage().getFrom().getId();
-//                    user = update.getMessage().getFrom();
-//                    SendMessage sendMessage1 = new SendMessage().setChatId(update.getMessage().getChatId());
-//                    sendMessage1.setText("El menu para los Materiales es:");
-//                    InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
-//                    List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
-//                    List<InlineKeyboardButton> rowInline = new ArrayList<>();
-//                    rowInline.add(new InlineKeyboardButton().setText("Agregar").setCallbackData("agregar"));
-//                    rowInline.add(new InlineKeyboardButton().setText("Editar").setCallbackData("editar"));
-//                    rowInline.add(new InlineKeyboardButton().setText("Eliminar").setCallbackData("eliminar"));
-//                    rowInline.add(new InlineKeyboardButton().setText("Lista").setCallbackData("lista"));
-//
-//                    rowsInline.add(rowInline);
-//                    markupInline.setKeyboard(rowsInline);
-//                    sendMessage1.setReplyMarkup(markupInline);
-//                    try {
-//                        execute(sendMessage1);
-//                    } catch (TelegramApiException e) {
-//                        e.printStackTrace();
-//                    }
-//                    break;
-//            }
-//        } else if (update.hasCallbackQuery()) {
-//
-//            String call_data = update.getCallbackQuery().getData();
-//            long message_id = update.getCallbackQuery().getMessage().getMessageId();
-//            long chat_id = update.getCallbackQuery().getMessage().getChatId();
-//            String caso = "";
-//            switch (call_data) {
-//                case "agregar":
-//
-//
-//                    break;
-//                case "editar":
-//
-//                    System.out.println("Apreto editar");
-//                    break;
-//
-//                case "eliminar":
-//                    System.out.println("Apreto eliminar");
-//                    break;
-//
-//                case "lista":
-//                    System.out.println("Apreto Lista");
-//                    MaterialsEntity materialsEntity = iMaterialsDao.findById((int) 1).get();
-//                    SendMessage message = new SendMessage()
-//                            .setChatId(chatId)
-//                            .setText("Materiales desde la Base de Datos" + materialsEntity);
-//                    System.out.println(materialsEntity);
-//                    try {
-//                        this.execute(message);
-//                    } catch (TelegramApiException e) {
-//                        e.printStackTrace();
-//                    }
-//                    break;
 //            }
 //        }
+//    }
+@Override
+public void onUpdateReceived(Update update){
 
-        //TODO REVISAR LAS SIG FUNCION GENERADA POR MERGE VANIA "Probando 11/22/2019"
-    public void onUpdateReceived(Update update) {
-        System.out.println(update);
-        update.getMessage().getFrom().getId();
-        if (update.hasMessage() && update.getMessage().hasText()) {
-            List<String> messages = botBl.processUpdate(update);
-            for(String messageText: messages) {
-                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                        .setChatId(update.getMessage().getChatId())
-                        .setText(messageText);
+
+    if(update.hasMessage() && update.getMessage().hasText()){
+        System.out.println(update.getMessage().getFrom().getFirstName()+ ": " +update.getMessage().getText());
+
+        switch (update.getMessage().getText()){
+            case "/start":
+                chatId = update.getMessage().getFrom().getId();
+                user = update.getMessage().getFrom();
+                SendMessage sendMessage = new SendMessage().setChatId(update.getMessage().getChatId());
+                sendMessage.setText("Bienvenido!!!!"+"\t" + update.getMessage().getFrom().getFirstName()+"\n"+
+                        "\n" +"A: Si desea ver el menu escriba /menu" );
+
+                try {
+                    execute(sendMessage);
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "/menu":
+                chatId = update.getMessage().getFrom().getId();
+                user = update.getMessage().getFrom();
+                SendMessage sendMessage1 = new SendMessage().setChatId(update.getMessage().getChatId());
+                sendMessage1.setText("El menu para los Materiales es:" );
+                InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+                List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+                List<InlineKeyboardButton> rowInline = new ArrayList<>();
+                rowInline.add(new InlineKeyboardButton().setText("Agregar").setCallbackData("agregar"));
+                rowInline.add(new InlineKeyboardButton().setText("Editar").setCallbackData("editar"));
+                rowInline.add(new InlineKeyboardButton().setText("Eliminar").setCallbackData("eliminar"));
+                rowInline.add(new InlineKeyboardButton().setText("Lista").setCallbackData("lista"));
+
+
+
+                rowsInline.add(rowInline);
+                markupInline.setKeyboard(rowsInline);
+                sendMessage1.setReplyMarkup(markupInline);
+                try {
+                    execute(sendMessage1);
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
+    }else if(update.hasCallbackQuery()){
+        String call_data = update.getCallbackQuery().getData();
+        long message_id = update.getCallbackQuery().getMessage().getMessageId();
+        long chat_id = update.getCallbackQuery().getMessage().getChatId();
+        String caso= "";
+        switch (call_data){
+            case"agregar":
+                System.out.println("Apreto Agregar");
+                caso = "Ingrese el nombre del curso a crear: ";
+                EditMessageText messageText = new EditMessageText()
+                        .setChatId(chat_id)
+                        .setMessageId(toIntExact(message_id))
+                        .setText(caso);
+                try {
+                    execute(messageText);
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "editar":
+
+                System.out.println("Apreto editar");
+                break;
+
+            case "eliminar":
+                System.out.println("Apreto eliminar");
+                break;
+
+            case "lista":
+                System.out.println("Apreto Lista");
+                MaterialsEntity materialsEntity = iMaterialsDao.findById((long)1).get();
+                SendMessage message = new SendMessage()
+                        .setChatId(chatId)
+                        .setText("Materiales desde la Base de Datos"+materialsEntity);
+                System.out.println(materialsEntity);
                 try {
                     this.execute(message);
                 } catch (TelegramApiException e) {
                     e.printStackTrace();
                 }
-
-            }
+                break;
         }
     }
-
-
-//    @Override
-//    public void onUpdateReceived(Update update){
-//
-//        if(update.hasMessage() && update.getMessage().hasText()){//inicio menu inventario
-//            System.out.println(update.getMessage().getFrom().getFirstName()+ ": " +update.getMessage().getText());
-//
-//                switch (update.getMessage().getText()){
-//                    case "/start":
-//                        chatId = update.getMessage().getFrom().getId();
-//                        user = update.getMessage().getFrom();
-//                        SendMessage sendMessage = new SendMessage().setChatId(update.getMessage().getChatId());
-//                        sendMessage.setText("Bienvenido!!!!"+"\t" + update.getMessage().getFrom().getFirstName()+"\n"+
-//                        "\n" +"A: Si desea ver el menu escriba /menu" );
-//
-//                        try {
-//                            execute(sendMessage);
-//                        } catch (TelegramApiException e) {
-//                            e.printStackTrace();
-//                        }
-//                        break;
-//                    case "/menu":
-//                        chatId = update.getMessage().getFrom().getId();
-//                        user = update.getMessage().getFrom();
-//                        SendMessage sendMessage1 = new SendMessage().setChatId(update.getMessage().getChatId());
-//                        sendMessage1.setText("El menu para los Materiales es:" );
-//                        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
-//                        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
-//                        List<InlineKeyboardButton> rowInline = new ArrayList<>();
-//                        rowInline.add(new InlineKeyboardButton().setText("Agregar").setCallbackData("agregar"));
-//                        rowInline.add(new InlineKeyboardButton().setText("Editar").setCallbackData("editar"));
-//                        rowInline.add(new InlineKeyboardButton().setText("Eliminar").setCallbackData("eliminar"));
-//                        rowInline.add(new InlineKeyboardButton().setText("Lista").setCallbackData("lista"));
-//
-//                        rowsInline.add(rowInline);
-//                        markupInline.setKeyboard(rowsInline);
-//                        sendMessage1.setReplyMarkup(markupInline);
-//                        try {
-//                            execute(sendMessage1);
-//                        } catch (TelegramApiException e) {
-//                            e.printStackTrace();
-//                        }
-//                        break;
-//            }
-//        }else if(update.hasCallbackQuery()){
-//
-//            String call_data = update.getCallbackQuery().getData();
-//            long message_id = update.getCallbackQuery().getMessage().getMessageId();
-//            long chat_id = update.getCallbackQuery().getMessage().getChatId();
-//            String caso= "";
-//            switch (call_data){
-//                case"agregar":
-//
-//                    System.out.println("Apreto Agregar");
-//                    caso = "Ingrese el nombre del curso a crear: ";
-//
-//                    EditMessageText new_messageCrearCurso = new EditMessageText()
-//                            .setChatId(chat_id)
-//                            .setMessageId(toIntExact(message_id))
-//                            .setText(caso);
-//                    try {
-//                        execute(new_messageCrearCurso);
-//                    } catch (TelegramApiException e) {
-//                        e.printStackTrace();
-//                    }
-//                    break;
-//                case "editar":
-//
-//                    System.out.println("Apreto editar");
-//                    break;
-//
-//                case "eliminar":
-//                    System.out.println("Apreto eliminar");
-//                    break;
-//
-//                case "lista":
-//                    System.out.println("Apreto Lista");
-//                    MaterialsEntity materialsEntity = iMaterialsDao.findById((long)1).get();
-//                    SendMessage message = new SendMessage()
-//                            .setChatId(chatId)
-//                            .setText("Materiales desde la Base de Datos"+materialsEntity);
-//                    System.out.println(materialsEntity);
-//                    try {
-//                        this.execute(message);
-//                    } catch (TelegramApiException e) {
-//                        e.printStackTrace();
-//                    }
-//                    break;
-//            }
-//        }
+}
 
 
          /*if (update.hasMessage() && update.getMessage().hasText()) { //inicio menu de citas
@@ -343,8 +261,8 @@ public class MainBot extends TelegramLongPollingBot {
     }*/
 
 
-                /* @@@@@@@@@@@@@@@@@@@@ Nilson Contreras @@@@@@@@@@@@@@@@@@@@@@@*/
-                @Override
+        /* @@@@@@@@@@@@@@@@@@@@ Nilson Contreras @@@@@@@@@@@@@@@@@@@@@@@*/
+ /*               @Override
                 public String getBotUsername () {
                     return "GatoscBot";
                 }
@@ -352,9 +270,9 @@ public class MainBot extends TelegramLongPollingBot {
                 @Override
                 public String getBotToken () {
                     return "718088447:AAFnThJd7y3IjjcmWFFJadMLYhfrqlRkAbY";
-                }
+                }*/
 
-                /* @@@@@@@@@@@@@@@@@@@@ Bacarreza Gadiel @@@@@@@@@@@@@@@@@@@@@@@*/
+        /* @@@@@@@@@@@@@@@@@@@@ Bacarreza Gadiel @@@@@@@@@@@@@@@@@@@@@@@*/
 //     @Override
 //    public String getBotUsername() {
 //        return "CitasDentistabot";
@@ -365,26 +283,25 @@ public class MainBot extends TelegramLongPollingBot {
 //        return "971865743:AAHD6m_iDbNA03GkGwUFdReXG5z8Ttnb5UI";
 //    }
 
-                /* @@@@@@@@@@@@@@@@@@@@ Vera Vania @@@@@@@@@@@@@@@@@@@@@@@*/
+        /* @@@@@@@@@@@@@@@@@@@@ Vera Vania @@@@@@@@@@@@@@@@@@@@@@@*/
 
-//     @Override
-//    public String getBotUsername() {
-//        return "materiales_bot";
-//    }
-//
-//    @Override
-//    public String getBotToken() {
-//        return "998435810:AAEScPMttRL_pnqy46amQfxg3bwvdWL6-Lo";
-//    }
+        @Override
+        public String getBotUsername () {
+            return "materiales_bot";
+        }
 
-                @Override
-                public void clearWebhook () throws TelegramApiRequestException {
-                    System.out.println("Se invoco clearWebhook");
-                }
+        @Override
+        public String getBotToken () {
+            return "998435810:AAEScPMttRL_pnqy46amQfxg3bwvdWL6-Lo";
+        }
+
+        @Override
+        public void clearWebhook () throws TelegramApiRequestException {
+            System.out.println("Se invoco clearWebhook");
+        }
 
 
-            }
-
+    }
 
 
 

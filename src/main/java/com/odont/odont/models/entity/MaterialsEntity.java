@@ -1,19 +1,20 @@
 package com.odont.odont.models.entity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
 @Table(name = "materials", schema = "db_odont", catalog = "")
-public class MaterialsEntity implements Serializable {
+public class MaterialsEntity {
     private long idmaterials;
-    private Date dateIn;
-    private Date dateOut;
+    private String codeMaterials;
     private String name;
     private double priceIn;
     private double priceOut;
+    private Date dateIn;
+    private Date dateOut;
 
     @Id
     @Column(name = "idmaterials")
@@ -26,23 +27,13 @@ public class MaterialsEntity implements Serializable {
     }
 
     @Basic
-    @Column(name = "date_in")
-    public Date getDateIn() {
-        return dateIn;
+    @Column(name = "code_materials")
+    public String getCodeMaterials() {
+        return codeMaterials;
     }
 
-    public void setDateIn(Date dateIn) {
-        this.dateIn = dateIn;
-    }
-
-    @Basic
-    @Column(name = "date_out")
-    public Date getDateOut() {
-        return dateOut;
-    }
-
-    public void setDateOut(Date dateOut) {
-        this.dateOut = dateOut;
+    public void setCodeMaterials(String codeMaterials) {
+        this.codeMaterials = codeMaterials;
     }
 
     @Basic
@@ -75,6 +66,26 @@ public class MaterialsEntity implements Serializable {
         this.priceOut = priceOut;
     }
 
+    @Basic
+    @Column(name = "date_in")
+    public Date getDateIn() {
+        return dateIn;
+    }
+
+    public void setDateIn(Date dateIn) {
+        this.dateIn = dateIn;
+    }
+
+    @Basic
+    @Column(name = "date_out")
+    public Date getDateOut() {
+        return dateOut;
+    }
+
+    public void setDateOut(Date dateOut) {
+        this.dateOut = dateOut;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -83,33 +94,37 @@ public class MaterialsEntity implements Serializable {
         return idmaterials == that.idmaterials &&
                 Double.compare(that.priceIn, priceIn) == 0 &&
                 Double.compare(that.priceOut, priceOut) == 0 &&
+                Objects.equals(codeMaterials, that.codeMaterials) &&
+                Objects.equals(name, that.name) &&
                 Objects.equals(dateIn, that.dateIn) &&
-                Objects.equals(dateOut, that.dateOut) &&
-                Objects.equals(name, that.name);
+                Objects.equals(dateOut, that.dateOut);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idmaterials, dateIn, dateOut, name, priceIn, priceOut);
+        return Objects.hash(idmaterials, codeMaterials, name, priceIn, priceOut, dateIn, dateOut);
+
+
     }
 
-    public MaterialsEntity(){
 
+    @Override
+    public String toString() {
+        return "MaterialsEntity{" +
+                "idmaterials=" + idmaterials +
+                ", codeMaterials='" + codeMaterials + '\'' +
+                ", name='" + name + '\'' +
+                ", priceIn=" + priceIn +
+                ", priceOut=" + priceOut +
+                ", dateIn=" + dateIn +
+                ", dateOut=" + dateOut +
+                '}';
+    }
+
+    public MaterialsEntity() {
     }
 
     public MaterialsEntity(long idmaterials) {
         this.idmaterials = idmaterials;
-    }
-
-    @Override
-    public String toString(){
-        return "MaterialsEntity{"+
-                "idmaterials = "+idmaterials+
-                ", name = '" + name + '\'' +
-                ", priceIn = '" + priceIn + '\'' +
-                ", priceOut = '" + priceOut + '\'' +
-                ", dateIn = '" + dateIn+ '\'' +
-                ", dateOut = '" + dateOut +
-                '}';
     }
 }
