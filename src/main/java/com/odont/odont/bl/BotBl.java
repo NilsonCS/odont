@@ -90,7 +90,7 @@ import java.util.List;
             LOGGER.info("PROCESSING IN MESSAGE: {} from user {}" ,update.getMessage().getText(), cpUser.getUserId());
             // Creamos el objeto CpChat con la respuesta a la presente conversación.
             CpChatEntity cpChat = new CpChatEntity();
-            cpChat.setCpUserUserId(cpUser);
+            //cpChat.setCpUserUserId(cpUser);
             cpChat.setInMessage(update.getMessage().getText());
             cpChat.setOutMessage(response);
             cpChat.setMsgDate((java.sql.Date) new Date()); //FIXME Obtener la fecha del campo entero update.getMessage().
@@ -119,7 +119,7 @@ import java.util.List;
                 personEntity.setStatus(Status.ACTIVE.getStatus());
                 personEntity.setTxHost("localhost");
                 personEntity.setTxUser("admin");
-                personEntity.setTxDate((java.sql.Date) new Date());
+                personEntity.setTxDate(new Date());
                 cpUserDao.save(cpUserEntity);
                 cpUserEntity = new CpUserEntity();
                 cpUserEntity.setBotUserId(user.getId().toString());

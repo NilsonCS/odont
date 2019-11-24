@@ -170,4 +170,7 @@ public class PersonEntity implements Serializable {
                 ", txDate=" + txDate +
                 '}';
     }
+
+    public void setTxDate(java.util.Date date) {
+    }
 }

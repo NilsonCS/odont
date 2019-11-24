@@ -1,5 +1,6 @@
 package com.odont.odont.bot;
 
+import com.odont.odont.bl.BotBl;
 import com.odont.odont.models.dao.IMaterialsDao;
 import com.odont.odont.models.dao.IPersonDao;
 import com.odont.odont.models.dao.ITreatmentDao;
@@ -20,10 +21,11 @@ public class BotInitializator {
     ITreatmentDao iTreatmentDao;
    MainBot mainBot;
     @Autowired
-    public BotInitializator(IPersonDao personDao, ITreatmentDao iTreatmentDao, IMaterialsDao iMaterialsDao) {
+    public BotInitializator(BotBl botBl, IPersonDao personDao, ITreatmentDao iTreatmentDao, IMaterialsDao iMaterialsDao) {
         this.personDao = personDao;
         this.iTreatmentDao = iTreatmentDao;
         this.iMaterialsDao = iMaterialsDao;
+        this.botBl = botBl;
 
     }
 
@@ -31,16 +33,32 @@ public class BotInitializator {
 
     }
 
+    BotBl botBl;
+
+//    @PostConstruct
+//    public void init() {
+//        ApiContextInitializer.init();
+//        TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
+//
+//        try {
+//            telegramBotsApi.registerBot(new MainBot(personDao, iTreatmentDao,iMaterialsDao));
+//
+//        } catch (TelegramApiException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
     @PostConstruct
     public void init() {
         ApiContextInitializer.init();
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
-
         try {
-            telegramBotsApi.registerBot(new MainBot(personDao, iTreatmentDao,iMaterialsDao));
-
+            telegramBotsApi.registerBot(new MainBot(botBl));
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
     }
+
+
+
 }

@@ -8,14 +8,14 @@ import java.util.Objects;
 @Table(name = "cp_user", schema = "db_odont", catalog = "")
 public class CpUserEntity {
     private long userId;
-    private String personId;
+
     private String botUserId;
     private String txUser;
     private String txHost;
     private Date txDate;
 
     @Id
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id",nullable = true)
     public long getUserId() {
         return userId;
     }
@@ -24,15 +24,7 @@ public class CpUserEntity {
         this.userId = userId;
     }
 
-    @Basic
-    @Column(name = "person_id", nullable = false)
-    public String getPersonId() {
-        return personId;
-    }
 
-    public void setPersonId(String personId) {
-        this.personId = personId;
-    }
 
     @Basic
     @Column(name = "bot_user_id", nullable = false, length = 100)
@@ -70,6 +62,14 @@ public class CpUserEntity {
         return txDate;
     }
 
+    @JoinColumn(name = "person_id", referencedColumnName = "person_id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private PersonEntity personId;
+
+    public void setPersonId(PersonEntity personId) {
+        this.personId = personId;
+    }
+
     public void setTxDate(Date txDate) {
         this.txDate = txDate;
     }
@@ -82,7 +82,6 @@ public class CpUserEntity {
 
     public CpUserEntity(long userId, String personId, String botUserId, String txUser, String txHost, Date txDate) {
         this.userId = userId;
-        this.personId = personId;
         this.botUserId = botUserId;
         this.txUser = txUser;
         this.txHost = txHost;
