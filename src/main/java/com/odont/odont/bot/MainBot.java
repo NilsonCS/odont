@@ -4,6 +4,7 @@ import com.odont.odont.bl.BotBl;
 import com.odont.odont.models.dao.IMaterialsDao;
 import com.odont.odont.models.dao.IPersonDao;
 import com.odont.odont.models.dao.ITreatmentDao;
+import com.odont.odont.models.dto.MaterialsDto;
 import com.odont.odont.models.dto.PersonDto;
 
 import com.odont.odont.models.entity.MaterialsEntity;
@@ -13,12 +14,15 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageTe
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import static java.lang.Math.toIntExact;
 
@@ -26,9 +30,10 @@ public class MainBot extends TelegramLongPollingBot {
 
     IPersonDao personDao;
     PersonDto personDto;
-
+    MaterialsDto materialsDto;
     IMaterialsDao iMaterialsDao;
     ITreatmentDao iTreatmentDao;
+    private final static Logger LOGGER = Logger.getLogger(MainBot.class.getName());
 
     public MainBot(IPersonDao personDao, ITreatmentDao iTreatmentDao, IMaterialsDao iMaterialsDao) {
         this.personDao = personDao;
@@ -119,16 +124,59 @@ public void onUpdateReceived(Update update){
         switch (call_data){
             case"agregar":
                 System.out.println("Apreto Agregar");
-                caso = "Ingrese el nombre del curso a crear: ";
-                EditMessageText messageText = new EditMessageText()
-                        .setChatId(chat_id)
-                        .setMessageId(toIntExact(message_id))
-                        .setText(caso);
-                try {
-                    execute(messageText);
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
+                String text;
+                int option = 0;
+                switch (option){
+                    case 0:
+
+                        text = "Ingrese el codigo del material";
+                        sendMessage(chat_id,text);
+                        LOGGER.info("Codigo:");
+                        break;
+                    case 1:
+                        materialsDto.setCodeMaterials(update.getMessage().getText());
+                        text = "Ingrese el nombre del material";
+                        sendMessage(chat_id,text);
+                        LOGGER.info("Nombre");
+                        break;
+                    case 2:
+                        materialsDto.setName(update.getMessage().getText());
+                        text = "Ingrese el precio de entrada";
+                        sendMessage(chat_id,text);
+                        LOGGER.info("Precio entrada");
+                        break;
+                    case 3:
+                        materialsDto.setPriceIn(Double.valueOf(update.getMessage().getText()));
+                        text = "Ingrese el precio de salida";
+                        sendMessage(chat_id,text);
+                        LOGGER.info("Precio salida");
+                        break;
+                    case 4:
+                        materialsDto.setPriceOut(Double.valueOf(update.getMessage().getText()));
+                        text = "Ingrese la fecha de entrada";
+                        sendMessage(chat_id,text);
+                        LOGGER.info("Fecha entrada");
+                        break;
+                    case 5:
+                        materialsDto.setDateIn(Date.valueOf(update.getMessage().getText()));
+                        text = "Ingrese la fecha de salida";
+                        sendMessage(chat_id,text);
+                        LOGGER.info("Fecha salida");
+
+                    case 6:
+                        materialsDto.setDateOut(Date.valueOf(update.getMessage().getText()));
                 }
+
+//                    caso = "Ingrese el nombre del curso a crear: ";
+//                    EditMessageText new_messageCrearCurso = new EditMessageText()
+//                            .setChatId(chat_id)
+//                            .setMessageId(toIntExact(message_id))
+//                            .setText(caso);
+//                    try {
+//                        execute(new_messageCrearCurso);
+//                    } catch (TelegramApiException e) {
+//                        e.printStackTrace();
+//                    }
                 break;
             case "editar":
 
@@ -140,21 +188,46 @@ public void onUpdateReceived(Update update){
                 break;
 
             case "lista":
-                System.out.println("Apreto Lista");
-                MaterialsEntity materialsEntity = iMaterialsDao.findById((long)1).get();
-                SendMessage message = new SendMessage()
+                String list ="Codigo = "+ materialsDto.getCodeMaterials()+
+                        "Nombre = "+materialsDto.getName()+
+                        "Precio in = "+materialsDto.getPriceIn()+
+                        "Precio out = "+materialsDto.getPriceOut()+
+                        "Date in = "+materialsDto.getDateIn()+
+                        "Date out = "+materialsDto.getDateOut();
+                SendMessage sendMessage = new SendMessage()
                         .setChatId(chatId)
-                        .setText("Materiales desde la Base de Datos"+materialsEntity);
-                System.out.println(materialsEntity);
-                try {
-                    this.execute(message);
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
-                }
+                        .setText("EL material registrado es: "+list );
+
+                System.out.println("Apreto Lista");
+                System.out.println(list);
+                LOGGER.info("Lista"+list);
+//                    MaterialsEntity materialsEntity = iMaterialsDao.findById((long)1).get();
+//                    SendMessage sendMessage = new SendMessage()
+//                            .setChatId(chatId)
+//                            .setText("Materiales desde la Base de Datos"+materialsEntity);
+//                    System.out.println(materialsEntity);
+//                    try {
+//                        this.execute(sendMessage);
+//                    } catch (TelegramApiException e) {
+//                        e.printStackTrace();
+//                    }
                 break;
         }
     }
 }
+
+    public void sendMessage(long chat_id, String text){
+        SendMessage message = new SendMessage() // Create a message object object
+                .setChatId(chat_id)
+                .setText(text);
+        ReplyKeyboardRemove keyboardMarkupRemove = new ReplyKeyboardRemove();
+        message.setReplyMarkup(keyboardMarkupRemove);
+        try {
+            execute(message); // Sending our message object to user
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
 
 
          /*if (update.hasMessage() && update.getMessage().hasText()) { //inicio menu de citas
