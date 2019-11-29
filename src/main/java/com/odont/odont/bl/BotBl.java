@@ -28,16 +28,21 @@ import java.util.List;
 
         private static final Logger LOGGER = LoggerFactory.getLogger(BotBl.class);
 
-        private IUserDao cpUserDao;
-        private IPersonDao cpPersonDao;
-        private IChatDao cpChatDao;
+        private IUserDao iUserDao;
+        private IPersonDao iPersonDaoPersonDao;
+        private IChatDao iChatDao;
 
-        @Autowired
-        public BotBl(IUserDao cpUserDao, IPersonDao cpPersonDao, IChatDao cpChatDao) {
-            this.cpUserDao = cpUserDao;
-            this.cpPersonDao = cpPersonDao;
-            this.cpChatDao = cpChatDao;
+        public BotBl(IUserDao iUserDao, IPersonDao iPersonDaoPersonDao, IChatDao iChatDao) {
+            this.iUserDao = iUserDao;
+            this.iPersonDaoPersonDao = iPersonDaoPersonDao;
+            this.iChatDao = iChatDao;
         }
+//        @Autowired
+//        public BotBl(IUserDao iUserDao, IPersonDao iPersonDao, IChatDao iChatDao) {
+//            this.iUserDao = iUserDao;
+//            this.cpPersonDao = cpPersonDao;
+//            this.cpChatDao = cpChatDao;
+//        }
 
         public List<String> processUpdate(Update update) {
             LOGGER.info("Recibiendo update {} ", update);
@@ -66,9 +71,9 @@ import java.util.List;
          * @param cpUser El usuario con el que se esta interactuando
          * @param chatResponse Los mensajes que se desean retornar al usuario.
          */
-        private void continueChatWithUser(Update update, CpUserEntity cpUser, List<String> chatResponse) {
+        private void continueChatWithUser(Update update, CpUserEntity cpUserEntity, List<String> chatResponse) {
             // Obtener el ultimo mensaje que envió el usuario
-            CpChatEntity lastMessage = (CpChatEntity) cpChatDao.findLastChatByUserId((int) cpUser.getUserId());
+            IChatDao lastMessage = iChatDao.findLastChatByUserId(cpUserEntity.getUserId());
             // Preparo la vaiable para retornar la respuesta
             String response = null;
             // Si el ultimo mensaje no existe (es la primera conversación)
@@ -81,25 +86,27 @@ import java.util.List;
                 try {
                     // Intenemos obtener el ultimo mensaje retornado y lo convertimos a entero.
                     // Si la coversin falla en el catch retornamos 1
-                    lastMessageInt = Integer.parseInt(lastMessage.getOutMessage());
+
+                    //TODO REPARAR EL ERROR
+                   // lastMessageInt = Integer.parseInt(lastMessage.getOutMessage());
+
                     response = "" + (lastMessageInt + 1);
                 } catch (NumberFormatException nfe) {
                     response = "1";
                 }
             }
-            LOGGER.info("PROCESSING IN MESSAGE: {} from user {}" ,update.getMessage().getText(), cpUser.getUserId());
+            LOGGER.info("PROCESSING IN MESSAGE: {} from user {}" ,update.getMessage().getText(), cpUserEntity.getUserId());
             // Creamos el objeto CpChat con la respuesta a la presente conversación.
             CpChatEntity cpChat = new CpChatEntity();
             //cpChat.setCpUserUserId(cpUser);
             cpChat.setInMessage(update.getMessage().getText());
             cpChat.setOutMessage(response);
-            cpChat.setMsgDate((java.sql.Date) new Date()); //FIXME Obtener la fecha del campo entero update.getMessage().
+            cpChat.setMsgDate( new Date()); //FIXME Obtener la fecha del campo entero update.getMessage().
             cpChat.setTxDate((java.sql.Date) new Date()); //FIXME no se por q no da ese error se debe de recoger.
-           // cpChat.setTxUser(cpUser.getUserId().toString());
+            cpChat.setTxUser(cpUserEntity.getUserId().toString());
             cpChat.setTxHost(update.getMessage().getChatId().toString());
             // Guardamos en base dedatos
-
-            cpChatDao.save (cpChat);
+            iChatDao.save (cpChat);
             // Agregamos la respuesta al chatResponse.
             chatResponse.add(response);
         }
@@ -111,7 +118,7 @@ import java.util.List;
          * @return first time login
          */
         private CpUserEntity initUser(User user) {
-            CpUserEntity cpUserEntity = cpUserDao.findByBotUserId(user.getId().toString());
+            CpUserEntity cpUserEntity = iUserDao.findByBotUserId(user.getId().toString());
             if (cpUserEntity == null) {
                 PersonEntity personEntity = new PersonEntity();
                 personEntity.setFirstName(user.getFirstName());
@@ -120,14 +127,14 @@ import java.util.List;
                 personEntity.setTxHost("localhost");
                 personEntity.setTxUser("admin");
                 personEntity.setTxDate(new Date());
-                cpUserDao.save(cpUserEntity);
+                iUserDao.save(cpUserEntity);
                 cpUserEntity = new CpUserEntity();
                 cpUserEntity.setBotUserId(user.getId().toString());
                 cpUserEntity.setPersonId(personEntity);
                 cpUserEntity.setTxHost("localhost");
                 cpUserEntity.setTxUser("admin");
-                cpUserEntity.setTxDate((java.sql.Date) new Date());
-                cpUserDao.save(cpUserEntity);
+                cpUserEntity.setTxDate(new Date());
+                iUserDao.save(cpUserEntity);
             }
             return cpUserEntity;
         }

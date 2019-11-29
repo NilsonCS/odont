@@ -16,18 +16,18 @@ import javax.annotation.PostConstruct;
 @Component
 public class BotInitializator {
 
-    IPersonDao personDao;
-    IMaterialsDao iMaterialsDao;
-    ITreatmentDao iTreatmentDao;
-   MainBot mainBot;
-    @Autowired
-    public BotInitializator(BotBl botBl, IPersonDao personDao, ITreatmentDao iTreatmentDao, IMaterialsDao iMaterialsDao) {
-        this.personDao = personDao;
-        this.iTreatmentDao = iTreatmentDao;
-        this.iMaterialsDao = iMaterialsDao;
-        this.botBl = botBl;
-
-    }
+//    IPersonDao personDao;
+//    IMaterialsDao iMaterialsDao;
+//    ITreatmentDao iTreatmentDao;
+//   MainBot mainBot;
+//    @Autowired
+//    public BotInitializator(BotBl botBl, IPersonDao personDao, ITreatmentDao iTreatmentDao, IMaterialsDao iMaterialsDao) {
+//        this.personDao = personDao;
+//        this.iTreatmentDao = iTreatmentDao;
+//        this.iMaterialsDao = iMaterialsDao;
+//        this.botBl = botBl;
+//
+//    }
 
     public BotInitializator() {
 

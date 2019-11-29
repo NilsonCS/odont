@@ -1,33 +1,77 @@
 package com.odont.odont.models.entity;
 
 import javax.persistence.*;
-import java.sql.Date;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "cp_user", schema = "db_odont", catalog = "")
-public class CpUserEntity {
-    private long userId;
+@Table(name = "cp_user")
+@XmlRootElement
+public class CpUserEntity implements Serializable {
 
-    private String botUserId;
-    private String txUser;
-    private String txHost;
-    private Date txDate;
-
+    private static final long serialVersionUID = 1L;
     @Id
-    @Column(name = "user_id",nullable = true)
-    public long getUserId() {
-        return userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "user_id")
+    private Integer userId;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "bot_user_id")
+    private String botUserId;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "tx_user")
+    private String txUser;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "tx_host")
+    private String txHost;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "tx_date")
+    @Temporal(TemporalType.DATE)
+    private java.util.Date txDate;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cpUserUserId", fetch = FetchType.LAZY)
+    private List<CpChatEntity> cpChatList;
+    @JoinColumn(name = "person_id", referencedColumnName = "person_id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private PersonEntity personId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId", fetch = FetchType.LAZY)
+    private List<CpUserFileEntity> cpUserFileList;
+
+    public CpUserEntity() {
     }
 
-    public void setUserId(long userId) {
+    public CpUserEntity(Integer userId) {
         this.userId = userId;
     }
 
+    public CpUserEntity(Integer userId, String botUserId, String txUser, String txHost, java.util.Date txDate) {
+        this.userId = userId;
+        this.botUserId = botUserId;
+        this.txUser = txUser;
+        this.txHost = txHost;
+        this.txDate = txDate;
+    }
 
+    public Integer getUserId() {
+        return userId;
+    }
 
-    @Basic
-    @Column(name = "bot_user_id", nullable = false, length = 100)
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
     public String getBotUserId() {
         return botUserId;
     }
@@ -36,8 +80,6 @@ public class CpUserEntity {
         this.botUserId = botUserId;
     }
 
-    @Basic
-    @Column(name = "tx_user", nullable = false, length = 50)
     public String getTxUser() {
         return txUser;
     }
@@ -46,8 +88,6 @@ public class CpUserEntity {
         this.txUser = txUser;
     }
 
-    @Basic
-    @Column(name = "tx_host", nullable = false, length = 100)
     public String getTxHost() {
         return txHost;
     }
@@ -56,65 +96,63 @@ public class CpUserEntity {
         this.txHost = txHost;
     }
 
-    @Basic
-    @Column(name = "tx_date", nullable = false)
-    public Date getTxDate() {
+    public java.util.Date getTxDate() {
         return txDate;
-    }
-
-    @JoinColumn(name = "person_id", referencedColumnName = "person_id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private PersonEntity personId;
-
-    public void setPersonId(PersonEntity personId) {
-        this.personId = personId;
     }
 
     public void setTxDate(Date txDate) {
         this.txDate = txDate;
     }
 
-    public CpUserEntity() { }
-
-    public CpUserEntity(long userId) {
-        this.userId = userId;
+    public PersonEntity getPersonId() {
+        return personId;
     }
 
-    public CpUserEntity(long userId, String personId, String botUserId, String txUser, String txHost, Date txDate) {
-        this.userId = userId;
-        this.botUserId = botUserId;
-        this.txUser = txUser;
-        this.txHost = txHost;
-        this.txDate = txDate;
+    public void setPersonId(PersonEntity personId) {
+        this.personId = personId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CpUserEntity that = (CpUserEntity) o;
-        return userId == that.userId &&
-                personId == that.personId &&
-                Objects.equals(botUserId, that.botUserId) &&
-                Objects.equals(txUser, that.txUser) &&
-                Objects.equals(txHost, that.txHost) &&
-                Objects.equals(txDate, that.txDate);
+    @XmlTransient
+    public List<CpUserFileEntity> getCpUserFileList() {
+        return cpUserFileList;
     }
 
-    @Override
-    public String toString() {
-        return "CpUserEntity{" +
-                "userId=" + userId +
-                ", personId=" + personId +
-                ", botUserId='" + botUserId + '\'' +
-                ", txUser='" + txUser + '\'' +
-                ", txHost='" + txHost + '\'' +
-                ", txDate=" + txDate +
-                '}';
+    public void setCpUserFileList(List<CpUserFileEntity> cpUserFileList) {
+        this.cpUserFileList = cpUserFileList;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, personId, botUserId, txUser, txHost, txDate);
+        int hash = 0;
+        hash += (userId != null ? userId.hashCode() : 0);
+        return hash;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof CpUserEntity)) {
+            return false;
+        }
+        CpUserEntity other = (CpUserEntity) object;
+        if ((this.userId == null && other.userId != null) || (this.userId != null && !this.userId.equals(other.userId))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "bo.edu.ucb.sis.carpool.chatbot.domain.CpUser[ userId=" + userId + " ]";
+    }
+
+    @XmlTransient
+    public List<CpChatEntity> getCpChatList() {
+        return cpChatList;
+    }
+
+    public void setCpChatList(List<CpChatEntity> cpChatList) {
+        this.cpChatList = cpChatList;
+    }
+
 }

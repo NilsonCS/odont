@@ -1,46 +1,99 @@
 package com.odont.odont.models.entity;
 
 import javax.persistence.*;
-import java.sql.Date;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
+import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 @Entity
-@Table(name = "cp_chat", schema = "db_odont", catalog = "")
-public class CpChatEntity {
-    private long chatId;
-    private long cpUserUserId;
+@Table(name = "cp_chat")
+@XmlRootElement
+public class CpChatEntity implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "chat_id")
+    private Integer chatId;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 400)
+    @Column(name = "in_message")
     private String inMessage;
+    @Size(max = 400)
+    @Column(name = "out_message")
     private String outMessage;
-    private Date msgDate;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "msg_date")
+    @Temporal(TemporalType.DATE)
+    private java.util.Date msgDate;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "tx_user")
     private String txUser;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "tx_host")
     private String txHost;
-    private Date txDate;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "tx_date")
+    @Temporal(TemporalType.DATE)
+    private java.util.Date txDate;
+    @JoinColumn(name = "cp_user_user_id", referencedColumnName = "user_id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private CpUserEntity cpUserUserId;
 
     public CpChatEntity() {
     }
 
-    @Id
-    @Column(name = "chat_id", nullable = false)
-    public long getChatId() {
-        return chatId;
-    }
-
-    public void setChatId(long chatId) {
+    public CpChatEntity(Integer chatId) {
         this.chatId = chatId;
     }
 
-    @Basic
-    @Column(name = "cp_user_user_id", nullable = false)
-    public long getCpUserUserId() {
-        return cpUserUserId;
+    public CpChatEntity(Integer chatId, String inMessage, java.util.Date msgDate, String txUser, String txHost, java.util.Date txDate) {
+        this.chatId = chatId;
+        this.inMessage = inMessage;
+        this.msgDate = msgDate;
+        this.txUser = txUser;
+        this.txHost = txHost;
+        this.txDate = txDate;
     }
 
-    public void setCpUserUserId(long cpUserUserId) {
-        this.cpUserUserId = cpUserUserId;
+    public Integer getChatId() {
+        return chatId;
     }
 
-    @Basic
-    @Column(name = "in_message", nullable = false, length = 400)
+    public void setChatId(Integer chatId) {
+        this.chatId = chatId;
+    }
+
     public String getInMessage() {
         return inMessage;
     }
@@ -49,8 +102,6 @@ public class CpChatEntity {
         this.inMessage = inMessage;
     }
 
-    @Basic
-    @Column(name = "out_message", nullable = true, length = 400)
     public String getOutMessage() {
         return outMessage;
     }
@@ -59,18 +110,14 @@ public class CpChatEntity {
         this.outMessage = outMessage;
     }
 
-    @Basic
-    @Column(name = "msg_date", nullable = false)
-    public Date getMsgDate() {
+    public java.util.Date getMsgDate() {
         return msgDate;
     }
 
-    public void setMsgDate(Date msgDate) {
+    public void setMsgDate(java.util.Date msgDate) {
         this.msgDate = msgDate;
     }
 
-    @Basic
-    @Column(name = "tx_user", nullable = false, length = 50)
     public String getTxUser() {
         return txUser;
     }
@@ -79,8 +126,6 @@ public class CpChatEntity {
         this.txUser = txUser;
     }
 
-    @Basic
-    @Column(name = "tx_host", nullable = false, length = 100)
     public String getTxHost() {
         return txHost;
     }
@@ -89,9 +134,7 @@ public class CpChatEntity {
         this.txHost = txHost;
     }
 
-    @Basic
-    @Column(name = "tx_date", nullable = false)
-    public Date getTxDate() {
+    public java.util.Date getTxDate() {
         return txDate;
     }
 
@@ -99,52 +142,37 @@ public class CpChatEntity {
         this.txDate = txDate;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CpChatEntity that = (CpChatEntity) o;
-        return chatId == that.chatId &&
-                cpUserUserId == that.cpUserUserId &&
-                Objects.equals(inMessage, that.inMessage) &&
-                Objects.equals(outMessage, that.outMessage) &&
-                Objects.equals(msgDate, that.msgDate) &&
-                Objects.equals(txUser, that.txUser) &&
-                Objects.equals(txHost, that.txHost) &&
-                Objects.equals(txDate, that.txDate);
+    public CpUserEntity getCpUserUserId() {
+        return cpUserUserId;
     }
 
-    public CpChatEntity(long chatId) {
-        this.chatId = chatId;
-    }
-
-    public CpChatEntity(long chatId, int cpUserUserId, String inMessage, String outMessage, Date msgDate, String txUser, String txHost, Date txDate) {
-        this.chatId = chatId;
+    public void setCpUserUserId(CpUserEntity cpUserUserId) {
         this.cpUserUserId = cpUserUserId;
-        this.inMessage = inMessage;
-        this.outMessage = outMessage;
-        this.msgDate = msgDate;
-        this.txUser = txUser;
-        this.txHost = txHost;
-        this.txDate = txDate;
-    }
-
-    @Override
-    public String toString() {
-        return "CpChatEntity{" +
-                "chatId=" + chatId +
-                ", cpUserUserId=" + cpUserUserId +
-                ", inMessage='" + inMessage + '\'' +
-                ", outMessage='" + outMessage + '\'' +
-                ", msgDate=" + msgDate +
-                ", txUser='" + txUser + '\'' +
-                ", txHost='" + txHost + '\'' +
-                ", txDate=" + txDate +
-                '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(chatId, cpUserUserId, inMessage, outMessage, msgDate, txUser, txHost, txDate);
+        int hash = 0;
+        hash += (chatId != null ? chatId.hashCode() : 0);
+        return hash;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof CpChatEntity)) {
+            return false;
+        }
+        CpChatEntity other = (CpChatEntity) object;
+        if ((this.chatId == null && other.chatId != null) || (this.chatId != null && !this.chatId.equals(other.chatId))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "bo.edu.ucb.sis.carpool.chatbot.domain.CpChat[ chatId=" + chatId + " ]";
+    }
+
 }
