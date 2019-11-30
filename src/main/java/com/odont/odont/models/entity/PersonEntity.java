@@ -1,8 +1,10 @@
 package com.odont.odont.models.entity;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -126,9 +128,22 @@ public class PersonEntity implements Serializable {
         return txDate;
     }
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personId", fetch = FetchType.LAZY)
+    private List<CpPersonAddress> cpPersonAddressList;
+
+
     public void setTxDate(Date txDate) {
         this.txDate = txDate;
     }
+    @XmlTransient
+    public List<CpPersonAddress> getCpPersonAddressList() {
+        return cpPersonAddressList;
+    }
+
+    public void setCpPersonAddressList(List<CpPersonAddress> cpPersonAddressList) {
+        this.cpPersonAddressList = cpPersonAddressList;
+    }
+
 
     @Override
     public boolean equals(Object o) {

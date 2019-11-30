@@ -83,7 +83,7 @@ public class PersonAddressIdEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "person_id", referencedColumnName = "person_id", nullable = false)
+    @JoinColumn(name = "person_id", referencedColumnName = "personId", nullable = false)
     public PersonEntity getPersonByPersonId() {
         return personByPersonId;
     }
@@ -93,7 +93,7 @@ public class PersonAddressIdEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "address_id", referencedColumnName = "address_id", nullable = false)
+    @JoinColumn(name = "address_id", referencedColumnName = "addressId", nullable = false)
     public AddressEntity getAddressByAddressId() {
         return addressByAddressId;
     }

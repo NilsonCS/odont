@@ -8,6 +8,8 @@ import com.odont.odont.models.dto.MaterialsDto;
 import com.odont.odont.models.dto.PersonDto;
 
 import com.odont.odont.models.entity.MaterialsEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -22,13 +24,13 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import static java.lang.Math.toIntExact;
 
 public class MainBot extends TelegramLongPollingBot {
 
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(BotBl.class);
     //@ USO VANIA @@@@@@@@@
 //    IPersonDao personDao;
 //    PersonDto personDto;
@@ -58,6 +60,7 @@ public class MainBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         System.out.println(update);
         update.getMessage().getFrom().getId();
+        LOGGER.info("Recibiendo update {} ", update);
         if (update.hasMessage() && update.getMessage().hasText()) {
             List<String> messages = botBl.processUpdate(update);
             for(String messageText: messages) {

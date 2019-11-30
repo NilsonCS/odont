@@ -18,31 +18,22 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
-
-
-
-
     @Service
     public class BotBl {
 
         private static final Logger LOGGER = LoggerFactory.getLogger(BotBl.class);
 
         private IUserDao iUserDao;
-        private IPersonDao iPersonDaoPersonDao;
+        private IPersonDao iPersonDao;
         private IChatDao iChatDao;
 
-        public BotBl(IUserDao iUserDao, IPersonDao iPersonDaoPersonDao, IChatDao iChatDao) {
+        public BotBl(IUserDao iUserDao, IPersonDao iPersonDao, IChatDao iChatDao) {
             this.iUserDao = iUserDao;
-            this.iPersonDaoPersonDao = iPersonDaoPersonDao;
+            this.iPersonDao = iPersonDao;
             this.iChatDao = iChatDao;
         }
-//        @Autowired
-//        public BotBl(IUserDao iUserDao, IPersonDao iPersonDao, IChatDao iChatDao) {
-//            this.iUserDao = iUserDao;
-//            this.cpPersonDao = cpPersonDao;
-//            this.cpChatDao = cpChatDao;
-//        }
+
+
 
         public List<String> processUpdate(Update update) {
             LOGGER.info("Recibiendo update {} ", update);
@@ -68,7 +59,7 @@ import java.util.List;
         /**
          * Procesa el chat con UN usuario
          * @param update El mensaje que envio el usuario
-         * @param cpUser El usuario con el que se esta interactuando
+         * @param cpUserEntity El usuario con el que se esta interactuando
          * @param chatResponse Los mensajes que se desean retornar al usuario.
          */
         private void continueChatWithUser(Update update, CpUserEntity cpUserEntity, List<String> chatResponse) {
@@ -98,11 +89,11 @@ import java.util.List;
             LOGGER.info("PROCESSING IN MESSAGE: {} from user {}" ,update.getMessage().getText(), cpUserEntity.getUserId());
             // Creamos el objeto CpChat con la respuesta a la presente conversación.
             CpChatEntity cpChat = new CpChatEntity();
-            //cpChat.setCpUserUserId(cpUser);
+            cpChat.setCpUserUserId(cpUserEntity);
             cpChat.setInMessage(update.getMessage().getText());
             cpChat.setOutMessage(response);
-            cpChat.setMsgDate( new Date()); //FIXME Obtener la fecha del campo entero update.getMessage().
-            cpChat.setTxDate((java.sql.Date) new Date()); //FIXME no se por q no da ese error se debe de recoger.
+            cpChat.setMsgDate ( new Date()); //FIXME Obtener la fecha del campo entero update.getMessage().
+            cpChat.setTxDate (new Date()); //FIXME no se por q no da ese error se debe de recoger.
             cpChat.setTxUser(cpUserEntity.getUserId().toString());
             cpChat.setTxHost(update.getMessage().getChatId().toString());
             // Guardamos en base dedatos

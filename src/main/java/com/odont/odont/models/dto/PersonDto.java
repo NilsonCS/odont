@@ -2,6 +2,8 @@ package com.odont.odont.models.dto;
 
 import com.odont.odont.models.entity.PersonEntity;
 
+import java.util.List;
+
 
 public class PersonDto {
     private Long personId;
@@ -11,6 +13,8 @@ public class PersonDto {
     private String firstSurname;
     private String secondSurname;
     private String thirdSurname;
+
+    private List<AddressDto> addressList;
 
     public PersonDto() {
     }
@@ -77,5 +81,16 @@ public class PersonDto {
     public void setThirdSurname(String thirdSurname) {
         this.thirdSurname = thirdSurname;
     }
+
+    public List<AddressDto> getAddressList() {
+        return addressList;
+    }
+
+    public void setAddressList(List<AddressDto> addressList) {
+        this.addressList = addressList;
+    }
 }
+
+
+
 
