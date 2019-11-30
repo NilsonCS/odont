@@ -60,20 +60,30 @@ public class MainBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         System.out.println(update);
         update.getMessage().getFrom().getId();
+
         LOGGER.info("Recibiendo update {} ", update);
         if (update.hasMessage() && update.getMessage().hasText()) {
-            List<String> messages = botBl.processUpdate(update);
-            for(String messageText: messages) {
-                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                        .setChatId(update.getMessage().getChatId())
-                        .setText(messageText);
-                try {
-                    this.execute(message);
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
-                }
 
-            }
+            System.out.println(update);
+            System.out.println(update); System.out.println(update);
+           List<String> messages = botBl.processUpdate(update);
+
+            System.out.println(update);
+            System.out.println(update); System.out.println(update);
+
+
+
+           // for(String messageText: messages) {
+           //     SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
+             //           .setChatId(update.getMessage().getChatId())
+              //          .setText(messageText);
+              //  try {
+              //      this.execute(message);
+              //  } catch (TelegramApiException e) {
+             //       e.printStackTrace();
+              //  }
+
+           // }
         }
     }
 

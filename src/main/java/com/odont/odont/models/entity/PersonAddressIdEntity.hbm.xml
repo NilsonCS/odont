@@ -20,11 +20,11 @@
         <property name="txDate">
             <column name="tx_date" sql-type="date"/>
         </property>
-        <many-to-one name="personByPersonId" class="com.odont.odont.models.entity.PersonEntity">
-            <column name="person_id"/>
-        </many-to-one>
-        <many-to-one name="addressByAddressId" class="com.odont.odont.models.entity.AddressEntity">
-            <column name="address_id"/>
-        </many-to-one>
+<!--        <many-to-one name="personByPersonId" class="com.odont.odont.models.entity.PersonEntity">-->
+<!--            <column name="person_id"/>-->
+<!--        </many-to-one>-->
+<!--        <many-to-one name="addressByAddressId" class="com.odont.odont.models.entity.AddressEntity">-->
+<!--            <column name="address_id"/>-->
+<!--        </many-to-one>-->
     </class>
 </hibernate-mapping>

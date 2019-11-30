@@ -12,10 +12,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- *
- * @author ecampohermoso
- */
 @Entity
 @Table(name = "cp_person_address")
 @XmlRootElement
@@ -51,7 +47,7 @@ public class CpPersonAddress implements Serializable {
     private AddressEntity addressId;
     @JoinColumn(name = "person_id", referencedColumnName = "person_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private AddressEntity personId;
+    private PersonEntity personId;
 
     public CpPersonAddress() {
     }
@@ -116,13 +112,13 @@ public class CpPersonAddress implements Serializable {
         this.addressId = addressId;
     }
 
-    public AddressEntity getPersonId() {
-        return personId;
-    }
-
-    public void setPersonId(AddressEntity personId) {
-        this.personId = personId;
-    }
+//    public AddressEntity getPersonId() {
+//        return personId;
+//    }
+//
+//    public void setPersonId(AddressEntity personId) {
+//        this.personId = personId;
+//    }
 
     @Override
     public int hashCode() {

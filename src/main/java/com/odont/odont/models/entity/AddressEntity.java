@@ -1,52 +1,97 @@
 package com.odont.odont.models.entity;
 
 import javax.persistence.*;
-import java.sql.Date;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "address", schema = "db_odont", catalog = "")
-public class AddressEntity {
-    private long addressId;
-    private double latitude;
-    private double longitud;
-    private int status;
-    private String txUser;
-    private String txHost;
-    private Date txDate;
+public class AddressEntity implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     @Id
-    @Column(name = "address_id", nullable = false)
-    public long getAddressId() {
-        return addressId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "address_id")
+    private Integer addressId;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "latitute")
+    private BigDecimal latitute;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "longitud")
+    private BigDecimal longitud;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "status")
+    private int status;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "tx_user")
+    private String txUser;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "tx_host")
+    private String txHost;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "tx_date")
+    @Temporal(TemporalType.DATE)
+    private java.util.Date txDate;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "addressId", fetch = FetchType.LAZY)
+    private List<CpPersonAddress> cpPersonAddressList;
+
+    public AddressEntity() {
     }
 
-    public void setAddressId(long addressId) {
+    public AddressEntity(Integer addressId) {
         this.addressId = addressId;
     }
 
-    @Basic
-    @Column(name = "latitude", nullable = false, precision = 0)
-    public double getLatitude() {
-        return latitude;
+    public AddressEntity(Integer addressId, BigDecimal latitute, BigDecimal longitud, int status, String txUser, String txHost, java.util.Date txDate) {
+        this.addressId = addressId;
+        this.latitute = latitute;
+        this.longitud = longitud;
+        this.status = status;
+        this.txUser = txUser;
+        this.txHost = txHost;
+        this.txDate = txDate;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
+    public Integer getAddressId() {
+        return addressId;
     }
 
-    @Basic
-    @Column(name = "longitud", nullable = false, precision = 0)
-    public double getLongitud() {
+    public void setAddressId(Integer addressId) {
+        this.addressId = addressId;
+    }
+
+    public BigDecimal getLatitute() {
+        return latitute;
+    }
+
+    public void setLatitute(BigDecimal latitute) {
+        this.latitute = latitute;
+    }
+
+    public BigDecimal getLongitud() {
         return longitud;
     }
 
-    public void setLongitud(double longitud) {
+    public void setLongitud(BigDecimal longitud) {
         this.longitud = longitud;
     }
 
-    @Basic
-    @Column(name = "status", nullable = false)
     public int getStatus() {
         return status;
     }
@@ -55,8 +100,6 @@ public class AddressEntity {
         this.status = status;
     }
 
-    @Basic
-    @Column(name = "tx_user", nullable = false, length = 50)
     public String getTxUser() {
         return txUser;
     }
@@ -65,8 +108,6 @@ public class AddressEntity {
         this.txUser = txUser;
     }
 
-    @Basic
-    @Column(name = "tx_host", nullable = false, length = 100)
     public String getTxHost() {
         return txHost;
     }
@@ -75,9 +116,7 @@ public class AddressEntity {
         this.txHost = txHost;
     }
 
-    @Basic
-    @Column(name = "tx_date", nullable = false)
-    public Date getTxDate() {
+    public java.util.Date getTxDate() {
         return txDate;
     }
 
@@ -85,22 +124,37 @@ public class AddressEntity {
         this.txDate = txDate;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AddressEntity that = (AddressEntity) o;
-        return addressId == that.addressId &&
-                Double.compare(that.latitude, latitude) == 0 &&
-                Double.compare(that.longitud, longitud) == 0 &&
-                status == that.status &&
-                Objects.equals(txUser, that.txUser) &&
-                Objects.equals(txHost, that.txHost) &&
-                Objects.equals(txDate, that.txDate);
+    @XmlTransient
+    public List<CpPersonAddress> getCpPersonAddressList() {
+        return cpPersonAddressList;
+    }
+
+    public void setCpPersonAddressList(List<CpPersonAddress> cpPersonAddressList) {
+        this.cpPersonAddressList = cpPersonAddressList;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(addressId, latitude, longitud, status, txUser, txHost, txDate);
+        int hash = 0;
+        hash += (addressId != null ? addressId.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof AddressEntity)) {
+            return false;
+        }
+        AddressEntity other = (AddressEntity) object;
+        if ((this.addressId == null && other.addressId != null) || (this.addressId != null && !this.addressId.equals(other.addressId))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "bo.edu.ucb.sis.carpool.chatbot.domain.CpAddress[ addressId=" + addressId + " ]";
     }
 }

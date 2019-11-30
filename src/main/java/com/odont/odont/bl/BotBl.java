@@ -109,6 +109,8 @@ import java.util.List;
          * @return first time login
          */
         private CpUserEntity initUser(User user) {
+            System.out.println("Llego aca");
+
             CpUserEntity cpUserEntity = iUserDao.findByBotUserId(user.getId().toString());
             if (cpUserEntity == null) {
                 PersonEntity personEntity = new PersonEntity();
@@ -126,6 +128,7 @@ import java.util.List;
                 cpUserEntity.setTxUser("admin");
                 cpUserEntity.setTxDate(new Date());
                 iUserDao.save(cpUserEntity);
+                System.out.println("Llego aca");
             }
             return cpUserEntity;
         }

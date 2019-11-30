@@ -65,6 +65,25 @@ public class PersonAddressIdEntity {
         this.txDate = txDate;
     }
 
+//    @JoinColumn(name = "address_id", referencedColumnName = "address_id")
+//    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+//    private AddressEntity addressId;
+//    @JoinColumn(name = "person_id", referencedColumnName = "person_id")
+//    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+//    private PersonEntity personId;
+
+    public PersonAddressIdEntity(long personAddressId, int status, String txUser, String txHost, Date txDate, PersonEntity personByPersonId, AddressEntity addressByAddressId, AddressEntity addressId, PersonEntity personId) {
+        this.personAddressId = personAddressId;
+        this.status = status;
+        this.txUser = txUser;
+        this.txHost = txHost;
+        this.txDate = txDate;
+        this.personByPersonId = personByPersonId;
+        this.addressByAddressId = addressByAddressId;
+//        this.addressId = addressId;
+//        this.personId = personId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -77,26 +96,23 @@ public class PersonAddressIdEntity {
                 Objects.equals(txDate, that.txDate);
     }
 
+//    public void setAddressId(AddressEntity addressId) {
+//        this.addressId = addressId;
+//    }
+//
+//    public PersonEntity getPersonId() {
+//        return personId;
+//    }
+//
+//    public void setPersonId(PersonEntity personId) {
+//        this.personId = personId;
+//    }
+
     @Override
     public int hashCode() {
         return Objects.hash(personAddressId, status, txUser, txHost, txDate);
     }
 
-    @ManyToOne
-    @JoinColumn(name = "person_id", referencedColumnName = "personId", nullable = false)
-    public PersonEntity getPersonByPersonId() {
-        return personByPersonId;
-    }
-
-    public void setPersonByPersonId(PersonEntity personByPersonId) {
-        this.personByPersonId = personByPersonId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "address_id", referencedColumnName = "addressId", nullable = false)
-    public AddressEntity getAddressByAddressId() {
-        return addressByAddressId;
-    }
 
     public void setAddressByAddressId(AddressEntity addressByAddressId) {
         this.addressByAddressId = addressByAddressId;
