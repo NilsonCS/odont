@@ -21,11 +21,11 @@ public class PersonServiceImpl implements IPersonService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-
-    public PersonEntity findById(Long person_id) {
-        return personDao.findById(person_id).orElse(null);
+    public PersonEntity findById(Long personId) {
+        return null;
     }
+
+
 
     @Override
     @Transactional
@@ -35,8 +35,9 @@ public class PersonServiceImpl implements IPersonService {
     }
 
     @Override
-    @Transactional
     public void delete(Long id) {
-        personDao.deleteById(id);
+
     }
+
+
 }

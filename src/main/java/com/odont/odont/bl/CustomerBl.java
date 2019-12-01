@@ -23,7 +23,7 @@ public class CustomerBl {
         this.iPersonDao = cpPersonDao;
     }
 
-    public PersonEntity findPersonById(long pk) {
+    public PersonEntity findPersonById(Integer pk) {
         Optional<PersonEntity> optional = this.iPersonDao.findById(pk);
         if (optional.isPresent()) {
             return optional.get();

@@ -50,6 +50,8 @@ public class MainBot extends TelegramLongPollingBot {
     BotBl botBl;
 
 
+
+
     public MainBot(BotBl customerBl) {
         this.botBl = customerBl;
     }
@@ -57,6 +59,7 @@ public class MainBot extends TelegramLongPollingBot {
 
 //        //TODO REVISAR LAS SIG FUNCION GENERADA POR MERGE VANIA "Probando 11/22/2019"
 //   TODO FUNCIONA NILSON
+    @Override
     public void onUpdateReceived(Update update) {
         System.out.println(update);
         update.getMessage().getFrom().getId();
@@ -66,26 +69,37 @@ public class MainBot extends TelegramLongPollingBot {
 
             System.out.println(update);
             System.out.println(update); System.out.println(update);
-           List<String> messages = botBl.processUpdate(update);
-
+//           List<String> messages = botBl.processUpdate(update);
+            List<String> pato = botBl.processUpdate(update);
             System.out.println(update);
             System.out.println(update); System.out.println(update);
 
 
 
-           // for(String messageText: messages) {
-           //     SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-             //           .setChatId(update.getMessage().getChatId())
-              //          .setText(messageText);
-              //  try {
-              //      this.execute(message);
-              //  } catch (TelegramApiException e) {
-             //       e.printStackTrace();
-              //  }
+//            for(String messageText: messages) {
+//                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
+//                        .setChatId(update.getMessage().getChatId())
+//                        .setText(messageText);
+//                try {
+//                    this.execute(message);
+//                } catch (TelegramApiException e) {
+//                    e.printStackTrace();
+//                }
 
-           // }
+
+                for(String Text: pato) {
+                    SendMessage patos = new SendMessage() // Create a SendMessage object with mandatory fields
+                            .setChatId(update.getMessage().getChatId())
+                            .setText(Text);
+                    try {
+                        this.execute(patos);
+                    } catch (TelegramApiException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
-    }
+
 
     // @@@@@@ USO DE VANIA
 //@Override

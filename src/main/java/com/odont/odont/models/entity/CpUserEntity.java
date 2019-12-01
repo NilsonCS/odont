@@ -50,13 +50,13 @@ public class CpUserEntity implements Serializable {
     private List<CpUserFileEntity> cpUserFileList;
 
     public CpUserEntity() {
-    }
+            }
 
     public CpUserEntity(Integer userId) {
         this.userId = userId;
     }
 
-    public CpUserEntity(Integer userId, String botUserId, String txUser, String txHost, java.util.Date txDate) {
+    public CpUserEntity(Integer userId, String botUserId, String txUser, String txHost, Date txDate) {
         this.userId = userId;
         this.botUserId = botUserId;
         this.txUser = txUser;
