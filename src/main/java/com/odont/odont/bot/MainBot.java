@@ -10,6 +10,7 @@ import com.odont.odont.models.dto.PersonDto;
 import com.odont.odont.models.entity.MaterialsEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -52,8 +53,9 @@ public class MainBot extends TelegramLongPollingBot {
 
 
 
-    public MainBot(BotBl customerBl) {
-        this.botBl = customerBl;
+    @Autowired
+    public MainBot(BotBl botBl) {
+        this.botBl = botBl;
     }
 
 
@@ -69,36 +71,46 @@ public class MainBot extends TelegramLongPollingBot {
 
             System.out.println(update);
             System.out.println(update); System.out.println(update);
-//           List<String> messages = botBl.processUpdate(update);
-            List<String> pato = botBl.processUpdate(update);
+            List<String> messages;
+            try {
+                //pato = botBl.processUpdate(update);
+                LOGGER.info("Ingresando al BL");
+                 messages = this.botBl.processUpdate(update);
+                LOGGER.info("SUCCESS ingrsando al BL");
+            } catch (Exception ex) {
+                LOGGER.warn("ERROR - process update", ex);
+                throw ex;
+            }
+
             System.out.println(update);
             System.out.println(update); System.out.println(update);
 
+            //
 
 
-//            for(String messageText: messages) {
-//                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-//                        .setChatId(update.getMessage().getChatId())
-//                        .setText(messageText);
-//                try {
-//                    this.execute(message);
-//                } catch (TelegramApiException e) {
-//                    e.printStackTrace();
-//                }
-
-
-                for(String Text: pato) {
-                    SendMessage patos = new SendMessage() // Create a SendMessage object with mandatory fields
-                            .setChatId(update.getMessage().getChatId())
-                            .setText(Text);
-                    try {
-                        this.execute(patos);
-                    } catch (TelegramApiException e) {
-                        e.printStackTrace();
-                    }
+            for(String messageText: messages) {
+                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
+                        .setChatId(update.getMessage().getChatId())
+                        .setText(messageText);
+                try {
+                    this.execute(message);
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
                 }
+
+
+//                for(String Text: pato) {
+//                    SendMessage patos = new SendMessage() // Create a SendMessage object with mandatory fields
+//                            .setChatId(update.getMessage().getChatId())
+//                            .setText(Text);
+//                    try {
+//                        this.execute(patos);
+//                    } catch (TelegramApiException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
             }
-        }
+        }}
 
 
     // @@@@@@ USO DE VANIA

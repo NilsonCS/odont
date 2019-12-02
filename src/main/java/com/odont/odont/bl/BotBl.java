@@ -37,16 +37,24 @@ import java.util.List;
 
 
         public List<String> processUpdate(Update update) {
-            int a = 1;
-            LOGGER.info("Recibiendo update {} ", update);
             List<String> result = new ArrayList<>();
-            // Si es la primera vez pedir una imagen para su perfil
-            if(a==1){
-            //if (initUser(update.getMessage().getFrom())) {
-                result.add("Bienvenido al bot primer inicio de sesion");
-            } else {
-                result.add("Bienvenido segunda xxx vez");
+            try {
+                LOGGER.info("Ingresando a funcion processUpdate");
+                int a = 1;
+                LOGGER.info("Recibiendo update {} ", update);
+
+                // Si es la primera vez pedir una imagen para su perfil
+                if(a==1){
+                    //if (initUser(update.getMessage().getFrom())) {
+                    result.add("Bienvenido al bot primer inicio de sesion");
+                } else {
+                    result.add("Bienvenido segunda xxx vez");
+                }
+            } catch (Exception ex){
+                LOGGER.warn("ERROR en processUpdate", ex);
+                throw ex;
             }
+
             return result;
 
 

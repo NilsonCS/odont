@@ -29,11 +29,15 @@ public class BotInitializator {
 //
 //    }
 
-    public BotInitializator() {
+    private BotBl botBl;
+
+    @Autowired
+    public BotInitializator( BotBl botBl) {
+        this.botBl = botBl;
 
     }
 
-    BotBl botBl;
+
 
 //    @PostConstruct
 //    public void init() {
