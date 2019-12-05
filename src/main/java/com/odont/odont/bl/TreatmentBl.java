@@ -2,8 +2,10 @@ package com.odont.odont.bl;
 
 import com.odont.odont.models.dao.IChatDao;
 import com.odont.odont.models.dao.ITreatmentDao;
+import com.odont.odont.models.entity.TreatmentEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +18,48 @@ public class TreatmentBl {
     private static int respuesta_respondida = 1;
     private static boolean inicio_tratamiento = false;
     private static boolean confirmacion = false;
-    private static List<String> tratamientos = new ArrayList<>();
+    private static List<String> ListaTratamientos = new ArrayList<>();
 
     private ITreatmentDao treatmentDao;
     private IChatDao chatDao;
 
+    public TreatmentBl(ITreatmentDao treatmentDao, IChatDao chatDao) {
+        this.treatmentDao = treatmentDao;
+        this.chatDao = chatDao;
+    }
+
+    public String mensajeAgregarTratamiento (Update update){
+        String cadena = new String();
+        switch (numero_pregunta){
+            case 0:
+                LOGGER.info("ingresando nombre tratamiento");
+                cadena = "Ingrese el nombre del tratamiento";
+                break;
+            case 1:
+                LOGGER.info("Ingrese el costo del tratamiento");
+                cadena = "Ingrese el costo del tratamiento";
+                break;
+            case 2:
+                LOGGER.info("ingrese la duracion del tratamiento");
+                cadena = "Ingrese la duracion del tratamiento";
+                break;
+        }
+        return cadena;
+    }
+
+    public String guardarTratamientos (List<String> listaTratamientos){
+        TreatmentEntity treatmentEntity = new TreatmentEntity();
+        treatmentEntity.setNameTreatment(listaTratamientos.get(0));
+        treatmentEntity.setCostTreatment(Double.parseDouble(listaTratamientos.get(1)));
+        treatmentEntity.setDuration(listaTratamientos.get(2));
+        treatmentDao.save(treatmentEntity);
+        return "Se guardo correctamente";
+    }
+
+    public TreatmentEntity findAllByTreatmentNombre (String nameTreatment){
+        TreatmentEntity treatmentEntity = treatmentDao.findAllByNameTreatment(nameTreatment);
+        return treatmentEntity;
+    }
     public static int getNumero_pregunta() {
         return numero_pregunta;
     }
@@ -69,12 +108,12 @@ public class TreatmentBl {
         TreatmentBl.confirmacion = confirmacion;
     }
 
-    public static List<String> getTratamientos() {
-        return tratamientos;
+    public static List<String> getListaTratamientos() {
+        return ListaTratamientos;
     }
 
-    public static void setTratamientos(List<String> tratamientos) {
-        TreatmentBl.tratamientos = tratamientos;
+    public static void setListaTratamientos(List<String> tratamientos) {
+        TreatmentBl.ListaTratamientos = tratamientos;
     }
 
     public ITreatmentDao getTreatmentDao() {
