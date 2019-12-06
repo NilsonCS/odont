@@ -2,15 +2,18 @@ package com.odont.odont.bl;
 
 import com.odont.odont.models.dao.IChatDao;
 import com.odont.odont.models.dao.IPersonDao;
+import com.odont.odont.models.dao.ITreatmentDao;
 import com.odont.odont.models.dao.IUserDao;
 import com.odont.odont.models.dto.Status;
 import com.odont.odont.models.entity.CpChatEntity;
 import com.odont.odont.models.entity.CpUserEntity;
 import com.odont.odont.models.entity.PersonEntity;
+import com.odont.odont.models.entity.TreatmentEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 
@@ -26,15 +29,24 @@ import java.util.List;
         private IUserDao iUserDao;
         private IPersonDao iPersonDao;
         private IChatDao iChatDao;
+        private ITreatmentDao treatmentDao;
 
         @Autowired
-        public BotBl(IUserDao iUserDao, IPersonDao iPersonDao, IChatDao iChatDao) {
+        public BotBl(IUserDao iUserDao, IPersonDao iPersonDao, IChatDao iChatDao, ITreatmentDao treatmentDao) {
             this.iUserDao = iUserDao;
             this.iPersonDao = iPersonDao;
             this.iChatDao = iChatDao;
+            this.treatmentDao = treatmentDao;
         }
 
-
+        public String guardarTratamientos (List<String> listaTratamientos){
+            TreatmentEntity treatmentEntity = new TreatmentEntity();
+            treatmentEntity.setNameTreatment(listaTratamientos.get(0));
+            treatmentEntity.setCostTreatment(Double.parseDouble(listaTratamientos.get(1)));
+            treatmentEntity.setDuration(listaTratamientos.get(2));
+            treatmentDao.save(treatmentEntity);
+            return "Se guardo correctamente";
+        }
 
         public List<String> processUpdate(Update update) {
             List<String> result = new ArrayList<>();
@@ -44,20 +56,22 @@ import java.util.List;
                 LOGGER.info("Recibiendo update {} ", update);
 
                 // Si es la primera vez pedir una imagen para su perfil
-                if(a==1){
+                if (a == 1) {
                     //if (initUser(update.getMessage().getFrom())) {
                     result.add("Bienvenido al bot primer inicio de sesion");
                 } else {
                     result.add("Bienvenido segunda xxx vez");
                 }
-            } catch (Exception ex){
+            } catch (Exception ex) {
                 LOGGER.warn("ERROR en processUpdate", ex);
                 throw ex;
             }
 
             return result;
+        }
+        public void continueChatWithUserMessage(Update update, TreatmentEntity treatmentEntity, SendMessage sendMessage){
 
-
+            }
 //            List<String> chatResponse = new ArrayList<>();
 //            CpUserEntity cpUser = initUser(update.getMessage().getFrom());
 //            continueChatWithUser(update, cpUser, chatResponse);
@@ -74,7 +88,7 @@ import java.util.List;
 //            result.add("Bienvenido al Bot");
 //        }
 
-        }
+        }//fin clase BotBl
 
 
         /**
@@ -155,7 +169,8 @@ import java.util.List;
 //
 //                return result;
             //return cpUserEntity;
-        }
+
+
 
 
 

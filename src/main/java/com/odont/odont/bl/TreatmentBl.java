@@ -60,6 +60,12 @@ public class TreatmentBl {
         TreatmentEntity treatmentEntity = treatmentDao.findAllByNameTreatment(nameTreatment);
         return treatmentEntity;
     }
+
+    public void SaveTreatment(String nombreTratamiento){
+        TreatmentEntity treatmentEntity = treatmentDao.findAllByNameTreatment(nombreTratamiento);//TODO completar Gadiel
+
+    }
+
     public static int getNumero_pregunta() {
         return numero_pregunta;
     }
