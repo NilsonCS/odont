@@ -37,9 +37,12 @@ import java.util.List;
 
 
         public List<String> processUpdate(Update update) {
+            LOGGER.info("Ingresando a funcion processUpdate");
             List<String> result = new ArrayList<>();
+            List<String> chatRespone = new ArrayList<>();
+            CpUserEntity cpUserEntity =  initUser(update.getMessage().getFrom());
             try {
-                LOGGER.info("Ingresando a funcion processUpdate");
+                LOGGER.info("Ingresando a funcion processUpdate x2");
                 int a = 1;
                 LOGGER.info("Recibiendo update {} ", update);
 
@@ -129,33 +132,32 @@ import java.util.List;
          * @param user
          * @return first time login
          */
-//        private boolean initUser(User user) {
-//            System.out.println("Llego aca");
-//            boolean result = true;
-//            CpUserEntity cpUserEntity = iUserDao.findByBotUserId(user.getId().toString());
-//            if (cpUserEntity == null) {
-//                PersonEntity personEntity = new PersonEntity();
-//                personEntity.setFirstName(user.getFirstName());
-//                personEntity.setFirstSurname(user.getLastName());
-//                personEntity.setStatus(Status.ACTIVE.getStatus());
-//                personEntity.setTxHost("localhost");
-//                personEntity.setTxUser("admin");
-//                personEntity.setTxDate(new Date());
-//                iPersonDao.save(personEntity);
-//                cpUserEntity = new CpUserEntity();
-//                cpUserEntity.setBotUserId(user.getId().toString());
-//                cpUserEntity.setPersonId(personEntity);
-//                cpUserEntity.setTxHost("localhost");
-//                cpUserEntity.setTxUser("admin");
-//                cpUserEntity.setTxDate(new Date());
-//                iUserDao.save(cpUserEntity);
-//                System.out.println("Llego aca");
-//                result = true;
-//            }
-//
-//                return result;
-            //return cpUserEntity;
-        }
+        private CpUserEntity initUser(User user) {
+            System.out.println("Llego aca");
+            //boolean result = true;
+            CpUserEntity cpUserEntity = iUserDao.findByBotUserId(user.getId().toString());
+            if (cpUserEntity == null) {
+                PersonEntity personEntity = new PersonEntity();
+                personEntity.setFirstName(user.getFirstName());
+                personEntity.setFirstSurname(user.getLastName());
+                personEntity.setStatus(Status.ACTIVE.getStatus());
+                personEntity.setTxHost("localhost");
+                personEntity.setTxUser("admin");
+                personEntity.setTxDate(new Date());
+                iPersonDao.save(personEntity);
+                cpUserEntity = new CpUserEntity();
+                cpUserEntity.setBotUserId(user.getId().toString());
+                cpUserEntity.setPersonId(personEntity);
+                cpUserEntity.setTxHost("localhost");
+                cpUserEntity.setTxUser("admin");
+                cpUserEntity.setTxDate(new Date());
+                iUserDao.save(cpUserEntity);
+                System.out.println("Llego aca");
+                //result = true;
+            }
+               // return result;
+            return cpUserEntity;
+        }}
 
 
 

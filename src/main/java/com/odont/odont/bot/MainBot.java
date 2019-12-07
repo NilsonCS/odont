@@ -50,17 +50,23 @@ public class MainBot extends TelegramLongPollingBot {
 //    private User user;
     BotBl botBl;
 
-
-
-
-    @Autowired
-    public MainBot(BotBl botBl) {
-        this.botBl = botBl;
+    public MainBot(BotBl customerBl) {
+        this.botBl = customerBl;
     }
 
 
-//        //TODO REVISAR LAS SIG FUNCION GENERADA POR MERGE VANIA "Probando 11/22/2019"
-//   TODO FUNCIONA NILSON
+
+
+
+
+    // MMMMMMM no entiendo
+//    @Autowired
+//    public MainBot(BotBl botBl) {
+//        this.botBl = botBl;
+//    }
+
+
+//   TODO FUNCIONA de NILSON no tocar
     @Override
     public void onUpdateReceived(Update update) {
         System.out.println(update);

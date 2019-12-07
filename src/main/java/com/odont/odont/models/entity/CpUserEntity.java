@@ -143,7 +143,7 @@ public class CpUserEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "bo.edu.ucb.sis.carpool.chatbot.domain.CpUser[ userId=" + userId + " ]";
+        return "com.odont.odont.entity.CpUserEntity[ userId=" + userId + " ]";
     }
 
     @XmlTransient
