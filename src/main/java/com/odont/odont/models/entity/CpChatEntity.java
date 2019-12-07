@@ -172,7 +172,7 @@ public class CpChatEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "bo.edu.ucb.sis.carpool.chatbot.domain.CpChat[ chatId=" + chatId + " ]";
+        return "com.odont.odont.entity.CpChatEntity [ chatId=" + chatId + " ]";
     }
 
 }

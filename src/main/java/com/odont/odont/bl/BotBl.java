@@ -39,26 +39,27 @@ import java.util.List;
         public List<String> processUpdate(Update update) {
             LOGGER.info("Ingresando a funcion processUpdate");
             List<String> result = new ArrayList<>();
-            List<String> chatRespone = new ArrayList<>();
+            List<String> chatResponse = new ArrayList<>();
             CpUserEntity cpUserEntity =  initUser(update.getMessage().getFrom());
-            try {
-                LOGGER.info("Ingresando a funcion processUpdate x2");
-                int a = 1;
-                LOGGER.info("Recibiendo update {} ", update);
+            continueChatWithUser(update, cpUserEntity, chatResponse);
+//            try {
+//                LOGGER.info("Ingresando a funcion processUpdate x2");
+//                int a = 1;
+//                LOGGER.info("Recibiendo update {} ", update);
+//
+//                // Si es la primera vez pedir una imagen para su perfil
+//                if(a==1){
+//                    //if (initUser(update.getMessage().getFrom())) {
+//                    result.add("Bienvenido al bot primer inicio de sesion");
+//                } else {
+//                    result.add("Bienvenido segunda xxx vez");
+//                }
+//            } catch (Exception ex){
+//                LOGGER.warn("ERROR en processUpdate", ex);
+//                throw ex;
+//            }
 
-                // Si es la primera vez pedir una imagen para su perfil
-                if(a==1){
-                    //if (initUser(update.getMessage().getFrom())) {
-                    result.add("Bienvenido al bot primer inicio de sesion");
-                } else {
-                    result.add("Bienvenido segunda xxx vez");
-                }
-            } catch (Exception ex){
-                LOGGER.warn("ERROR en processUpdate", ex);
-                throw ex;
-            }
-
-            return result;
+            return chatResponse;
 
 
 //            List<String> chatResponse = new ArrayList<>();
@@ -86,45 +87,47 @@ import java.util.List;
          * @param cpUserEntity El usuario con el que se esta interactuando
          * @param chatResponse Los mensajes que se desean retornar al usuario.
          */
-//        private void continueChatWithUser(Update update, CpUserEntity cpUserEntity, List<String> chatResponse) {
-//            // Obtener el ultimo mensaje que envió el usuario
-//            IChatDao lastMessage = iChatDao.findLastChatByUserId(cpUserEntity.getUserId());
-//            // Preparo la vaiable para retornar la respuesta
-//            String response = null;
-//            // Si el ultimo mensaje no existe (es la primera conversación)
-//            if (lastMessage == null) {
-//                // Retornamos 1
-//                response = "1";
-//            } else {
-//                // Si existe convesasción previa iniciamos la variable del ultimo mensaje en 1
-//                int lastMessageInt = 0;
-//                try {
-//                    // Intenemos obtener el ultimo mensaje retornado y lo convertimos a entero.
-//                    // Si la coversin falla en el catch retornamos 1
-//
-//                    //TODO REPARAR EL ERROR
-//                   // lastMessageInt = Integer.parseInt(lastMessage.getOutMessage());
-//
-//                    response = "" + (lastMessageInt + 1);
-//                } catch (NumberFormatException nfe) {
-//                    response = "1";
-//                }
-//            }
-//            LOGGER.info("PROCESSING IN MESSAGE: {} from user {}" ,update.getMessage().getText(), cpUserEntity.getUserId());
-//            // Creamos el objeto CpChat con la respuesta a la presente conversación.
-//            CpChatEntity cpChat = new CpChatEntity();
-//            cpChat.setCpUserUserId(cpUserEntity);
-//            cpChat.setInMessage(update.getMessage().getText());
-//            cpChat.setOutMessage(response);
-//            cpChat.setMsgDate ( new Date()); //FIXME Obtener la fecha del campo entero update.getMessage().
-//            cpChat.setTxDate (new Date()); //FIXME no se por q no da ese error se debe de recoger.
-//            cpChat.setTxUser(cpUserEntity.getUserId().toString());
-//            cpChat.setTxHost(update.getMessage().getChatId().toString());
-//            // Guardamos en base dedatos
-//            iChatDao.save (cpChat);
-//            // Agregamos la respuesta al chatResponse.
-//            chatResponse.add(response);
-//        }
+        private void continueChatWithUser(Update update, CpUserEntity cpUserEntity, List<String> chatResponse) {
+            // Obtener el ultimo mensaje que envió el usuario
+            //CpChatEntity lastMessage = iChatDao.findLastChatByUserId(cpUserEntity.getUserId());
+            CpChatEntity lastMessage = iChatDao.findLastChatByUserId(cpUserEntity.getUserId());
+            // Preparo la vaiable para retornar la respuesta
+            String response = null;
+            // Si el ultimo mensaje no existe (es la primera conversación)
+            if (lastMessage == null) {
+                // Retornamos 1
+                response = "1";
+            } else {
+                // Si existe convesasción previa iniciamos la variable del ultimo mensaje en 1
+                int lastMessageInt = 0;
+                try {
+                    // Intenemos obtener el ultimo mensaje retornado y lo convertimos a entero.
+                    // Si la coversin falla en el catch retornamos 1
+
+                    //TODO REPARAR EL ERROR
+                    lastMessageInt = Integer.parseInt(lastMessage.getOutMessage());
+
+
+                    response = "" + (lastMessageInt + 1);
+                } catch (NumberFormatException nfe) {
+                    response = "1";
+                }
+            }
+            LOGGER.info("PROCESSING IN MESSAGE: {} from user {}" ,update.getMessage().getText(), cpUserEntity.getUserId());
+            // Creamos el objeto CpChat con la respuesta a la presente conversación.
+            CpChatEntity cpChat = new CpChatEntity();
+            cpChat.setCpUserUserId(cpUserEntity);
+            cpChat.setInMessage(update.getMessage().getText());
+            cpChat.setOutMessage(response);
+            cpChat.setMsgDate ( new Date()); //FIXME Obtener la fecha del campo entero update.getMessage().
+            cpChat.setTxDate (new Date()); //FIXME no se por q no da ese error se debe de recoger.
+            cpChat.setTxUser(cpUserEntity.getUserId().toString());
+            cpChat.setTxHost(update.getMessage().getChatId().toString());
+            // Guardamos en base dedatos
+            iChatDao.save (cpChat);
+            // Agregamos la respuesta al chatResponse.
+            chatResponse.add(response);
+        }
 
         /**
          * Si es la primera vez que el usuario conversa con el bot, se guarda su información en BBDD.
