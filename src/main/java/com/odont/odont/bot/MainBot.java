@@ -1,13 +1,17 @@
 package com.odont.odont.bot;
 
 import com.odont.odont.bl.BotBl;
+import com.odont.odont.bl.PersonBl;
+import com.odont.odont.bl.UserBl;
 import com.odont.odont.models.dao.IMaterialsDao;
 import com.odont.odont.models.dao.IPersonDao;
 import com.odont.odont.models.dao.ITreatmentDao;
 import com.odont.odont.models.dto.MaterialsDto;
 import com.odont.odont.models.dto.PersonDto;
 
+import com.odont.odont.models.entity.CpUserEntity;
 import com.odont.odont.models.entity.MaterialsEntity;
+import com.odont.odont.models.entity.PersonEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +21,10 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageTe
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
@@ -49,6 +55,14 @@ public class MainBot extends TelegramLongPollingBot {
 //    private long chatId;
 //    private User user;
     BotBl botBl;
+    private UserBl userBl;
+    private PersonBl personBl;
+
+
+
+
+    public static CpUserEntity cpUser = new CpUserEntity();
+    public static PersonEntity cpPerson = new PersonEntity();
 
     public MainBot(BotBl customerBl) {
         this.botBl = customerBl;
@@ -67,42 +81,56 @@ public class MainBot extends TelegramLongPollingBot {
 
 
 //   TODO FUNCIONA de NILSON no tocar
+//    @Override
+//    public void onUpdateReceived(Update update) {
+//        System.out.println(update);
+//        update.getMessage().getFrom().getId();
+//
+//        LOGGER.info("Recibiendo update {} ", update);
+//        if (update.hasMessage() && update.getMessage().hasText()) {
+//
+//
+//            List<String> messages;
+//            try {
+//                //pato = botBl.processUpdate(update);
+//                LOGGER.info("Ingresando al BL");
+//                 messages = this.botBl.processUpdate(update);
+//                LOGGER.info("SUCCESS ingrsando al BL");
+//            } catch (Exception ex) {
+//                LOGGER.warn("ERROR - process update", ex);
+//                throw ex;
+//            }
+//
+//
+//            for(String messageText: messages) {
+//                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
+//                        .setChatId(update.getMessage().getChatId())
+//                        .setText(messageText);
+//                try {
+//                    this.execute(message);
+//                } catch (TelegramApiException e) {
+//                    e.printStackTrace();
+//                }
+
+
+
     @Override
     public void onUpdateReceived(Update update) {
-        System.out.println(update);
-        update.getMessage().getFrom().getId();
-
-        LOGGER.info("Recibiendo update {} ", update);
         if (update.hasMessage() && update.getMessage().hasText()) {
-
-            System.out.println(update);
-            System.out.println(update); System.out.println(update);
-            List<String> messages;
-            try {
-                //pato = botBl.processUpdate(update);
-                LOGGER.info("Ingresando al BL");
-                 messages = this.botBl.processUpdate(update);
-                LOGGER.info("SUCCESS ingrsando al BL");
-            } catch (Exception ex) {
-                LOGGER.warn("ERROR - process update", ex);
-                throw ex;
-            }
-
-            System.out.println(update);
-            System.out.println(update); System.out.println(update);
-
-            //
+            responseConversation action = botBl.processUpdate(update);
+            //switch moved to the response function
+            response(action, update);
+        }else if (update.hasCallbackQuery()) {
+            responseConversation action = botBl.processUpdate(update);
+            //switch moved to the response function
+            response(action, update);
+        }
+    }
 
 
-            for(String messageText: messages) {
-                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                        .setChatId(update.getMessage().getChatId())
-                        .setText(messageText);
-                try {
-                    this.execute(message);
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
-                }
+
+
+
 
 
 //                for(String Text: pato) {
@@ -115,11 +143,212 @@ public class MainBot extends TelegramLongPollingBot {
 //                        e.printStackTrace();
 //                    }
 //                }
+
+
+
+
+
+    private ReplyKeyboardMarkup createReplyKeyboardConfirmation() {
+        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+        // Create the keyboard (list of keyboard rows)
+        List<KeyboardRow> keyboard = new ArrayList<>();
+        // Create a keyboard row
+        KeyboardRow row = new KeyboardRow();
+        // Set each button, you can also use KeyboardButton objects if you need something else than text
+        row.add("Si");
+        // Add the first row to the keyboard
+        keyboard.add(row);
+        row = new KeyboardRow();
+        row.add("No");
+        keyboard.add(row);
+
+        // Set the keyboard to the markup
+        keyboardMarkup.setKeyboard(keyboard);
+        // Add it to the message
+        return keyboardMarkup;
+    }
+    //Here the user decides whether it will be a carpooler or a rider and creates a custom keyboard for it
+    private ReplyKeyboardMarkup createReplyKeyboard() {
+        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+        // Create the keyboard (list of keyboard rows)
+        List<KeyboardRow> keyboard = new ArrayList<>();
+        // Create a keyboard row
+        KeyboardRow row = new KeyboardRow();
+        // Set each button, you can also use KeyboardButton objects if you need something else than text
+        row.add("Carpooler");
+        // Add the first row to the keyboard
+        keyboard.add(row);
+        // Create another keyboard row
+        row = new KeyboardRow();
+        // Set each button for the second line
+        row.add("Rider");
+        // Add the second row to the keyboard
+        keyboard.add(row);
+        row = new KeyboardRow();
+        // Set each button for the second line
+        row.add("Corregir registro");
+        // Add the second row to the keyboard
+        keyboard.add(row);
+        // Set the keyboard to the markup
+        keyboardMarkup.setKeyboard(keyboard);
+        // Add it to the message
+        return keyboardMarkup;
+    }
+    private ReplyKeyboardMarkup createOkMenu(){
+        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+        // Create the keyboard (list of keyboard rows)
+        List<KeyboardRow> keyboard = new ArrayList<>();
+        // Create a keyboard row
+        KeyboardRow row = new KeyboardRow();
+        // Set each button, you can also use KeyboardButton objects if you need something else than text
+        row.add("OK");
+        // Add the first row to the keyboard
+        keyboard.add(row);
+        // Create another keyboard row
+        // Set the keyboard to the markup
+        keyboardMarkup.setKeyboard(keyboard);
+        // Add it to the message
+        return keyboardMarkup;
+
+    }
+    private ReplyKeyboardMarkup createReplyKeyboardCarpooler() {
+        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+        // Create the keyboard (list of keyboard rows)
+        List<KeyboardRow> keyboard = new ArrayList<>();
+        // Create a keyboard row
+        KeyboardRow row = new KeyboardRow();
+        // Set each button, you can also use KeyboardButton objects if you need something else than text
+        row.add("Registrar Vehículo");
+        // Add the first row to the keyboard
+        keyboard.add(row);
+        row = new KeyboardRow();
+        row.add("Ver Vehículos");
+        keyboard.add(row);
+        // Create another keyboard row
+        row = new KeyboardRow();
+        // Set each button for the second line
+        row.add("Registrar Viaje");
+        // Add the second row to the keyboard
+        keyboard.add(row);
+        row = new KeyboardRow();
+        // Set each button for the second line
+        row.add("Ver Viajes");
+        // Add the second row to the keyboard
+        keyboard.add(row);
+        row = new KeyboardRow();
+        // Set each button for the second line
+        row.add("Volver al Menú Principal");
+        // Add the second row to the keyboard
+        keyboard.add(row);
+        // Set the keyboard to the markup
+        keyboardMarkup.setKeyboard(keyboard);
+        // Add it to the message
+        return keyboardMarkup;
+    }
+
+    private ReplyKeyboardMarkup createReplyKeyboardRider() {
+        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+        // Create the keyboard (list of keyboard rows)
+        List<KeyboardRow> keyboard = new ArrayList<>();
+        // Create a keyboard row
+        KeyboardRow row = new KeyboardRow();
+        // Set each button, you can also use KeyboardButton objects if you need something else than text
+
+        row.add("Buscar Paciente");
+        keyboard.add(row);
+        // Create another keyboard row
+        row = new KeyboardRow();
+        // Set each button for the second line
+        row.add("Ver Peciente");
+        // Add the second row to the keyboard
+        keyboard.add(row);
+        row = new KeyboardRow();
+        // Set each button for the second line
+        row.add("Eliminar Paciente");
+        // Add the second row to the keyboard
+        keyboard.add(row);
+        // Set the keyboard to the markup
+        row = new KeyboardRow();
+        // Set each button for the second line
+        row.add("Volver al Principio");
+        // Add the second row to the keyboard
+        keyboard.add(row);
+        keyboardMarkup.setKeyboard(keyboard);
+        // Add it to the message
+        return keyboardMarkup;
+    }
+    private ReplyKeyboardMarkup createReplyKeyboardOptions(List<String> options){
+        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+        // Create the keyboard (list of keyboard rows)
+        List<KeyboardRow> keyboard = new ArrayList<>();
+        // Create a keyboard row
+        KeyboardRow row = new KeyboardRow();
+        for(String option: options){
+            row.add(option);
+            keyboard.add(row);
+            // Create another keyboard row
+            row = new KeyboardRow();
+        }
+        keyboardMarkup.setKeyboard(keyboard);
+        // Add it to the message
+        return keyboardMarkup;
+    }
+
+    private ReplyKeyboardMarkup createReplyKeyboardTravels(List<String> options){
+        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+        // Create the keyboard (list of keyboard rows)
+        List<KeyboardRow> keyboard = new ArrayList<>();
+        // Create a keyboard row
+        KeyboardRow row = new KeyboardRow();
+        for(String option: options){
+            row.add(option);
+            keyboard.add(row);
+            // Create another keyboard row
+            row = new KeyboardRow();
+        }
+        keyboardMarkup.setKeyboard(keyboard);
+        // Add it to the message
+        return keyboardMarkup;
+    }
+
+    public void response(responseConversation action, Update update) {
+        int conversation = action.getConversation();
+        List<String> responses = new ArrayList<>();
+        ReplyKeyboardMarkup rkm = null;
+        switch (conversation) {
+            //****************************************\\
+            //Here is the initial registering\\
+            //****************************************\\
+            case 1:
+                responses.add(" Odont");
+                responses.add("registrate");
+                responses.add("ingresa tu nombre");
+                break;
+
+        }
+        for (String messageText : responses) {
+            SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
+                    .setChatId(update.getMessage().getChatId())
+                    .setText(messageText);
+            if (rkm != null) {
+                message.setReplyMarkup(rkm);
+            } else {
+                ReplyKeyboardRemove keyboardMarkupRemove = new ReplyKeyboardRemove();
+                message.setReplyMarkup(keyboardMarkupRemove);
             }
-        }}
+            try {
+                this.execute(message);
+
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 
-    // @@@@@@ USO DE VANIA
+
+
+        // @@@@@@ USO DE VANIA
 //@Override
 //public void onUpdateReceived(Update update){
 //
