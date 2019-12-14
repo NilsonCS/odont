@@ -73,7 +73,7 @@ public class MainBot extends TelegramLongPollingBot {
 
 
 
-    // MMMMMMM no entiendo
+    // MMMMMMM no entiendo para manuel de manuel
 //    @Autowired
 //    public MainBot(BotBl botBl) {
 //        this.botBl = botBl;
@@ -82,50 +82,32 @@ public class MainBot extends TelegramLongPollingBot {
 
 //   TODO FUNCIONA de NILSON no tocar
 //    @Override
-//    public void onUpdateReceived(Update update) {
-//        System.out.println(update);
-//        update.getMessage().getFrom().getId();
-//
-//        LOGGER.info("Recibiendo update {} ", update);
-//        if (update.hasMessage() && update.getMessage().hasText()) {
-//
-//
-//            List<String> messages;
-//            try {
-//                //pato = botBl.processUpdate(update);
-//                LOGGER.info("Ingresando al BL");
-//                 messages = this.botBl.processUpdate(update);
-//                LOGGER.info("SUCCESS ingrsando al BL");
-//            } catch (Exception ex) {
-//                LOGGER.warn("ERROR - process update", ex);
-//                throw ex;
-//            }
-//
-//
-//            for(String messageText: messages) {
-//                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-//                        .setChatId(update.getMessage().getChatId())
-//                        .setText(messageText);
-//                try {
-//                    this.execute(message);
-//                } catch (TelegramApiException e) {
-//                    e.printStackTrace();
-//                }
+public void onUpdateReceived(Update update) {
+    System.out.println(update);
+    update.getMessage().getFrom().getId();
+
+    LOGGER.info("Recibiendo update {} ", update);
+    if (update.hasMessage() && update.getMessage().hasText()) {
 
 
-
-    @Override
-    public void onUpdateReceived(Update update) {
-        if (update.hasMessage() && update.getMessage().hasText()) {
+        List<String> messages;
+        try {
+            //pato = botBl.processUpdate(update);
+            LOGGER.info("Ingresando al BL");
             responseConversation action = botBl.processUpdate(update);
-            //switch moved to the response function
+            //  messages = this.botBl.processUpdate(update);
             response(action, update);
-        }else if (update.hasCallbackQuery()) {
-            responseConversation action = botBl.processUpdate(update);
-            //switch moved to the response function
-            response(action, update);
+            LOGGER.info("SUCCESS ingrsando al BL");
+            // response(action, update);
+        } catch (Exception ex) {
+            LOGGER.warn("ERROR - process update", ex);
+            throw ex;
         }
     }
+}
+
+
+
 
 
 
@@ -175,18 +157,18 @@ public class MainBot extends TelegramLongPollingBot {
         // Create a keyboard row
         KeyboardRow row = new KeyboardRow();
         // Set each button, you can also use KeyboardButton objects if you need something else than text
-        row.add("Carpooler");
+        row.add("Pacientes");
         // Add the first row to the keyboard
         keyboard.add(row);
         // Create another keyboard row
         row = new KeyboardRow();
         // Set each button for the second line
-        row.add("Rider");
+        row.add("Tratamientos");
         // Add the second row to the keyboard
         keyboard.add(row);
         row = new KeyboardRow();
         // Set each button for the second line
-        row.add("Corregir registro");
+        row.add("Inventarios");
         // Add the second row to the keyboard
         keyboard.add(row);
         // Set the keyboard to the markup
@@ -211,40 +193,7 @@ public class MainBot extends TelegramLongPollingBot {
         return keyboardMarkup;
 
     }
-    private ReplyKeyboardMarkup createReplyKeyboardCarpooler() {
-        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
-        // Create the keyboard (list of keyboard rows)
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        // Create a keyboard row
-        KeyboardRow row = new KeyboardRow();
-        // Set each button, you can also use KeyboardButton objects if you need something else than text
-        row.add("Registrar Vehículo");
-        // Add the first row to the keyboard
-        keyboard.add(row);
-        row = new KeyboardRow();
-        row.add("Ver Vehículos");
-        keyboard.add(row);
-        // Create another keyboard row
-        row = new KeyboardRow();
-        // Set each button for the second line
-        row.add("Registrar Viaje");
-        // Add the second row to the keyboard
-        keyboard.add(row);
-        row = new KeyboardRow();
-        // Set each button for the second line
-        row.add("Ver Viajes");
-        // Add the second row to the keyboard
-        keyboard.add(row);
-        row = new KeyboardRow();
-        // Set each button for the second line
-        row.add("Volver al Menú Principal");
-        // Add the second row to the keyboard
-        keyboard.add(row);
-        // Set the keyboard to the markup
-        keyboardMarkup.setKeyboard(keyboard);
-        // Add it to the message
-        return keyboardMarkup;
-    }
+
 
     private ReplyKeyboardMarkup createReplyKeyboardRider() {
         ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
@@ -311,40 +260,40 @@ public class MainBot extends TelegramLongPollingBot {
         return keyboardMarkup;
     }
 
-    public void response(responseConversation action, Update update) {
-        int conversation = action.getConversation();
-        List<String> responses = new ArrayList<>();
-        ReplyKeyboardMarkup rkm = null;
-        switch (conversation) {
-            //****************************************\\
-            //Here is the initial registering\\
-            //****************************************\\
-            case 1:
-                responses.add(" Odont");
-                responses.add("registrate");
-                responses.add("ingresa tu nombre");
-                break;
 
-        }
-        for (String messageText : responses) {
-            SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                    .setChatId(update.getMessage().getChatId())
-                    .setText(messageText);
-            if (rkm != null) {
-                message.setReplyMarkup(rkm);
-            } else {
-                ReplyKeyboardRemove keyboardMarkupRemove = new ReplyKeyboardRemove();
-                message.setReplyMarkup(keyboardMarkupRemove);
+
+        public void response(responseConversation action, Update update) {
+            int conversation = action.getConversation();
+            List<String> responses = new ArrayList<>();
+            ReplyKeyboardMarkup rkm = null;
+            switch (conversation) {
+                //****************************************\\
+                //Here is the initial registering\\
+                //****************************************\\
+                case 0:
+                    responses.add(" Hola, que de deseas hacer");
+                    rkm= createReplyKeyboard();
+                    break;
+
             }
-            try {
-                this.execute(message);
+            for (String messageText : responses) {
+                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
+                        .setChatId(update.getMessage().getChatId())
+                        .setText(messageText);
+                if (rkm != null) {
+                    message.setReplyMarkup(rkm);
+                } else {
+                    ReplyKeyboardRemove keyboardMarkupRemove = new ReplyKeyboardRemove();
+                    message.setReplyMarkup(keyboardMarkupRemove);
+                }
+                try {
+                    this.execute(message);
 
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
             }
         }
-    }
-
 
 
 
@@ -615,26 +564,26 @@ public class MainBot extends TelegramLongPollingBot {
 
 
         /* @@@@@@@@@@@@@@@@@@@@ Nilson Contreras @@@@@@@@@@@@@@@@@@@@@@@*/
-//                @Override
-//                public String getBotUsername () {
-//                    return "GatoscBot";
-//                }
-//
-//                @Override
-//                public String getBotToken () {
-//                    return "718088447:AAFnThJd7y3IjjcmWFFJadMLYhfrqlRkAbY";
-//                }
+                @Override
+                public String getBotUsername () {
+                    return "GatoscBot";
+                }
+
+                @Override
+                public String getBotToken () {
+                    return "718088447:AAFnThJd7y3IjjcmWFFJadMLYhfrqlRkAbY";
+                }
 
         /* @@@@@@@@@@@@@@@@@@@@ Bacarreza Gadiel @@@@@@@@@@@@@@@@@@@@@@@*/
-     @Override
-    public String getBotUsername() {
-        return "CitasDentistabot";
-    }
-
-    @Override
-    public String getBotToken() {
-        return "971865743:AAHD6m_iDbNA03GkGwUFdReXG5z8Ttnb5UI";
-    }
+//     @Override
+//    public String getBotUsername() {
+//        return "CitasDentistabot";
+//    }
+//
+//    @Override
+//    public String getBotToken() {
+//        return "971865743:AAHD6m_iDbNA03GkGwUFdReXG5z8Ttnb5UI";
+//    }
 
         /* @@@@@@@@@@@@@@@@@@@@ Vera Vania @@@@@@@@@@@@@@@@@@@@@@@*/
 

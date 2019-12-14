@@ -6,7 +6,8 @@ public class responseConversation {
     int conversation;
     List<String> options;
 
-    public responseConversation(int conversation, List<String> options) {
+    public responseConversation(int conversation) {
+    //public responseConversation(int conversation, List<String> options) {
         this.conversation = conversation;
         this.options = options;
     }
