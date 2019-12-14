@@ -40,6 +40,7 @@ import static com.odont.odont.bot.MainBot.cpUser;
         private IChatDao iChatDao;
         private ITreatmentDao treatmentDao;
 
+<<<<<<< HEAD
 //<<<<<<< HEAD
 
     @Autowired
@@ -48,6 +49,12 @@ import static com.odont.odont.bot.MainBot.cpUser;
 //        @Autowired
 //        public BotBl(IUserDao iUserDao, IPersonDao iPersonDao, IChatDao iChatDao, ITreatmentDao treatmentDao) {
 //>>>>>>> be86159e5327a27c132d9f855b047f2a9ca9376e
+=======
+
+        @Autowired
+        public BotBl(IUserDao iUserDao, IPersonDao iPersonDao, IChatDao iChatDao, ITreatmentDao treatmentDao) {
+
+>>>>>>> a1a617ba93d231c4c22ecd97bf59a2443e64a3f3
             this.iUserDao = iUserDao;
             this.iPersonDao = iPersonDao;
             this.iChatDao = iChatDao;
@@ -105,7 +112,10 @@ import static com.odont.odont.bot.MainBot.cpUser;
 //            CpUserEntity cpUserEntity =  initUser(update.getMessage().getFrom());
 //            continueChatWithUser(update, cpUserEntity, chatResponse);
 
+<<<<<<< HEAD
 //<<<<<<< HEAD
+=======
+>>>>>>> a1a617ba93d231c4c22ecd97bf59a2443e64a3f3
 
 //            try {
 //                LOGGER.info("Ingresando a funcion processUpdate x2");
@@ -126,6 +136,7 @@ import static com.odont.odont.bot.MainBot.cpUser;
 
 //            return chatResponse;
 
+<<<<<<< HEAD
 //=======
                 // Si es la primera vez pedir una imagen para su perfil
 //                if (a == 1) {
@@ -198,46 +209,33 @@ import static com.odont.odont.bot.MainBot.cpUser;
 //                    execute(new_message);
 //                } catch (TelegramApiException e) {
 //                    e.printStackTrace();
+=======
+
+                // Si es la primera vez pedir una imagen para su perfil
+//                if (a == 1) {
+//                    //if (initUser(update.getMessage().getFrom())) {
+//                    result.add("Bienvenido al bot primer inicio de sesion");
+//                } else {
+//                    result.add("Bienvenido segunda xxx vez");
+>>>>>>> a1a617ba93d231c4c22ecd97bf59a2443e64a3f3
 //                }
+//            } catch (Exception ex) {
+//                LOGGER.warn("ERROR en processUpdate", ex);
+//                throw ex;
 //            }
-//            if (call_data.equals("Modificar")) {
-//                String answer = "Ingrese nueva fecha y hora";
-//                TreatmentEntity treatmentEntity1 = treatmentDao.findById((long)3).get();
-//                SendMessage message1 = new SendMessage() // Create a SendMessage object with mandatory fields
-//                        .setChatId(update.getMessage().getChatId())
-//                        .setText("Persona desde BBDD: " + treatmentEntity1 + "\n" + " Materiales desde BBDD:" );
-//                // .setText("Persona desde BBDD: " + personDto);
-//                System.out.println(treatmentEntity1);
 //
-//
-//                try {
-//                    this.execute(message1);
-//                } catch (TelegramApiException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//            if (call_data.equals("Eliminar")) {
-//                String answer = "Ingrese fecha y hora que desee eliminar";
-//                EditMessageText new_message = new EditMessageText()
-//                        .setChatId(chat_id)
-//                        .setMessageId(toIntExact(message_id))
-//                        .setText(answer);
-//                try {
-//                    execute(new_message);
-//                } catch (TelegramApiException e) {
-//                    e.printStackTrace();
-//                }
-//            }
+//            return result;
 //        }
-//                    // }//fin menu de citas
 //
 //
 //                }
 //
 //        }
 //
+<<<<<<< HEAD
 //>>>>>>> be86159e5327a27c132d9f855b047f2a9ca9376e
+=======
+>>>>>>> a1a617ba93d231c4c22ecd97bf59a2443e64a3f3
 
 //            List<String> chatResponse = new ArrayList<>();
 //            CpUserEntity cpUser = initUser(update.getMessage().getFrom());
@@ -255,12 +253,67 @@ import static com.odont.odont.bot.MainBot.cpUser;
 //            result.add("Bienvenido al Bot");
 //        }
 
+<<<<<<< HEAD
 //<<<<<<< HEAD
+=======
+>>>>>>> a1a617ba93d231c4c22ecd97bf59a2443e64a3f3
 
 
 
 
 
+<<<<<<< HEAD
+=======
+        public responseConversation processUpdate(Update update){
+            LOGGER.info("Receiving an update from user {}",update);
+            int response = 0;
+            List<String> options = new ArrayList<>();
+            if(isNewUser(update)){
+                LOGGER.info("First time using app for: {} ",update.getMessage().getFrom() );
+                response = 1;
+            }
+            else{
+               // List<CpCar> allCars;
+                Boolean validation;
+                String newLastName,newFirstName,newCellphone,newCI,newBrand,newModel,newEnrollmentNumber,newPassenger;
+                Integer idUser;
+               // CpCar newCar;
+               PersonEntity personEntity;
+               // CpUser cpUser;
+                cpUser = iUserDao.findByBotUserId(update.getMessage().getFrom().getId().toString());
+
+                int last_conversation = cpUser.getUserId();
+                //What happens when chatbot receives a response to a conversation "last conversation"
+                switch (last_conversation) {
+                    //****************************************\\
+                    //Here is the initial registering\\
+                    //****************************************\\
+                    case 1:
+                        idUser = cpUser.getPersonId().getPersonId();
+                        LOGGER.info("Buscando el id {} en CpPerson", idUser);
+                        personEntity = iPersonDao.findById(idUser).get();
+                        newLastName = update.getMessage().getText();
+                        //See if the Last name only has alphabetical Letters and spaces
+                        // validation = isOnlyAlphabeticalCharacters(newLastName);
+//                        if(validation){
+                        cpPerson.setFirstName(newLastName);
+                        iPersonDao.save(cpPerson);
+                        response = 2;
+//                        }
+//                        else{
+                        response = 4;
+                        break;
+                }
+               // cpUser.setConversationId(response);
+               // cpUserRepository.save(cpUser);
+            }
+            responseConversation result = new responseConversation(response,options);
+            return result;
+        }
+
+//fin clase BotBl
+
+>>>>>>> a1a617ba93d231c4c22ecd97bf59a2443e64a3f3
 
 
 
@@ -383,7 +436,95 @@ import static com.odont.odont.bot.MainBot.cpUser;
                // return result;
             return cpUserEntity;
         }}
+<<<<<<< HEAD
 //=======
+=======
+
+
+            /**
+             * Procesa el chat con UN usuario
+             * @param update El mensaje que envio el usuario
+             * @param cpUserEntity El usuario con el que se esta interactuando
+             * @param chatResponse Los mensajes que se desean retornar al usuario.
+             */
+//        private void continueChatWithUser(Update update, CpUserEntity cpUserEntity, List<String> chatResponse) {
+//            // Obtener el ultimo mensaje que envió el usuario
+//            // #NOTA# MI ERROR EN LA SIG LINEA FUE POR NO IChat dao gg
+//            //CpChatEntity lastMessage = iChatDao.findLastChatByUserId(cpUserEntity.getUserId());
+//            CpChatEntity lastMessage = iChatDao.findLastChatByUserId(cpUserEntity.getUserId());
+//            // Preparo la vaiable para retornar la respuesta
+//            String response = null;
+//            // Si el ultimo mensaje no existe (es la primera conversación)
+//            if (lastMessage == null) {
+//                // Retornamos 1
+//                response = "1";
+//            } else {
+//                // Si existe convesasción previa iniciamos la variable del ultimo mensaje en 1
+//                int lastMessageInt = 0;
+//                try {
+//                    // Intenemos obtener el ultimo mensaje retornado y lo convertimos a entero.
+//                    // Si la coversin falla en el catch retornamos 1
+//
+//
+//                    lastMessageInt = Integer.parseInt(lastMessage.getOutMessage());
+//
+//
+//                    response = "" + (lastMessageInt + 1);
+//                } catch (NumberFormatException nfe) {
+//                    response = "1";
+//                }
+//            }
+//            LOGGER.info("PROCESSING IN MESSAGE: {} from user {}" ,update.getMessage().getText(), cpUserEntity.getUserId());
+//            // Creamos el objeto CpChat con la respuesta a la presente conversación.
+//            CpChatEntity cpChat = new CpChatEntity();
+//            cpChat.setCpUserUserId(cpUserEntity);
+//            cpChat.setInMessage(update.getMessage().getText());
+//            cpChat.setOutMessage(response);
+//            cpChat.setMsgDate ( new Date()); //FIXME Obtener la fecha del campo entero update.getMessage().
+//            cpChat.setTxDate (new Date()); //FIXME no se por q no da ese error se debe de recoger.
+//            cpChat.setTxUser(cpUserEntity.getUserId().toString());
+//            cpChat.setTxHost(update.getMessage().getChatId().toString());
+//            // Guardamos en base dedatos
+//            iChatDao.save (cpChat);
+//            // Agregamos la respuesta al chatResponse.
+//            chatResponse.add(response);
+//        }
+//
+//        /**
+//         * Si es la primera vez que el usuario conversa con el bot, se guarda su información en BBDD.
+//         * A futuro ademas de guardar la información captura el ultimo estado de la conversación.
+//         * @param user
+//         * @return first time login
+//         */
+//        private CpUserEntity initUser(User user) {
+//            System.out.println("Llego aca");
+//            //boolean result = true;
+//            CpUserEntity cpUserEntity = iUserDao.findByBotUserId(user.getId().toString());
+//            if (cpUserEntity == null) {
+//                PersonEntity personEntity = new PersonEntity();
+//                personEntity.setFirstName(user.getFirstName());
+//                personEntity.setFirstSurname(user.getLastName());
+//                personEntity.setStatus(Status.ACTIVE.getStatus());
+//                personEntity.setTxHost("localhost");
+//                personEntity.setTxUser("admin");
+//                personEntity.setTxDate(new Date());
+//                iPersonDao.save(personEntity);
+//                cpUserEntity = new CpUserEntity();
+//                cpUserEntity.setBotUserId(user.getId().toString());
+//                cpUserEntity.setPersonId(personEntity);
+//                cpUserEntity.setTxHost("localhost");
+//                cpUserEntity.setTxUser("admin");
+//                cpUserEntity.setTxDate(new Date());
+//                iUserDao.save(cpUserEntity);
+//                System.out.println("Llego aca");
+//                //result = true;
+//            }
+
+//               // return result;
+//            return cpUserEntity;
+//        }}
+
+>>>>>>> a1a617ba93d231c4c22ecd97bf59a2443e64a3f3
 //
 //                return result;
             //return cpUserEntity;
@@ -391,6 +532,9 @@ import static com.odont.odont.bot.MainBot.cpUser;
 
 
 
+<<<<<<< HEAD
 //>>>>>>> be86159e5327a27c132d9f855b047f2a9ca9376e
 
+=======
+>>>>>>> a1a617ba93d231c4c22ecd97bf59a2443e64a3f3
 
