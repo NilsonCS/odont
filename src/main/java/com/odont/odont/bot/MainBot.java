@@ -114,19 +114,17 @@ public void onUpdateReceived(Update update) {
     private void responsesToChatUSer(Update update, responseConversation responses,List<responseConversation> listMessage) {
 
         ReplyKeyboardMarkup replyKeyboardMarkup = null;
-        /*if(responses.getConversation()==4 && responses.getMessage()==1){
-            replyKeyboardMarkup=menuDays();
-        }
-        if(responses.getConversation()==3 && responses.getMessage()==1){
-            replyKeyboardMarkup=menuTimeTable();
-        }*/
-        if (responses.getConversation() == 20 && responses.getMessage() == 1 && numberRegistro == 0) {
+
+        if (responses.getConversation() == 20 && responses.getMessage() == 1 ) {
 
             replyKeyboardMarkup = menuInitialNewUser();
-            numberRegistro++;
+
         }
-        if (responses.getConversation() == 30 && responses.getMessage() == 1 && numberRegistro != 0) {
+        if (responses.getConversation() == 30 && responses.getMessage() == 1 ) {
             replyKeyboardMarkup = menuInitialUserPacient();
+        }
+        if (responses.getConversation() == 50 && responses.getMessage() == 1 ) {
+            replyKeyboardMarkup = menuTreatment();
         }
         LOGGER.info("numero de Registro es = " + numberRegistro);
         //manda el mensaje de respuesta al usuario
@@ -173,6 +171,28 @@ public void onUpdateReceived(Update update) {
 
             return keyboard;
         }
+    //Metodo donde definimos el menu de botones para un usuario-cliente
+    private ReplyKeyboardMarkup menuTreatment(){
+        ReplyKeyboardMarkup keyboard = new ReplyKeyboardMarkup();
+        ArrayList<KeyboardRow> listKeyboard=new ArrayList<KeyboardRow>();
+
+
+        KeyboardRow keyboardButtons=new KeyboardRow();
+        keyboardButtons.add("Agregar tratamiento");
+        listKeyboard.add(keyboardButtons);
+
+        keyboardButtons=new KeyboardRow();
+        keyboardButtons.add("Modificar tratamiento");
+        listKeyboard.add(keyboardButtons);
+
+        keyboardButtons=new KeyboardRow();
+        keyboardButtons.add("Eliminar tratamiento");
+        listKeyboard.add(keyboardButtons);
+
+        keyboard.setKeyboard(listKeyboard);
+
+        return keyboard;
+    }
 
     private ReplyKeyboardMarkup menuInitialUserPacient(){
         ReplyKeyboardMarkup keyboard = new ReplyKeyboardMarkup();
@@ -194,30 +214,6 @@ public void onUpdateReceived(Update update) {
 
         return keyboard;
     }
-
-
-
-
-
-
-
-
-
-
-//                for(String Text: pato) {
-//                    SendMessage patos = new SendMessage() // Create a SendMessage object with mandatory fields
-//                            .setChatId(update.getMessage().getChatId())
-//                            .setText(Text);
-//                    try {
-//                        this.execute(patos);
-//                    } catch (TelegramApiException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-
-
-
-
 
     private ReplyKeyboardMarkup createReplyKeyboardConfirmation() {
         ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
@@ -347,41 +343,6 @@ public void onUpdateReceived(Update update) {
         // Add it to the message
         return keyboardMarkup;
     }
-
-
-
-        public void response(responseConversation action, Update update) {
-            int conversation = action.getConversation();
-            List<String> responses = new ArrayList<>();
-            ReplyKeyboardMarkup rkm = null;
-            switch (conversation) {
-                //****************************************\\
-                //Here is the initial registering\\
-                //****************************************\\
-                case 0:
-                    responses.add(" Hola, que de deseas hacer");
-                    rkm= createReplyKeyboard();
-                    break;
-
-            }
-            for (String messageText : responses) {
-                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                        .setChatId(update.getMessage().getChatId())
-                        .setText(messageText);
-                if (rkm != null) {
-                    message.setReplyMarkup(rkm);
-                } else {
-                    ReplyKeyboardRemove keyboardMarkupRemove = new ReplyKeyboardRemove();
-                    message.setReplyMarkup(keyboardMarkupRemove);
-                }
-                try {
-                    this.execute(message);
-
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
 
 
 
@@ -652,26 +613,26 @@ public void onUpdateReceived(Update update) {
 
 
         /* @@@@@@@@@@@@@@@@@@@@ Nilson Contreras @@@@@@@@@@@@@@@@@@@@@@@*/
-                @Override
-                public String getBotUsername () {
-                    return "GatoscBot";
-                }
-
-                @Override
-                public String getBotToken () {
-                    return "718088447:AAFnThJd7y3IjjcmWFFJadMLYhfrqlRkAbY";
-                }
+//                @Override
+//                public String getBotUsername () {
+//                    return "GatoscBot";
+//                }
+//
+//                @Override
+//                public String getBotToken () {
+//                    return "718088447:AAFnThJd7y3IjjcmWFFJadMLYhfrqlRkAbY";
+//                }
 
         /* @@@@@@@@@@@@@@@@@@@@ Bacarreza Gadiel @@@@@@@@@@@@@@@@@@@@@@@*/
-//     @Override
-//    public String getBotUsername() {
-//        return "CitasDentistabot";
-//    }
-//
-//    @Override
-//    public String getBotToken() {
-//        return "971865743:AAHD6m_iDbNA03GkGwUFdReXG5z8Ttnb5UI";
-//    }
+     @Override
+    public String getBotUsername() {
+        return "CitasDentistabot";
+    }
+
+    @Override
+    public String getBotToken() {
+        return "971865743:AAHD6m_iDbNA03GkGwUFdReXG5z8Ttnb5UI";
+    }
 
         /* @@@@@@@@@@@@@@@@@@@@ Vera Vania @@@@@@@@@@@@@@@@@@@@@@@*/
 

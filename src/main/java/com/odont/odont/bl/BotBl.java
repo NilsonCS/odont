@@ -3,10 +3,7 @@ package com.odont.odont.bl;
 import com.odont.odont.bot.responseConversation;
 import com.odont.odont.models.dao.*;
 import com.odont.odont.models.dto.Status;
-import com.odont.odont.models.entity.CpChatEntity;
-import com.odont.odont.models.entity.CpUserEntity;
-import com.odont.odont.models.entity.PatientEntity;
-import com.odont.odont.models.entity.PersonEntity;
+import com.odont.odont.models.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,15 +27,6 @@ import java.util.List;
     private IChatDao iChatDao;
     private ITreatmentDao treatmentDao;
     private IPatientDao iPatientDao;
-
-//<<<<<<< HEAD
-
-//    @Autowired
-//        public BotBl(IUserDao iUserDao, IPersonDao iPersonDao, IChatDao iChatDao) {
-//=======
-//        @Autowired
-//        public BotBl(IUserDao iUserDao, IPersonDao iPersonDao, IChatDao iChatDao, ITreatmentDao treatmentDao) {
-//>>>>>>> be86159e5327a27c132d9f855b047f2a9ca9376e
 
     @Autowired
     public BotBl(IUserDao iUserDao, IPersonDao iPersonDao, IChatDao iChatDao, ITreatmentDao treatmentDao, IPatientDao iPatientDao) {
@@ -164,7 +152,7 @@ import java.util.List;
 
     private responseConversation listResponses(int conversation, int message, String messagereceived, Update update) {
         responseConversation responseConversation = new responseConversation();
-
+        CpUserEntity cpuser = new CpUserEntity();
         switch (conversation) {
             case 0:
 //inicio chat
@@ -203,6 +191,8 @@ import java.util.List;
                 break;
             case 70:
                 break;*/
+            case 50:
+                responseConversation = switchRegisterClientTreatment(conversation, message, messagereceived, update, cpuser);
         }
         return responseConversation;
     }
@@ -302,6 +292,61 @@ import java.util.List;
 
 
     }
+    private responseConversation switchRegisterClientTreatment (int conversation, int message, String messagereceived, Update update, CpUserEntity cpuser) {
+        responseConversation responsesReturn = new responseConversation();
+        switch (message) {
+            case 1:
+                responsesReturn.setResponses("Ingrese el nombre del tratamiento");
+                responsesReturn.setMessage(2);
+                responsesReturn.setConversation(conversation);
+
+                break;
+            case 2:
+                responsesReturn.setResponses("Ingrese el costo del tratamiento");
+                responsesReturn.setMessage(3);
+                responsesReturn.setConversation(conversation);
+                break;
+            case 3:
+                responsesReturn.setResponses("Ingrese la duracion del tratamiento");
+                responsesReturn.setMessage(4);
+                responsesReturn.setConversation(conversation);
+                break;
+            case 7:
+
+                responsesReturn.setResponses("GRACIAS!!!!! \n Los datos se guardaron correctamente");
+                responsesReturn.setMessage(1);
+                responsesReturn.setConversation(30);
+                TreatmentEntity treatmentEntity = null;
+                treatmentEntity = returnTreatment(conversation, cpuser, messagereceived);
+                treatmentDao.save(treatmentEntity);
+                break;
+        }
+        return responsesReturn;
+    }
+    private TreatmentEntity returnTreatment(int conversation, CpUserEntity cpuser, String lastmessage) {
+        TreatmentEntity treatmentEntity = new TreatmentEntity();
+        ArrayList<CpChatEntity> listTreatment = new ArrayList<>();
+
+        for (int i = 0; i < 9; i++) {
+            CpChatEntity cpChatEntity = iChatDao.findMessageAndConversationByUserId(cpuser.getUserId(), conversation, i + 3);
+            listTreatment.add(cpChatEntity);
+        }
+
+        LOGGER.info(listTreatment.get(0).getInMessage());
+        LOGGER.info(listTreatment.get(1).getInMessage());
+        LOGGER.info(listTreatment.get(2).getInMessage());
+        LOGGER.info(listTreatment.get(3).getInMessage());
+        LOGGER.info(listTreatment.get(4).getInMessage());
+
+        treatmentEntity.setNameTreatment(listTreatment.get(0).getInMessage());
+        treatmentEntity.setDuration(listTreatment.get(1).getInMessage());
+        treatmentEntity.setCostTreatment(Double.parseDouble(listTreatment.get(2).getInMessage()));
+        return treatmentEntity;
+
+
+    }
+
+
 
 }
 
