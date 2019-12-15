@@ -8,37 +8,29 @@ import com.odont.odont.models.dao.IUserDao;
 import com.odont.odont.models.dto.Status;
 import com.odont.odont.models.entity.CpChatEntity;
 import com.odont.odont.models.entity.CpUserEntity;
+import com.odont.odont.models.entity.PatientEntity;
 import com.odont.odont.models.entity.PersonEntity;
-import com.odont.odont.models.entity.TreatmentEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.odont.odont.bot.MainBot.cpPerson;
-import static com.odont.odont.bot.MainBot.cpUser;
-
 @Service
     public class BotBl {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BotBl.class);
+        private static final Logger LOGGER = LoggerFactory.getLogger(BotBl.class);
 
-    private IUserDao iUserDao;
-    private IPersonDao iPersonDao;
-    private IChatDao iChatDao;
-    private ITreatmentDao treatmentDao;
+        private IUserDao iUserDao;
+        private IPersonDao iPersonDao;
+        private IChatDao iChatDao;
+        private ITreatmentDao treatmentDao;
 
 //<<<<<<< HEAD
 
@@ -49,46 +41,46 @@ import static com.odont.odont.bot.MainBot.cpUser;
 //        public BotBl(IUserDao iUserDao, IPersonDao iPersonDao, IChatDao iChatDao, ITreatmentDao treatmentDao) {
 //>>>>>>> be86159e5327a27c132d9f855b047f2a9ca9376e
 
-    @Autowired
-    public BotBl(IUserDao iUserDao, IPersonDao iPersonDao, IChatDao iChatDao, ITreatmentDao treatmentDao) {
+        @Autowired
+        public BotBl(IUserDao iUserDao, IPersonDao iPersonDao, IChatDao iChatDao, ITreatmentDao treatmentDao) {
 
-        this.iUserDao = iUserDao;
-        this.iPersonDao = iPersonDao;
-        this.iChatDao = iChatDao;
-        this.treatmentDao = treatmentDao;
-    }
-
-    public responseConversation processUpdate(Update update) {
-        LOGGER.info("Ingresando a funcion processUpdate");
-        int response = 0;
-
-
-        //   List<String> result = new ArrayList<>();
-        List<String> chatResponse = new ArrayList<>();
-        List<String> options = new ArrayList<>();
-        CpUserEntity cpUserEntity = initUser(update.getMessage().getFrom());
-        continueChatWithUser(update, cpUserEntity, chatResponse);
-
-
-        try {
-            LOGGER.info("Ingresando a funcion processUpdate x2");
-            int a = 1;
-            LOGGER.info("Recibiendo update {} ", update);
-
-            // Si es la primera vez pedir una imagen para su perfil
-            if (a == 1) {
-                //if (initUser(update.getMessage().getFrom())) {
-                //  result.add("Bienvenido al bot primer inicio de sesion");
-            } else {
-                // result.add("Bienvenido segunda xxx vez");
-            }
-        } catch (Exception ex) {
-            LOGGER.warn("ERROR en processUpdate", ex);
-            throw ex;
+            this.iUserDao = iUserDao;
+            this.iPersonDao = iPersonDao;
+            this.iChatDao = iChatDao;
+            this.treatmentDao = treatmentDao;
         }
-        responseConversation result = new responseConversation(response);
-        return result;
-    }
+
+        public responseConversation processUpdate(Update update) {
+            LOGGER.info("Ingresando a funcion processUpdate");
+            int response = 1;
+
+
+            //   List<String> result = new ArrayList<>();
+            List<String> chatResponse = new ArrayList<>();
+            List<String> options = new ArrayList<>();
+            CpUserEntity cpUserEntity = initUser(update.getMessage().getFrom());
+            continueChatWithUser(update, cpUserEntity, chatResponse);
+
+            try {
+                LOGGER.info("Ingresando a funcion processUpdate x2");
+
+                int a = 1;
+                LOGGER.info("Recibiendo update {} ", update);
+
+                // Si es la primera vez pedir una imagen para su perfil
+               if (a == 1) {
+                     //if (initUser(update.getMessage().getFrom())) {
+                    //  result.add("Bienvenido al bot primer inicio de sesion");
+                } else {
+                    // result.add("Bienvenido segunda xxx vez");
+                }
+            } catch (Exception ex) {
+                LOGGER.warn("ERROR en processUpdate", ex);
+                throw ex;
+            }
+            responseConversation result = new responseConversation(response);
+            return result;
+        }
 
         private void continueChatWithUser (Update update, CpUserEntity cpUserEntity, List < String > chatResponse){
             // Obtener el ultimo mensaje que envió el usuario
@@ -131,8 +123,9 @@ import static com.odont.odont.bot.MainBot.cpUser;
             iChatDao.save(cpChat);
             // Agregamos la respuesta al chatResponse.
             chatResponse.add(response);
+
         }
-    
+
 
         private CpUserEntity initUser (User user){
             System.out.println("Llego aca");
@@ -161,7 +154,136 @@ import static com.odont.odont.bot.MainBot.cpUser;
             return cpUserEntity;
         }
 
+
+    private responseConversation listResponses(int conversation,int message, String messagereceived, Update update){
+        responseConversation responseConversation=new responseConversation();
+
+        switch (conversation){
+            case 0:
+//inicio chat
+
+                responseConversation.setResponses("Bienvenido a GatoscBot" +
+                        "\nSus datos son los siguientes\n"+
+                        update.getMessage().getFrom().getFirstName()+"  "+update.getMessage().getFrom().getLastName());
+                responseConversation.setMessage(1);
+                responseConversation.setConversation(20);
+                break;
+            case 10:
+                responseConversation=switchMenuBuscar(message,messagereceived,update);
+
+                break;
+            case 20:
+
+                //Se obtiene el person de la tabla user con el Chat_id que llega del update, para guardar
+                //en la tabla restaurant
+                CpUserEntity cpUserEntity = iUserDao.findByBotUserId(update.getMessage().getChatId().toString());
+                responseConversation = switchRegisterPaciente(conversation, message, messagereceived, update, cpuser);
+
+                break;
+            case 30:
+                responsesReturn=switchMenuPaciente(conversation,message,messagereceived,update);
+
+                break;
+            case 40:
+                responsesReturn=switchMenuConfiguracion(message,messagereceived,update);
+
+                break;
+            /*case 50:
+                Cpuser cpuser2 = cpUSerRepository.findByBotUserId(update.getMessage().getChatId().toString());
+                responsesReturn=switchTimeTable(conversation,message,messagereceived,update,cpuser2);
+                break;
+            case 60:
+                break;
+            case 70:
+                break;*/
+        }
+        return responsesReturn;
+    }
+
+    private responseConversation switchMenuBuscar(int message, String messagereceived, Update update) {
+        responseConversation responseConversation = new responseConversation();
+
+        switch (message) {
+            case 1:
+                responseConversation.setResponses("Ingresaaste Buscar paciente");
+                responseConversation.setMessage(1);
+                responseConversation.setConversation(20);
+        }
+        return responseConversation;
+    }
+
+    private responseConversation switchRegisterPaciente(int conversation,int message, String messagereceived, Update update,Cpuser cpuser){
+        responseConversation responsesReturn=new responseConversation();
+        switch (message){
+            case 1:
+                responsesReturn.setResponses("Ingrese el nombre del paciente");
+                responsesReturn.setMessage(2);
+                responsesReturn.setConversation(conversation);
+
+                break;
+            case 2:
+                responsesReturn.setResponses("Ingrese la ciudad de nacimiento del paciente");
+                responsesReturn.setMessage(3);
+                responsesReturn.setConversation(conversation);
+                break;
+            case 3:
+                responsesReturn.setResponses("Ingrese la zona en la que vive el paciente");
+                responsesReturn.setMessage(4);
+                responsesReturn.setConversation(conversation);
+                break;
+            case 4:
+                responsesReturn.setResponses("Ingrese la calle del domicilio del paciente");
+                responsesReturn.setMessage(5);
+                responsesReturn.setConversation(conversation);
+                break;
+
+            case 5:
+                responsesReturn.setResponses("Ingrese la ubicacion del paciente");
+                responsesReturn.setMessage(6);
+                responsesReturn.setConversation(conversation);
+                break;
+
+            case 6:
+                responsesReturn.setResponses("Ingrese una imagen del paciente");
+                responsesReturn.setMessage(7);
+                responsesReturn.setConversation(conversation);
+                break;
+
+            case 7:
+
+                responsesReturn.setResponses("GRACIAS!!!!! \n Los datos se guardaron correctamente");
+                responsesReturn.setMessage(1);
+                responsesReturn.setConversation(30);
+                PatientEntity patientEntity=null;
+                patientEntity=returnRestaurant(conversation,cpuser,messagereceived);
+                iPatientDao.save(patientEntity);
+                break;
+        }
+        return  responsesReturn;
+    }
+
+    private PatientEntity returnRestaurant(int conversation,CpUserEntity cpuser,String lastmessage){
+        PatientEntity restaurant=new PatientEntity();
+        ArrayList<Chat> listRegisterRestaurant=new ArrayList<>();
+
+        for (int i=0;i<9;i++){
+            Chat chat=iChatDao.findMessageAndConversationByUserId(cpuser.getUserId(),conversation,i+3);
+            listRegisterRestaurant.add(chat);
+        }
+
+        LOGGER.info(listRegisterRestaurant.get(0).getInMessage());
+        LOGGER.info(listRegisterRestaurant.get(1).getInMessage());
+        LOGGER.info(listRegisterRestaurant.get(2).getInMessage());
+        LOGGER.info(listRegisterRestaurant.get(3).getInMessage());
+        LOGGER.info(listRegisterRestaurant.get(4).getInMessage());
+
+
+    }
+
 }
+
+
+
 
 
 

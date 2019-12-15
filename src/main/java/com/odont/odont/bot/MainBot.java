@@ -149,7 +149,6 @@ public void onUpdateReceived(Update update) {
         // Add it to the message
         return keyboardMarkup;
     }
-    //Here the user decides whether it will be a carpooler or a rider and creates a custom keyboard for it
     private ReplyKeyboardMarkup createReplyKeyboard() {
         ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
         // Create the keyboard (list of keyboard rows)
