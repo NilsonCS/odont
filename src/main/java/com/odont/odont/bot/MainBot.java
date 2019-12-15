@@ -57,6 +57,7 @@ public class MainBot extends TelegramLongPollingBot {
     BotBl botBl;
     private UserBl userBl;
     private PersonBl personBl;
+    int numberRegistro=0;
 
 
 
@@ -89,14 +90,17 @@ public void onUpdateReceived(Update update) {
     LOGGER.info("Recibiendo update {} ", update);
     if (update.hasMessage() && update.getMessage().hasText()) {
 
+        List<responseConversation> messages = botBl.processUpdate(update);
+        responseConversation responses = messages.get(0);
 
-        List<String> messages;
+        responsesToChatUSer(update, responses, messages);
+
+
+        //List<String> messages;
         try {
             //pato = botBl.processUpdate(update);
             LOGGER.info("Ingresando al BL");
-            responseConversation action = botBl.processUpdate(update);
             //  messages = this.botBl.processUpdate(update);
-            response(action, update);
             LOGGER.info("SUCCESS ingrsando al BL");
             // response(action, update);
         } catch (Exception ex) {
@@ -105,6 +109,91 @@ public void onUpdateReceived(Update update) {
         }
     }
 }
+
+    //Control de los momentos en los que tiene que mostrar los botones
+    private void responsesToChatUSer(Update update, responseConversation responses,List<responseConversation> listMessage) {
+
+        ReplyKeyboardMarkup replyKeyboardMarkup = null;
+        /*if(responses.getConversation()==4 && responses.getMessage()==1){
+            replyKeyboardMarkup=menuDays();
+        }
+        if(responses.getConversation()==3 && responses.getMessage()==1){
+            replyKeyboardMarkup=menuTimeTable();
+        }*/
+        if (responses.getConversation() == 20 && responses.getMessage() == 1 && numberRegistro == 0) {
+
+            replyKeyboardMarkup = menuInitialNewUser();
+            numberRegistro++;
+        }
+        if (responses.getConversation() == 30 && responses.getMessage() == 1 && numberRegistro != 0) {
+            replyKeyboardMarkup = menuInitialUserPacient();
+        }
+        LOGGER.info("numero de Registro es = " + numberRegistro);
+        //manda el mensaje de respuesta al usuario
+        for (responseConversation messageText : listMessage) {
+
+            SendMessage message = new SendMessage()
+                    .setChatId(update.getMessage().getChatId())
+                    .setText(messageText.getResponses());
+
+            if (replyKeyboardMarkup != null) {
+                message.setReplyMarkup(replyKeyboardMarkup);
+            } else {
+                ReplyKeyboardRemove keyboardMarkupRemove = new ReplyKeyboardRemove();
+                message.setReplyMarkup(keyboardMarkupRemove);
+            }
+            try {
+                this.execute(message);
+
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+        //Metodo donde definimos el menu de botones para un usuario-cliente
+        private ReplyKeyboardMarkup menuInitialNewUser(){
+            ReplyKeyboardMarkup keyboard = new ReplyKeyboardMarkup();
+            ArrayList<KeyboardRow> listKeyboard=new ArrayList<KeyboardRow>();
+
+
+            KeyboardRow keyboardButtons=new KeyboardRow();
+            keyboardButtons.add("Buscar paciente");
+            listKeyboard.add(keyboardButtons);
+
+            keyboardButtons=new KeyboardRow();
+            keyboardButtons.add("Registrar paciente");
+            listKeyboard.add(keyboardButtons);
+
+            keyboardButtons=new KeyboardRow();
+            keyboardButtons.add("Opciones paciente");
+            listKeyboard.add(keyboardButtons);
+
+            keyboard.setKeyboard(listKeyboard);
+
+            return keyboard;
+        }
+
+    private ReplyKeyboardMarkup menuInitialUserPacient(){
+        ReplyKeyboardMarkup keyboard = new ReplyKeyboardMarkup();
+        ArrayList<KeyboardRow> listKeyboard=new ArrayList<KeyboardRow>();
+
+        KeyboardRow keyboardButtons=new KeyboardRow();
+        keyboardButtons.add("Buscar paciente");
+        listKeyboard.add(keyboardButtons);
+
+        keyboardButtons=new KeyboardRow();
+        keyboardButtons.add("Ingresar paciente");
+        listKeyboard.add(keyboardButtons);
+
+        keyboardButtons=new KeyboardRow();
+        keyboardButtons.add("Opciones paciente");
+        listKeyboard.add(keyboardButtons);
+
+        keyboard.setKeyboard(listKeyboard);
+
+        return keyboard;
+    }
 
 
 

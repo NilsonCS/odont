@@ -14,6 +14,30 @@ public class PatientEntity {
     private String phone;
     private String refPhone;
     private String refFamily;
+    private Integer chatId;
+
+
+
+    @Basic
+    @Column(name = "chat_id")
+
+    public Integer getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(Integer chatId) {
+        this.chatId = chatId;
+    }
+
+
+
+  //  @JoinColumn(name = "chat_Id", referencedColumnName = "chat_Id")
+    //@ManyToOne(optional = false, fetch = FetchType.LAZY)
+    //private CpChatEntity chatId;
+
+    @JoinColumn(name = "person_id", referencedColumnName = "person_id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private PersonEntity personId;
 
     @Id
     @Column(name = "patient_id")
@@ -93,6 +117,16 @@ public class PatientEntity {
 
     public void setRefFamily(String refFamily) {
         this.refFamily = refFamily;
+    }
+
+
+
+    public PersonEntity getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(PersonEntity personId) {
+        this.personId = personId;
     }
 
     @Override
