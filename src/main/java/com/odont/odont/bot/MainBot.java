@@ -91,9 +91,9 @@ public void onUpdateReceived(Update update) {
     if (update.hasMessage() && update.getMessage().hasText()) {
 
         List<responseConversation> messages = botBl.processUpdate(update);
-        responseConversation responses = messages.get(0);
+        responseConversation response = messages.get(0);
 
-        responsesToChatUSer(update, responses, messages);
+        responsesToChatUSer(update, response, messages);
 
 
         //List<String> messages;

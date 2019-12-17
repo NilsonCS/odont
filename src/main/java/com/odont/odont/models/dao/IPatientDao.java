@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface IPatientDao extends JpaRepository<PatientEntity,Integer> {
 
    // @Query(value = "select * from restaurant where person_id=?1 order by chat_id desc LIMIT 1",nativeQuery = true)
-    @Query(value = "select * from patient where person_id=?1 order by chat_id desc LIMIT 1",nativeQuery = true)
+    //@Query(value = "select * from patient where person_id=?1 order by chat_id desc LIMIT 1",nativeQuery = true)
 
-    public PersonEntity findPersonId(Integer person_id);
+    public PatientEntity findByPatientId(Integer patient_id);
 }

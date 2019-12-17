@@ -52,15 +52,15 @@ import java.util.List;
 
     public List<responseConversation> processUpdate(Update update) {
         LOGGER.info("Ingresando a funcion processUpdate");
-        int response = 1;
+        // int response = 1;
 
 
         //   List<String> result = new ArrayList<>();
         List<responseConversation> chatResponse = new ArrayList<>();
-        List<String> options = new ArrayList<>();
         CpUserEntity cpUserEntity = initUser(update.getMessage().getFrom());
-        continueChatWithUser(update, cpUserEntity, chatResponse);
 
+        continueChatWithUser(update, cpUserEntity, chatResponse);
+        LOGGER.info("Ingresando a funcion processUpdate x999999992");
         try {
             LOGGER.info("Ingresando a funcion processUpdate x2");
 
@@ -86,42 +86,63 @@ import java.util.List;
         // #NOTA# MI ERROR EN LA SIG LINEA FUE POR NO IChat dao gg
         //CpChatEntity lastMessage = iChatDao.findLastChatByUserId(cpUserEntity.getUserId());
         CpChatEntity lastMessage = iChatDao.findLastChatByUserId(cpUserEntity.getUserId());
+
         // Preparo la vaiable para retornar la respuesta
         responseConversation response = null;
         // Si el ultimo mensaje no existe (es la primera conversación)
         if (lastMessage == null) {
             // Retornamos 1
-            response=listResponses(0,0,update.getMessage().getText(),update);
+            response = listResponses(0, 0, update.getMessage().getText(), update);
 
             //response = 1;
+
         } else {
 
-            switch (update.getMessage().getText()){
-                case "Buscar restaurantes":
-                   // response = listResponses(10, lastMessage.getMessageId(), update.getMessage().getText(), update);
-                    response = listResponses(10, lastMessage.getChatId(), update.getMessage().getText(), update);
-                    break;}
-            // Si existe convesasción previa iniciamos la variable del ultimo mensaje en 1
-            int lastMessageInt = 0;
-            try {
-                // Intenemos obtener el ultimo mensaje retornado y lo convertimos a entero.
-                // Si la coversin falla en el catch retornamos 1
+            switch (update.getMessage().getText()) {
+                case "Buscar Paciente":
 
+                    LOGGER.warn("llega no llega");
+                    // response = listResponses(10, lastMessage.getMessageId(), update.getMessage().getText(), update);
+                    response = listResponses(10, 0, update.getMessage().getText(), update);
+                    break;
+                case "Registrar Paciente":
+                    LOGGER.warn("llega no llega x2");
+                    response = listResponses(20, lastMessage.getChatId(), update.getMessage().getText(), update);
 
-                lastMessageInt = Integer.parseInt(lastMessage.getOutMessage());
+                    break;
+                case "Ingresar Paciente":
 
+                    LOGGER.warn("llega no llega x3");
+                    response = listResponses(30, lastMessage.getChatId(), update.getMessage().getText(), update);
 
-                //response = "" + (lastMessageInt + 1);
-            } catch (NumberFormatException nfe) {
-               // response = "0";
+                    break;
+
             }
+
+
+            // Si existe convesasción previa iniciamos la variable del ultimo mensaje en 1
+//            int lastMessageInt = 0;
+//            try {
+//                // Intenemos obtener el ultimo mensaje retornado y lo convertimos a entero.
+//                // Si la coversin falla en el catch retornamos 1
+//
+//
+//                lastMessageInt = Integer.parseInt(lastMessage.getOutMessage());
+//
+//
+//                //response = "" + (lastMessageInt + 1);
+//            } catch (NumberFormatException nfe) {
+//                // response = "0";
+//            }
         }
+
         LOGGER.info("PROCESSING IN MESSAGE: {} from user {}", update.getMessage().getText(), cpUserEntity.getUserId());
         // Creamos el objeto CpChat con la respuesta a la presente conversación.
         CpChatEntity cpChat = new CpChatEntity();
         cpChat.setCpUserUserId(cpUserEntity);
         cpChat.setInMessage(update.getMessage().getText());
         cpChat.setOutMessage(response.getResponses());
+
         cpChat.setMsgDate(new Date()); //FIXME Obtener la fecha del campo entero update.getMessage().
         cpChat.setTxDate(new Date()); //FIXME no se por q no da ese error se debe de recoger.
         cpChat.setTxUser(cpUserEntity.getUserId().toString());
@@ -129,7 +150,8 @@ import java.util.List;
         // Guardamos en base dedatos
         iChatDao.save(cpChat);
         // Agregamos la respuesta al chatResponse.
-        chatResponse.add(response);
+            chatResponse.add(response);
+
 
     }
 
@@ -138,6 +160,7 @@ import java.util.List;
         System.out.println("Llego aca");
         //boolean result = true;
         CpUserEntity cpUserEntity = iUserDao.findByBotUserId(user.getId().toString());
+       // CpUserEntity cpUserEntity = iUserDao.findByPersonId(user.getId().toString());
         if (cpUserEntity == null) {
             PersonEntity personEntity = new PersonEntity();
             personEntity.setFirstName(user.getFirstName());
@@ -174,15 +197,26 @@ import java.util.List;
                         update.getMessage().getFrom().getFirstName() + "  " + update.getMessage().getFrom().getLastName());
                 responseConversation.setMessage(1);
                 responseConversation.setConversation(20);
+                //  CpUserEntity cpUserEntity = iUserDao.findByBotUserId(update.getMessage().getChatId().toString());
+                //responseConversation = switchRegisterPaciente(conversation, message, messagereceived, update, cpUserEntity);
+
+
                 break;
             case 10:
+                System.out.println("Hola");
+
                 responseConversation = switchMenuBuscar(message, messagereceived, update);
+
 
                 break;
             case 20:
 
                 //Se obtiene el person de la tabla user con el Chat_id que llega del update, para guardar
-                //en la tabla restaurant
+
+
+
+                LOGGER.info("PROCESSING IN MEsdasSSAGE: {} from user {}", update.getMessage().getText());
+
                 CpUserEntity cpUserEntity = iUserDao.findByBotUserId(update.getMessage().getChatId().toString());
                 responseConversation = switchRegisterPaciente(conversation, message, messagereceived, update, cpUserEntity);
 
@@ -195,14 +229,8 @@ import java.util.List;
 //                responsesReturn = switchMenuConfiguracion(message, messagereceived, update);
 //
 //                break;
-            /*case 50:
-                Cpuser cpuser2 = cpUSerRepository.findByBotUserId(update.getMessage().getChatId().toString());
-                responsesReturn=switchTimeTable(conversation,message,messagereceived,update,cpuser2);
-                break;
-            case 60:
-                break;
-            case 70:
-                break;*/
+
+
         }
         return responseConversation;
     }
@@ -285,14 +313,20 @@ import java.util.List;
         LOGGER.info(listRegisterPatient.get(3).getInMessage());
         LOGGER.info(listRegisterPatient.get(4).getInMessage());
 
-//        patientEntity.setRestaurantName(listRegisterPatient.get(0).getInMessage());
-//        patientEntity.setRestaurantName(listRegisterPatient.get(0).getInMessage());
+        //      patientEntity.setName(listRegisterPatient.get(0).getInMessage());
+//        patientEntity.setCity(listRegisterRestaurant.get(1).getInMessage());
 //        patientEntity.setCity(listRegisterRestaurant.get(1).getInMessage());
 //        patientEntity.setZone(listRegisterRestaurant.get(2).getInMessage());
+//        patientEntity.setZone(listRegisterRestaurant.get(2).getInMessage());
+//        patientEntity.setStreet(listRegisterRestaurant.get(3).getInMessage());
 //        patientEntity.setStreet(listRegisterRestaurant.get(3).getInMessage());
 //        patientEntity.setLatitude(new BigDecimal(123.123));
+//        patientEntity.setLatitude(new BigDecimal(123.123));
+//        patientEntity.setLongitude(new BigDecimal(123.123));
 //        patientEntity.setLongitude(new BigDecimal(123.123));
 //        patientEntity.setImages(lastmessage);
+//        patientEntity.setImages(lastmessage);
+//        patientEntity.setStatus(1);
 //        patientEntity.setStatus(1);
 //        patientEntity.setTxUser("Admin");
 //        patientEntity.setTxHost("localhost");
@@ -300,10 +334,12 @@ import java.util.List;
 //        patientEntity.setPersonId(cpuser.getPersonId());
         return patientEntity;
 
-
     }
 
 }
+
+
+
 
 
 

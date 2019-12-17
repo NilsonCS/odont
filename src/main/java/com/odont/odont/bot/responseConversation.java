@@ -5,11 +5,16 @@ import java.util.List;
 public class responseConversation {
     String responses;
     int message;
+    int conversation;
 
 
-    public responseConversation(String responses, int conversation) {
+
+
+    public responseConversation() {}
+
+    public responseConversation (String responses, int step) {
         this.responses = responses;
-        this.conversation = conversation;
+        this.message = step;
     }
 
     public String getResponses() {
@@ -20,17 +25,16 @@ public class responseConversation {
         this.responses = responses;
     }
 
-    int conversation;
-    List<String> options;
-
-
-    public responseConversation() {}
-
-    public responseConversation( int conversation) {
-    //public responseConversation(int conversation, List<String> options) {
-        this.conversation = conversation;
-        this.options = options;
+    public int getMessage() {
+        return message;
     }
+
+    public void setMessage(int step) {
+        this.message = step;
+    }
+
+
+
 
     public int getConversation() {
         return conversation;
@@ -40,20 +44,6 @@ public class responseConversation {
         this.conversation = conversation;
     }
 
-    public List<String> getOptions() {
-        return options;
-    }
 
-    public void setOptions(List<String> options) {
-        this.options = options;
-    }
-
-    public int getMessage() {
-        return message;
-    }
-
-    public void setMessage(int step) {
-        this.message = step;
-    }
 
 }
