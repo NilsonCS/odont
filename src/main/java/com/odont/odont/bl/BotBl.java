@@ -137,18 +137,19 @@ import java.util.List;
 
                     // conversation y message van a la funcion responsestochatuser
                     // response = listResponses(10, lastMessage.getMessageId(), update.getMessage().getText(), update);
-                    response = listResponses(10, lastMessage.getChatId(), update.getMessage().getText(), update);
+                    response = listResponses(10, lastMessage.getMessageId(), update.getMessage().getText(), update);
 
                     break;
-                case "Registrar Paciente":
+                case "Registrar paciente":
                     System.out.println("Registrat paciente "+ update.getMessage().getText());
-                    response = listResponses(20, lastMessage.getChatId(), update.getMessage().getText(), update);
+                    response = listResponses(20, lastMessage.getMessageId(), update.getMessage().getText(), update);
+                    System.out.println("OOOOOOOKKKKKK va por el lado registrar paciente con un valor de : "+ update.getMessage().getText());
 
                     break;
                 case "Ingresar Paciente":
 
                     LOGGER.warn("llega no llega x3");
-                    response = listResponses(30, lastMessage.getChatId(), update.getMessage().getText(), update);
+                    response = listResponses(30, lastMessage.getMessageId(), update.getMessage().getText(), update);
 
                     break;
 
@@ -173,19 +174,20 @@ import java.util.List;
 
         LOGGER.info("PROCESSING IN MESSAGE: {} from user {}", update.getMessage().getText(), cpUserEntity.getUserId());
         // Creamos el objeto CpChat con la respuesta a la presente conversación.
-        CpChatEntity cpChat = new CpChatEntity();
-        cpChat.setCpUserUserId(cpUserEntity);
-        cpChat.setInMessage(update.getMessage().getText());
+        CpChatEntity cpChatEntity = new CpChatEntity();
+        cpChatEntity.setCpUserUserId(cpUserEntity);
+        cpChatEntity.setInMessage(update.getMessage().getText());
+        cpChatEntity.setOutMessage(response.getResponses());
+       cpChatEntity.setInMessage(update.getMessage().getText());
+       cpChatEntity.setConversationId(response.getConversation());
+       cpChatEntity.setMessageId(response.getMessage());
+       cpChatEntity.setMsgDate(new Date()); //FIXME Obtener la fecha del campo entero update.getMessage().
+       cpChatEntity.setTxDate(new Date()); //FIXME no se por q no da ese error se debe de recoger.
+       cpChatEntity.setTxUser(cpUserEntity.getUserId().toString());
+       cpChatEntity.setTxHost(update.getMessage().getChatId().toString());
 
-        // FIXME 17/12/2019 reparar
-       cpChat.setOutMessage(response.getResponses());
-
-        cpChat.setMsgDate(new Date()); //FIXME Obtener la fecha del campo entero update.getMessage().
-        cpChat.setTxDate(new Date()); //FIXME no se por q no da ese error se debe de recoger.
-        cpChat.setTxUser(cpUserEntity.getUserId().toString());
-        cpChat.setTxHost(update.getMessage().getChatId().toString());
         // Guardamos en base dedatos
-        iChatDao.save(cpChat);
+        iChatDao.save(cpChatEntity);
         // Agregamos la respuesta al chatResponse.
             chatResponse.add(response);
            // CpChatEntity lastMessage = update.getMessage().getText();
@@ -296,54 +298,54 @@ import java.util.List;
         return responseConversation;
     }
 
-    private responseConversation switchRegisterPaciente(int conversation, int message, String messagereceived, Update update, CpUserEntity cpuser) {
-        responseConversation responsesReturn = new responseConversation();
+    private responseConversation switchRegisterPaciente(int conversation, int message, String messagereceived, Update update, CpUserEntity cpUserEntity) {
+        responseConversation responseConversation = new responseConversation();
         switch (message) {
             case 1:
-                responsesReturn.setResponses("Ingrese el nombre del paciente");
-                responsesReturn.setMessage(2);
-                responsesReturn.setConversation(conversation);
+                responseConversation.setResponses("Ingrese el nombre del paciente");
+                responseConversation.setMessage(2);
+                responseConversation.setConversation(conversation);
 
                 break;
             case 2:
-                responsesReturn.setResponses("Ingrese la ciudad de nacimiento del paciente");
-                responsesReturn.setMessage(3);
-                responsesReturn.setConversation(conversation);
+                responseConversation.setResponses("Ingrese la ciudad de nacimiento del paciente");
+                responseConversation.setMessage(3);
+                responseConversation.setConversation(conversation);
                 break;
             case 3:
-                responsesReturn.setResponses("Ingrese la zona en la que vive el paciente");
-                responsesReturn.setMessage(4);
-                responsesReturn.setConversation(conversation);
+                responseConversation.setResponses("Ingrese la zona en la que vive el paciente");
+                responseConversation.setMessage(4);
+                responseConversation.setConversation(conversation);
                 break;
             case 4:
-                responsesReturn.setResponses("Ingrese la calle del domicilio del paciente");
-                responsesReturn.setMessage(5);
-                responsesReturn.setConversation(conversation);
+                responseConversation.setResponses("Ingrese la calle del domicilio del paciente");
+                responseConversation.setMessage(5);
+                responseConversation.setConversation(conversation);
                 break;
 
             case 5:
-                responsesReturn.setResponses("Ingrese la ubicacion del paciente");
-                responsesReturn.setMessage(6);
-                responsesReturn.setConversation(conversation);
+                responseConversation.setResponses("Ingrese la ubicacion del paciente");
+                responseConversation.setMessage(6);
+                responseConversation.setConversation(conversation);
                 break;
 
             case 6:
-                responsesReturn.setResponses("Ingrese una imagen del paciente");
-                responsesReturn.setMessage(7);
-                responsesReturn.setConversation(conversation);
+                responseConversation.setResponses("Ingrese una imagen del paciente");
+                responseConversation.setMessage(7);
+                responseConversation.setConversation(conversation);
                 break;
 
             case 7:
 
-                responsesReturn.setResponses("GRACIAS!!!!! \n Los datos se guardaron correctamente");
-                responsesReturn.setMessage(1);
-                responsesReturn.setConversation(30);
+                responseConversation.setResponses("GRACIAS!!!!! \n Los datos se guardaron correctamente");
+                responseConversation.setMessage(1);
+                responseConversation.setConversation(30);
                 PatientEntity patientEntity = null;
-                patientEntity = returnPaciente(conversation, cpuser, messagereceived);
+                patientEntity = returnPaciente(conversation, cpUserEntity, messagereceived);
                 iPatientDao.save(patientEntity);
                 break;
         }
-        return responsesReturn;
+        return responseConversation;
     }
 
     // Para guardar paciente

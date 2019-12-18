@@ -43,7 +43,13 @@ public class CpChatEntity implements Serializable {
     @Size(min = 1, max = 400)
     @Column(name = "in_message")
     private String inMessage;
-    @Size(max = 400)
+    @Column(name = "conversation_id")
+    private int conversationId;
+    @Column(name = "message_id")
+    private int messageId;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 500)
     @Column(name = "out_message")
     private String outMessage;
     @Basic(optional = false)
@@ -77,9 +83,11 @@ public class CpChatEntity implements Serializable {
         this.chatId = chatId;
     }
 
-    public CpChatEntity(Integer chatId, String inMessage, java.util.Date msgDate, String txUser, String txHost, java.util.Date txDate) {
+    public CpChatEntity(Integer chatId, int conversationId, int messageId, String inMessage, java.util.Date msgDate, String txUser, String txHost, java.util.Date txDate) {
         this.chatId = chatId;
+        this.conversationId = conversationId;
         this.inMessage = inMessage;
+        this.messageId = messageId;
         this.msgDate = msgDate;
         this.txUser = txUser;
         this.txHost = txHost;
@@ -110,6 +118,14 @@ public class CpChatEntity implements Serializable {
         this.outMessage = outMessage;
     }
 
+    public int getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(int messageId) {
+        this.messageId = messageId;
+    }
+
     public java.util.Date getMsgDate() {
         return msgDate;
     }
@@ -133,6 +149,15 @@ public class CpChatEntity implements Serializable {
     public void setTxHost(String txHost) {
         this.txHost = txHost;
     }
+
+    public int getConversationId() {
+        return conversationId;
+    }
+
+    public void setConversationId(int conversationId) {
+        this.conversationId = conversationId;
+    }
+
 
     public java.util.Date getTxDate() {
         return txDate;
