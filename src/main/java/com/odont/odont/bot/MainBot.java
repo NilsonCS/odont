@@ -9,6 +9,7 @@ import com.odont.odont.models.dao.ITreatmentDao;
 import com.odont.odont.models.dto.MaterialsDto;
 import com.odont.odont.models.dto.PersonDto;
 
+import com.odont.odont.models.entity.CpChatEntity;
 import com.odont.odont.models.entity.CpUserEntity;
 import com.odont.odont.models.entity.MaterialsEntity;
 import com.odont.odont.models.entity.PersonEntity;
@@ -98,44 +99,54 @@ public void onUpdateReceived(Update update) {
 }
 
     //Control de los momentos en los que tiene que mostrar los botones
-    private void responsesToChatUSer(Update update, responseConversation responses,List<responseConversation> listMessage) {
+    private void responsesToChatUSer(Update update, responseConversation responses,List<responseConversation> listMessage)
+        {
 
-        ReplyKeyboardMarkup replyKeyboardMarkup = null;
+            ReplyKeyboardMarkup replyKeyboardMarkup = null;
 
-        if (responses.getConversation() == 20 && responses.getMessage() == 1 ) {
-            System.out.println("aca?");
-            replyKeyboardMarkup = menuInitialNewUser();
+            if (responses.getConversation() == 10 && responses.getMessage() == 1 ) {
+                System.out.println("aca?");
+                replyKeyboardMarkup = menuInitialNewUser();
 
-        }
-        if (responses.getConversation() == 20 && responses.getMessage() == 1 ) {
-            replyKeyboardMarkup = menuInitialNewUser();
-            //replyKeyboardMarkup = menuInitialUserPacient();
-        }
-        if (responses.getConversation() == 50 && responses.getMessage() == 1 ) {
-            replyKeyboardMarkup = menuTreatment();
-        }
-        LOGGER.info("numero de Registro es = " + numberRegistro);
-        //manda el mensaje de respuesta al usuario
-        for (responseConversation messageText : listMessage) {
-
-            SendMessage message = new SendMessage()
-                    .setChatId(update.getMessage().getChatId())
-                    .setText(messageText.getResponses());
-
-            if (replyKeyboardMarkup != null) {
-                message.setReplyMarkup(replyKeyboardMarkup);
-            } else {
-                ReplyKeyboardRemove keyboardMarkupRemove = new ReplyKeyboardRemove();
-                message.setReplyMarkup(keyboardMarkupRemove);
             }
-            try {
-                this.execute(message);
-
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
+            if (responses.getConversation() == 20 && responses.getMessage() == 1 ) {
+                replyKeyboardMarkup = menuInitialNewUser();
+                //replyKeyboardMarkup = menuInitialUserPacient();
             }
+            if (responses.getConversation() == 50 && responses.getMessage() == 1 ) {
+                replyKeyboardMarkup = menuTreatment();
+            }
+            LOGGER.info("numero de Registro es = " + numberRegistro);
+            //manda el mensaje de respuesta al usuario
+                for (responseConversation messageText : listMessage)
+                {
+
+                    SendMessage message = new SendMessage()
+                            .setChatId(update.getMessage().getChatId())
+                            .setText(messageText.getResponses());
+
+                    System.out.println("Mensaje senf teclado"+message);
+
+                    CpChatEntity cpChatEntity = new CpChatEntity();
+                            cpChatEntity.setOutMessage(message.getText());
+
+
+
+
+                    if (replyKeyboardMarkup != null) {
+                            message.setReplyMarkup(replyKeyboardMarkup);
+                        } else {
+                            ReplyKeyboardRemove keyboardMarkupRemove = new ReplyKeyboardRemove();
+                            message.setReplyMarkup(keyboardMarkupRemove);
+                        }
+                        try {
+                            this.execute(message);
+
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+                        }
+                }
         }
-    }
 
         //Metodo donde definimos el menu de botones para un usuario-cliente
         private ReplyKeyboardMarkup menuInitialNewUser(){

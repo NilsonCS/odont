@@ -68,6 +68,8 @@ import java.util.List;
         }
         System.out.println("Chat response "+ chatResponse);
         return chatResponse;
+
+
     }
 
 
@@ -80,15 +82,16 @@ import java.util.List;
         // #NOTA# MI ERROR EN LA SIG LINEA FUE POR NO IChat dao gg
         //CpChatEntity lastMessage = iChatDao.findLastChatByUserId(cpUserEntity.getUserId());
         //CpChatEntity lastMessage = iChatDao.findLastChatByUserId(cpUserEntity.getUserId());
-        CpChatEntity lastMessage = iChatDao.findLastChatByUserId(cpUserEntity.getUserId());
+    CpChatEntity lastMessage = iChatDao.findLastChatByUserId(cpUserEntity.getUserId());
+
+
         System.out.println("OK! LLEGA ACA , Continue chat with user su valor es:"+lastMessage);
         // Preparo la vaiable para retornar la respuesta
 
 
+
          // Imprimiendo response
         List<responseConversation> responseConversations = new ArrayList<>();
-
-
 
         for(responseConversation responseConversation : responseConversations) {
             System.out.println(responseConversation.getConversation());
@@ -98,6 +101,7 @@ import java.util.List;
         for(int i = 0; i < responseConversations.size(); i++) {
             System.out.println(responseConversations.get(i).getConversation());
         }
+
 
 
 
@@ -125,17 +129,19 @@ import java.util.List;
 
 
         } else {
+            System.out.println("OOOOOOOKKKKKK va por el lado del else con un valor de : "+ update.getMessage().getText());
 
             switch (update.getMessage().getText()) {
                 case "Buscar Paciente":
 
-                    LOGGER.warn("llega no llega");
+
+                    // conversation y message van a la funcion responsestochatuser
                     // response = listResponses(10, lastMessage.getMessageId(), update.getMessage().getText(), update);
-                    response = listResponses(10, 0, update.getMessage().getText(), update);
+                    response = listResponses(10, lastMessage.getChatId(), update.getMessage().getText(), update);
 
                     break;
                 case "Registrar Paciente":
-                    LOGGER.warn("llega no llega x2");
+                    System.out.println("Registrat paciente "+ update.getMessage().getText());
                     response = listResponses(20, lastMessage.getChatId(), update.getMessage().getText(), update);
 
                     break;
@@ -172,7 +178,7 @@ import java.util.List;
         cpChat.setInMessage(update.getMessage().getText());
 
         // FIXME 17/12/2019 reparar
-       cpChat.setOutMessage(update.getMessage().getText());
+       cpChat.setOutMessage(response.getResponses());
 
         cpChat.setMsgDate(new Date()); //FIXME Obtener la fecha del campo entero update.getMessage().
         cpChat.setTxDate(new Date()); //FIXME no se por q no da ese error se debe de recoger.
@@ -182,6 +188,8 @@ import java.util.List;
         iChatDao.save(cpChat);
         // Agregamos la respuesta al chatResponse.
             chatResponse.add(response);
+           // CpChatEntity lastMessage = update.getMessage().getText();
+        System.out.println("OK! LLEGA ACA , Continue chat with user su valor es al finalizar:"+lastMessage);
 
 
     }
@@ -229,7 +237,7 @@ import java.util.List;
                 responseConversation.setMessage(1);
                 responseConversation.setConversation(10);
 
-                System.out.println(messagereceived);
+                System.out.println("Valor de message recived en case 0: "+messagereceived);
 
 
 //                int lalo;
@@ -245,7 +253,7 @@ import java.util.List;
             case 10:
                 System.out.println("Hola");
 
-              //  responseConversation = switchMenuBuscar(message, messagereceived, update);
+               // responseConversation = switchMenuBuscar(message, messagereceived, update);
 
 
                 break;
@@ -269,7 +277,11 @@ import java.util.List;
 //
 //                break;
         }
+        System.out.println("Valor de message recived en case 0 despues del  breake: "+messagereceived);
+
         return responseConversation;
+
+
     }
 
     private responseConversation switchMenuBuscar(int message, String messagereceived, Update update) {
