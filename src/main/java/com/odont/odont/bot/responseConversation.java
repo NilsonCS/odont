@@ -3,9 +3,10 @@ package com.odont.odont.bot;
 import java.util.List;
 
 public class responseConversation {
+
+    int conversation;
     String responses;
     int message;
-    int conversation;
 
 
 

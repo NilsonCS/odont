@@ -88,8 +88,11 @@ import java.util.List;
          // Imprimiendo response
         List<responseConversation> responseConversations = new ArrayList<>();
 
+
+
         for(responseConversation responseConversation : responseConversations) {
             System.out.println(responseConversation.getConversation());
+            System.out.println(responseConversation.getMessage());
         }
 
         for(int i = 0; i < responseConversations.size(); i++) {
@@ -129,6 +132,7 @@ import java.util.List;
                     LOGGER.warn("llega no llega");
                     // response = listResponses(10, lastMessage.getMessageId(), update.getMessage().getText(), update);
                     response = listResponses(10, 0, update.getMessage().getText(), update);
+
                     break;
                 case "Registrar Paciente":
                     LOGGER.warn("llega no llega x2");
@@ -168,7 +172,7 @@ import java.util.List;
         cpChat.setInMessage(update.getMessage().getText());
 
         // FIXME 17/12/2019 reparar
-       cpChat.setOutMessage(response.getResponses());
+       cpChat.setOutMessage(update.getMessage().getText());
 
         cpChat.setMsgDate(new Date()); //FIXME Obtener la fecha del campo entero update.getMessage().
         cpChat.setTxDate(new Date()); //FIXME no se por q no da ese error se debe de recoger.
@@ -204,7 +208,7 @@ import java.util.List;
             cpUserEntity.setTxUser("admin");
             cpUserEntity.setTxDate(new Date());
             iUserDao.save(cpUserEntity);
-            System.out.println("Llego aca");
+            System.out.println("Llego a guardar en init user");
             //result = true;
         }
         // return result;
@@ -223,7 +227,14 @@ import java.util.List;
                         "\nSus datos son los siguientes\n" +
                         update.getMessage().getFrom().getFirstName() + "  " + update.getMessage().getFrom().getLastName());
                 responseConversation.setMessage(1);
-                responseConversation.setConversation(0);
+                responseConversation.setConversation(10);
+
+                System.out.println(messagereceived);
+
+
+//                int lalo;
+//                lalo = responseConversation.getMessage();
+//                System.out.println(lalo + "Impresion del cambio de mensaje");
 
                // CpUserEntity cpUserEntity = iUserDao.findByBotUserId(update.getMessage().getChatId().toString());
 
@@ -234,7 +245,7 @@ import java.util.List;
             case 10:
                 System.out.println("Hola");
 
-                responseConversation = switchMenuBuscar(message, messagereceived, update);
+              //  responseConversation = switchMenuBuscar(message, messagereceived, update);
 
 
                 break;
@@ -268,7 +279,7 @@ import java.util.List;
             case 1:
                 responseConversation.setResponses("Ingresaaste Buscar paciente");
                 responseConversation.setMessage(1);
-                responseConversation.setConversation(20);
+                responseConversation.setConversation(0);
         }
         return responseConversation;
     }
