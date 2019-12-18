@@ -66,16 +66,38 @@ import java.util.List;
             LOGGER.warn("ERROR en processUpdate", ex);
             throw ex;
         }
+        System.out.println("Chat response "+ chatResponse);
         return chatResponse;
     }
+
+
+
+
+
 
     private void continueChatWithUser(Update update, CpUserEntity cpUserEntity, List<responseConversation> chatResponse) {
         // Obtener el ultimo mensaje que envió el usuario
         // #NOTA# MI ERROR EN LA SIG LINEA FUE POR NO IChat dao gg
         //CpChatEntity lastMessage = iChatDao.findLastChatByUserId(cpUserEntity.getUserId());
+        //CpChatEntity lastMessage = iChatDao.findLastChatByUserId(cpUserEntity.getUserId());
         CpChatEntity lastMessage = iChatDao.findLastChatByUserId(cpUserEntity.getUserId());
-
+        System.out.println("OK! LLEGA ACA , Continue chat with user su valor es:"+lastMessage);
         // Preparo la vaiable para retornar la respuesta
+
+
+         // Imprimiendo response
+        List<responseConversation> responseConversations = new ArrayList<>();
+
+        for(responseConversation responseConversation : responseConversations) {
+            System.out.println(responseConversation.getConversation());
+        }
+
+        for(int i = 0; i < responseConversations.size(); i++) {
+            System.out.println(responseConversations.get(i).getConversation());
+        }
+
+
+
         responseConversation response = null;
         // Si el ultimo mensaje no existe (es la primera conversación)
         if (lastMessage == null) {
@@ -83,6 +105,21 @@ import java.util.List;
             response = listResponses(0, 0, update.getMessage().getText(), update);
 
             //response = 1;
+
+
+            // Imprimiendo response
+            List<responseConversation> responseConversations2 = new ArrayList<>();
+
+            for(responseConversation responseConversation : responseConversations2) {
+                System.out.println(responseConversation.getConversation());
+            }
+
+            for(int i = 0; i < responseConversations2.size(); i++) {
+                System.out.println(responseConversations.get(i).getConversation());
+            }
+
+
+
 
         } else {
 
@@ -129,7 +166,9 @@ import java.util.List;
         CpChatEntity cpChat = new CpChatEntity();
         cpChat.setCpUserUserId(cpUserEntity);
         cpChat.setInMessage(update.getMessage().getText());
-        cpChat.setOutMessage(response.getResponses());
+
+        // FIXME 17/12/2019 reparar
+       cpChat.setOutMessage(response.getResponses());
 
         cpChat.setMsgDate(new Date()); //FIXME Obtener la fecha del campo entero update.getMessage().
         cpChat.setTxDate(new Date()); //FIXME no se por q no da ese error se debe de recoger.
@@ -175,7 +214,7 @@ import java.util.List;
 
     private responseConversation listResponses(int conversation, int message, String messagereceived, Update update) {
         responseConversation responseConversation = new responseConversation();
-        CpUserEntity cpuser = new CpUserEntity();
+        //CpUserEntity cpUserEntity = new CpUserEntity();
         switch (conversation) {
             case 0:
 //inicio chat
@@ -184,8 +223,10 @@ import java.util.List;
                         "\nSus datos son los siguientes\n" +
                         update.getMessage().getFrom().getFirstName() + "  " + update.getMessage().getFrom().getLastName());
                 responseConversation.setMessage(1);
-                responseConversation.setConversation(20);
-                //  CpUserEntity cpUserEntity = iUserDao.findByBotUserId(update.getMessage().getChatId().toString());
+                responseConversation.setConversation(0);
+
+               // CpUserEntity cpUserEntity = iUserDao.findByBotUserId(update.getMessage().getChatId().toString());
+
                 //responseConversation = switchRegisterPaciente(conversation, message, messagereceived, update, cpUserEntity);
 
 

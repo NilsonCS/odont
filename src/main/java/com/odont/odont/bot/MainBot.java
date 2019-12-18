@@ -38,22 +38,7 @@ public class MainBot extends TelegramLongPollingBot {
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BotBl.class);
-    //@ USO VANIA @@@@@@@@@
-//    IPersonDao personDao;
-//    PersonDto personDto;
-//    MaterialsDto materialsDto;
-//    IMaterialsDao iMaterialsDao;
-//    ITreatmentDao iTreatmentDao;
-//    private final static Logger LOGGER = Logger.getLogger(MainBot.class.getName());
-//
-//    public MainBot(IPersonDao personDao, ITreatmentDao iTreatmentDao, IMaterialsDao iMaterialsDao) {
-//        this.personDao = personDao;
-//        this.iTreatmentDao = iTreatmentDao;
-//        this.iMaterialsDao = iMaterialsDao;
-//    }
-//
-//    private long chatId;
-//    private User user;
+
     BotBl botBl;
     private UserBl userBl;
     private PersonBl personBl;
@@ -71,9 +56,6 @@ public class MainBot extends TelegramLongPollingBot {
 
 
 
-
-
-
     // MMMMMMM no entiendo para manuel de manuel
 //    @Autowired
 //    public MainBot(BotBl botBl) {
@@ -81,25 +63,30 @@ public class MainBot extends TelegramLongPollingBot {
 //    }
 
 
-//   TODO FUNCIONA de NILSON no tocar
+//   @NILSON : TODO FUNCIONA  no tocar
 //    @Override
 public void onUpdateReceived(Update update) {
-    System.out.println(update);
+    System.out.println(("Entrando a onUpdateReceived update")+update );
     update.getMessage().getFrom().getId();
 
     LOGGER.info("Recibiendo update {} ", update);
     if (update.hasMessage() && update.getMessage().hasText()) {
-
+        LOGGER.info("Recibiendo update dentro del if de onUpdateReceived{} ", update);
         List<responseConversation> messages = botBl.processUpdate(update);
+        System.out.println("Que mensaje retorna" + messages);
+        LOGGER.info("Ingresando al BL");
         responseConversation response = messages.get(0);
+        System.out.println(response);
 
         responsesToChatUSer(update, response, messages);
 
 
+        System.out.println("Pasada por onUpdateReceived");
+
         //List<String> messages;
         try {
             //pato = botBl.processUpdate(update);
-            LOGGER.info("Ingresando al BL");
+           // LOGGER.info("Ingresando al BL");
             //  messages = this.botBl.processUpdate(update);
             LOGGER.info("SUCCESS ingrsando al BL");
             // response(action, update);
@@ -116,12 +103,13 @@ public void onUpdateReceived(Update update) {
         ReplyKeyboardMarkup replyKeyboardMarkup = null;
 
         if (responses.getConversation() == 20 && responses.getMessage() == 1 ) {
-
+            System.out.println("aca?");
             replyKeyboardMarkup = menuInitialNewUser();
 
         }
-        if (responses.getConversation() == 30 && responses.getMessage() == 1 ) {
-            replyKeyboardMarkup = menuInitialUserPacient();
+        if (responses.getConversation() == 20 && responses.getMessage() == 1 ) {
+            replyKeyboardMarkup = menuInitialNewUser();
+            //replyKeyboardMarkup = menuInitialUserPacient();
         }
         if (responses.getConversation() == 50 && responses.getMessage() == 1 ) {
             replyKeyboardMarkup = menuTreatment();
@@ -346,7 +334,71 @@ public void onUpdateReceived(Update update) {
 
 
 
-        // @@@@@@ USO DE VANIA
+
+
+
+        /* @@@@@@@@@@@@@@@@@@@@ Nilson Contreras @@@@@@@@@@@@@@@@@@@@@@@*/
+                @Override
+                public String getBotUsername () {
+                    return "GatoscBot";
+                }
+
+                @Override
+                public String getBotToken () {
+                    return "718088447:AAFnThJd7y3IjjcmWFFJadMLYhfrqlRkAbY";
+                }
+
+        /* @@@@@@@@@@@@@@@@@@@@ Bacarreza Gadiel @@@@@@@@@@@@@@@@@@@@@@@*/
+//     @Override
+//    public String getBotUsername() {
+//        return "CitasDentistabot";
+//    }
+//
+//    @Override
+//    public String getBotToken() {
+//        return "971865743:AAHD6m_iDbNA03GkGwUFdReXG5z8Ttnb5UI";
+//    }
+
+        /* @@@@@@@@@@@@@@@@@@@@ Vera Vania @@@@@@@@@@@@@@@@@@@@@@@*/
+
+//        @Override
+//        public String getBotUsername () {
+//            return "materiales_bot";
+//        }
+//
+//        @Override
+//        public String getBotToken () {
+//            return "998435810:AAEScPMttRL_pnqy46amQfxg3bwvdWL6-Lo";
+//        }
+
+        @Override
+        public void clearWebhook () throws TelegramApiRequestException {
+            System.out.println("Se invoco clearWebhook");
+        }
+
+
+    }
+
+
+//@ USO VANIA @@@@@@@@@
+//    IPersonDao personDao;
+//    PersonDto personDto;
+//    MaterialsDto materialsDto;
+//    IMaterialsDao iMaterialsDao;
+//    ITreatmentDao iTreatmentDao;
+//    private final static Logger LOGGER = Logger.getLogger(MainBot.class.getName());
+//
+//    public MainBot(IPersonDao personDao, ITreatmentDao iTreatmentDao, IMaterialsDao iMaterialsDao) {
+//        this.personDao = personDao;
+//        this.iTreatmentDao = iTreatmentDao;
+//        this.iMaterialsDao = iMaterialsDao;
+//    }
+//
+//    private long chatId;
+//    private User user;
+
+
+// @@@@@@ USO DE VANIA
 //@Override
 //public void onUpdateReceived(Update update){
 //
@@ -444,7 +496,7 @@ public void onUpdateReceived(Update update) {
 //                        materialsDto.setDateOut(Date.valueOf(update.getMessage().getText()));
 //                }
 
-                // @@@@ Comentado vania y nilson @@@@
+// @@@@ Comentado vania y nilson @@@@
 //                    caso = "Ingrese el nombre del curso a crear: ";
 //                    EditMessageText new_messageCrearCurso = new EditMessageText()
 //                            .setChatId(chat_id)
@@ -580,7 +632,7 @@ public void onUpdateReceived(Update update) {
                 }
             }
         }*/
-        // }fin menu de citas
+// }fin menu de citas
 
 
 /*
@@ -610,49 +662,6 @@ public void onUpdateReceived(Update update) {
         }
 
     }*/
-
-
-        /* @@@@@@@@@@@@@@@@@@@@ Nilson Contreras @@@@@@@@@@@@@@@@@@@@@@@*/
-//                @Override
-//                public String getBotUsername () {
-//                    return "GatoscBot";
-//                }
-//
-//                @Override
-//                public String getBotToken () {
-//                    return "718088447:AAFnThJd7y3IjjcmWFFJadMLYhfrqlRkAbY";
-//                }
-
-        /* @@@@@@@@@@@@@@@@@@@@ Bacarreza Gadiel @@@@@@@@@@@@@@@@@@@@@@@*/
-     @Override
-    public String getBotUsername() {
-        return "CitasDentistabot";
-    }
-
-    @Override
-    public String getBotToken() {
-        return "971865743:AAHD6m_iDbNA03GkGwUFdReXG5z8Ttnb5UI";
-    }
-
-        /* @@@@@@@@@@@@@@@@@@@@ Vera Vania @@@@@@@@@@@@@@@@@@@@@@@*/
-
-//        @Override
-//        public String getBotUsername () {
-//            return "materiales_bot";
-//        }
-//
-//        @Override
-//        public String getBotToken () {
-//            return "998435810:AAEScPMttRL_pnqy46amQfxg3bwvdWL6-Lo";
-//        }
-
-        @Override
-        public void clearWebhook () throws TelegramApiRequestException {
-            System.out.println("Se invoco clearWebhook");
-        }
-
-
-    }
 
 
 
