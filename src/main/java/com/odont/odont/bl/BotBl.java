@@ -268,7 +268,7 @@ import java.util.List;
 
                 CpUserEntity cpUserEntity = iUserDao.findByBotUserId(update.getMessage().getChatId().toString());
                 responseConversation = switchRegisterPaciente(conversation, message, messagereceived, update, cpUserEntity);
-
+                System.out.println(switchRegisterPaciente(conversation, message, messagereceived, update, cpUserEntity));
                 break;
 //            case 30:
 //                responsesReturn = switchMenuPaciente(conversation, message, messagereceived, update);
@@ -302,35 +302,35 @@ import java.util.List;
         responseConversation responseConversation = new responseConversation();
         switch (message) {
             case 1:
-                responseConversation.setResponses("Ingrese el nombre del paciente");
+                responseConversation.setResponses("Ingrese el nombre del nuevo paciente");
                 responseConversation.setMessage(2);
                 responseConversation.setConversation(conversation);
 
                 break;
             case 2:
-                responseConversation.setResponses("Ingrese la ciudad de nacimiento del paciente");
+                responseConversation.setResponses("Ingrese la edad del paciente");
                 responseConversation.setMessage(3);
                 responseConversation.setConversation(conversation);
                 break;
             case 3:
-                responseConversation.setResponses("Ingrese la zona en la que vive el paciente");
+                responseConversation.setResponses("Ingrese el CI del paciente");
                 responseConversation.setMessage(4);
                 responseConversation.setConversation(conversation);
                 break;
             case 4:
-                responseConversation.setResponses("Ingrese la calle del domicilio del paciente");
+                responseConversation.setResponses("Ingrese el telefono del paciente");
                 responseConversation.setMessage(5);
                 responseConversation.setConversation(conversation);
                 break;
 
             case 5:
-                responseConversation.setResponses("Ingrese la ubicacion del paciente");
+                responseConversation.setResponses("Ingrese el nombre de un familiar ");
                 responseConversation.setMessage(6);
                 responseConversation.setConversation(conversation);
                 break;
 
             case 6:
-                responseConversation.setResponses("Ingrese una imagen del paciente");
+                responseConversation.setResponses("Ingrese el numero de referencia de ese familiar");
                 responseConversation.setMessage(7);
                 responseConversation.setConversation(conversation);
                 break;
@@ -349,14 +349,16 @@ import java.util.List;
     }
 
     // Para guardar paciente
-    private PatientEntity returnPaciente(int conversation, CpUserEntity cpuser, String lastmessage) {
+    private PatientEntity returnPaciente(int conversation, CpUserEntity cpUserEntity, String lastmessage) {
         PatientEntity patientEntity = new PatientEntity();
+        System.out.println("Llega aca");
         ArrayList<CpChatEntity> listRegisterPatient = new ArrayList<>();
 
         for (int i = 0; i < 9; i++) {
-            CpChatEntity cpChatEntity = iChatDao.findMessageAndConversationByUserId(cpuser.getUserId(), conversation, i + 3);
+            CpChatEntity cpChatEntity = iChatDao.findMessageAndConversationByUserId(cpUserEntity.getUserId(), conversation, i + 3);
             listRegisterPatient.add(cpChatEntity);
         }
+
 
         LOGGER.info(listRegisterPatient.get(0).getInMessage());
         LOGGER.info(listRegisterPatient.get(1).getInMessage());
@@ -364,14 +366,29 @@ import java.util.List;
         LOGGER.info(listRegisterPatient.get(3).getInMessage());
         LOGGER.info(listRegisterPatient.get(4).getInMessage());
 
-        //      patientEntity.setName(listRegisterPatient.get(0).getInMessage());
-//        patientEntity.setCity(listRegisterRestaurant.get(1).getInMessage());
-//        patientEntity.setCity(listRegisterRestaurant.get(1).getInMessage());
+        patientEntity.setName(listRegisterPatient.get(0).getInMessage());
+        patientEntity.setAge(20);
+        patientEntity.setCi(listRegisterPatient.get(1).getInMessage());
+        patientEntity.setPhone(listRegisterPatient.get(2).getInMessage());
+        patientEntity.setRefFamily(listRegisterPatient.get(3).getInMessage());
+        patientEntity.setRefPhone(listRegisterPatient.get(4).getInMessage());
+
+
+
+
+
+
+
+
+
+//        patientEntity.setName(listRegisterPatient.get(0).getInMessage());
+//        patientEntity.setCi(listRegisterRestaurant.get(1).getInMessage());
+//        patientEntity.setSex(listRegisterRestaurant.get(1).getInMessage());
 //        patientEntity.setZone(listRegisterRestaurant.get(2).getInMessage());
 //        patientEntity.setZone(listRegisterRestaurant.get(2).getInMessage());
 //        patientEntity.setStreet(listRegisterRestaurant.get(3).getInMessage());
 //        patientEntity.setStreet(listRegisterRestaurant.get(3).getInMessage());
-//        patientEntity.setLatitude(new BigDecimal(123.123));
+//        patientEntity.setAge(new BigDecimal(123.123));
 //        patientEntity.setLatitude(new BigDecimal(123.123));
 //        patientEntity.setLongitude(new BigDecimal(123.123));
 //        patientEntity.setLongitude(new BigDecimal(123.123));

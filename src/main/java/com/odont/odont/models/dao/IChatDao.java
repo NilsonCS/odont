@@ -11,7 +11,7 @@ public interface IChatDao extends JpaRepository <CpChatEntity,Integer> {
     public CpChatEntity findLastChatByUserId(Integer userId);
 
 
-    @Query(value = "select * from chat where user_id=?1 and conversation_id=?2 and message_id=?3",nativeQuery = true)
+    @Query(value = "select * from cp_chat where user_id=?1 and conversation_id=?2 and message_id=?3",nativeQuery = true)
     public CpChatEntity findMessageAndConversationByUserId(Integer user_id,Integer conversation,Integer message);
 
 }
